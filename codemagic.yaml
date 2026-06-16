@@ -48,8 +48,8 @@ workflows:
         script: |
           cd ios
           pod install
-      - name: Build iOS App (No Codesign)
+      - name: Build iOS App (Simulator)
         script: |
-          flutter build ios --no-codesign
+          flutter build ios --simulator --no-codesign
     artifacts:
-      - build/ios/iphoneos/*.app
+      - build/ios/iphonesimulator/*.app
