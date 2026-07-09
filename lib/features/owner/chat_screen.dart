@@ -74,6 +74,8 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
     }
 
     final isClosed = item.status == 'returned';
+    final isPaused = itemsService.isChatPaused(widget.itemId);
+
 
     // Trigger scroll to bottom on load
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
@@ -146,6 +148,25 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
                     Text(
                       'This support channel has been closed & archived.',
                       style: TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.bold, fontSize: 13),
+                    ),
+                  ],
+                ),
+              )
+            else if (isPaused)
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: const BoxDecoration(
+                  color: AppColors.surface,
+                  border: Border(top: BorderSide(color: AppColors.border)),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.pause_circle_filled, color: AppColors.warning, size: 20),
+                    SizedBox(width: 8),
+                    Text(
+                      'This chat has been paused by the Administrator.',
+                      style: TextStyle(color: AppColors.warning, fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                   ],
                 ),
