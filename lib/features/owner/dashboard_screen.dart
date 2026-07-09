@@ -209,6 +209,52 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               const SizedBox(height: 20.0),
             ],
 
+            // Map Search CTA Card
+            Card(
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () => context.push('/owner/map'),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(Icons.map, color: AppColors.primary, size: 28),
+                      ),
+                      const SizedBox(width: 16.0),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Verified Partner Desks',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 4.0),
+                            Text(
+                              'Find the nearest safe drop-off & collection counters.',
+                              style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.textSecondary),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20.0),
+
             Text(
               'ACTIVE LOST ITEMS',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

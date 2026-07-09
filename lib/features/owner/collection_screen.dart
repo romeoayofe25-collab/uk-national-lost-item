@@ -137,26 +137,40 @@ class CollectionDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     // Mock location map preview
-                    Container(
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF101622),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: AppColors.border),
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: GridPaper(
-                              color: Colors.white.withValues(alpha: 0.02),
-                              interval: 30,
-                              subdivisions: 1,
+                    GestureDetector(
+                      onTap: () => context.push('/owner/map'),
+                      child: Container(
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF101622),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: GridPaper(
+                                color: Colors.white.withValues(alpha: 0.02),
+                                interval: 30,
+                                subdivisions: 1,
+                              ),
                             ),
-                          ),
-                          const Center(
-                            child: Icon(Icons.store, color: AppColors.success, size: 36),
-                          ),
-                        ],
+                            const Center(
+                              child: Icon(Icons.map, color: AppColors.primary, size: 36),
+                            ),
+                            const Positioned(
+                              bottom: 8,
+                              right: 8,
+                              child: Row(
+                                children: [
+                                  Icon(Icons.zoom_out_map, size: 12, color: AppColors.textSecondary),
+                                  SizedBox(width: 4),
+                                  Text('Tap to Open Live Map', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),

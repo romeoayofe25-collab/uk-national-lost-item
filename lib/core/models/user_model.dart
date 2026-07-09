@@ -37,4 +37,22 @@ class AppUser {
   }
 
   bool get isSuspended => status == 'suspended';
+
+  AppUser copyWith({
+    String? uid,
+    String? email,
+    String? displayName,
+    String? role,
+    int? trustScore,
+    String? status,
+  }) {
+    return AppUser(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      displayName: displayName ?? this.displayName,
+      role: role ?? this.role,
+      trustScore: trustScore ?? this.trustScore,
+      status: status ?? this.status,
+    );
+  }
 }

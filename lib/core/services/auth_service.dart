@@ -129,4 +129,22 @@ class AuthService {
       await _auth.signOut();
     }
   }
+
+  static List<AppUser> get mockUsersList => _mockUsers.values.toList();
+
+  static void suspendUser(String email) {
+    final cleanEmail = email.trim().toLowerCase();
+    if (_mockUsers.containsKey(cleanEmail)) {
+      final u = _mockUsers[cleanEmail]!;
+      _mockUsers[cleanEmail] = u.copyWith(status: 'suspended');
+    }
+  }
+
+  static void activateUser(String email) {
+    final cleanEmail = email.trim().toLowerCase();
+    if (_mockUsers.containsKey(cleanEmail)) {
+      final u = _mockUsers[cleanEmail]!;
+      _mockUsers[cleanEmail] = u.copyWith(status: 'active');
+    }
+  }
 }

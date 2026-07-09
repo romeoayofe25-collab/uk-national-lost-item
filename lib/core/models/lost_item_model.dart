@@ -84,6 +84,7 @@ class LostItem {
   final Map<String, String> verificationAnswers;
   final String? verificationSerialNumber;
   final List<ChatMessage> messages;
+  final String? storageLocation;
 
   LostItem({
     required this.id,
@@ -107,6 +108,7 @@ class LostItem {
     this.verificationAnswers = const {},
     this.verificationSerialNumber,
     this.messages = const [],
+    this.storageLocation,
   });
 
   Map<String, dynamic> toMap() {
@@ -131,6 +133,7 @@ class LostItem {
       'verificationAnswers': verificationAnswers,
       'verificationSerialNumber': verificationSerialNumber,
       'messages': messages.map((m) => m.toMap()).toList(),
+      'storageLocation': storageLocation,
     };
   }
 
@@ -163,6 +166,7 @@ class LostItem {
               ?.map((m) => ChatMessage.fromMap(m))
               .toList() ??
           [],
+      storageLocation: map['storageLocation'],
     );
   }
 
@@ -187,6 +191,7 @@ class LostItem {
     Map<String, String>? verificationAnswers,
     String? verificationSerialNumber,
     List<ChatMessage>? messages,
+    String? storageLocation,
   }) {
     return LostItem(
       id: id,
@@ -210,6 +215,7 @@ class LostItem {
       verificationAnswers: verificationAnswers ?? this.verificationAnswers,
       verificationSerialNumber: verificationSerialNumber ?? this.verificationSerialNumber,
       messages: messages ?? this.messages,
+      storageLocation: storageLocation ?? this.storageLocation,
     );
   }
 }

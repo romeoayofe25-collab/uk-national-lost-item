@@ -13,9 +13,25 @@ import 'features/owner/details_screen.dart';
 import 'features/owner/verification_screen.dart';
 import 'features/owner/collection_screen.dart';
 import 'features/owner/chat_screen.dart';
+import 'features/owner/map_screen.dart';
+
 import 'features/finder/dashboard_screen.dart';
+import 'features/finder/report_wizard_screen.dart';
+import 'features/finder/dropoff_screen.dart';
+import 'features/finder/claims_screen.dart';
+import 'features/finder/chat_screen.dart';
 import 'features/intermediary/dashboard_screen.dart';
+import 'features/intermediary/scan_screen.dart';
+import 'features/intermediary/deposit_screen.dart';
+import 'features/intermediary/handover_screen.dart';
+import 'features/intermediary/inventory_screen.dart';
+import 'features/intermediary/chat_screen.dart';
 import 'features/admin/dashboard_screen.dart';
+import 'features/admin/claims_review_screen.dart';
+import 'features/admin/disputes_panel_screen.dart';
+import 'features/admin/chat_monitor_screen.dart';
+import 'features/admin/centre_manager_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -118,19 +134,99 @@ class _MyAppState extends State<MyApp> {
                 return OwnerAdminChatScreen(itemId: id);
               },
             ),
+            GoRoute(
+              path: 'map',
+              builder: (context, state) => const OwnerMapScreen(),
+            ),
           ],
         ),
         GoRoute(
           path: '/finder',
           builder: (context, state) => const FinderDashboardScreen(),
+          routes: [
+            GoRoute(
+              path: 'report',
+              builder: (context, state) => const ReportFoundItemScreen(),
+            ),
+            GoRoute(
+              path: 'dropoff/:id',
+              builder: (context, state) {
+                final id = state.pathParameters['id'] ?? '';
+                return DropOffScreen(foundItemId: id);
+              },
+            ),
+            GoRoute(
+              path: 'claims',
+              builder: (context, state) => const ClaimsScreen(),
+            ),
+            GoRoute(
+              path: 'chat/:id',
+              builder: (context, state) {
+                final id = state.pathParameters['id'] ?? '';
+                return FinderChatScreen(foundItemId: id);
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: '/intermediary',
           builder: (context, state) => const IntermediaryDashboardScreen(),
+          routes: [
+            GoRoute(
+              path: 'scan',
+              builder: (context, state) => const IntermediaryScanScreen(),
+            ),
+            GoRoute(
+              path: 'deposit/:id',
+              builder: (context, state) {
+                final id = state.pathParameters['id'] ?? '';
+                return IntermediaryDepositScreen(foundItemId: id);
+              },
+            ),
+            GoRoute(
+              path: 'handover/:id',
+              builder: (context, state) {
+                final id = state.pathParameters['id'] ?? '';
+                return IntermediaryHandoverScreen(lostItemId: id);
+              },
+            ),
+            GoRoute(
+              path: 'inventory',
+              builder: (context, state) => const IntermediaryInventoryScreen(),
+            ),
+            GoRoute(
+              path: 'chat/:id',
+              builder: (context, state) {
+                final id = state.pathParameters['id'] ?? '';
+                return IntermediaryChatScreen(itemId: id);
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: '/admin',
           builder: (context, state) => const AdminDashboardScreen(),
+          routes: [
+            GoRoute(
+              path: 'claims/:id',
+              builder: (context, state) {
+                final id = state.pathParameters['id'] ?? '';
+                return AdminClaimsReviewScreen(matchId: id);
+              },
+            ),
+            GoRoute(
+              path: 'disputes',
+              builder: (context, state) => const AdminDisputesPanelScreen(),
+            ),
+            GoRoute(
+              path: 'chats',
+              builder: (context, state) => const AdminChatMonitorScreen(),
+            ),
+            GoRoute(
+              path: 'centres',
+              builder: (context, state) => const AdminCentreManagerScreen(),
+            ),
+          ],
         ),
       ],
     );
