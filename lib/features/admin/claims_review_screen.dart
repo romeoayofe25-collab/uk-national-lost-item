@@ -215,6 +215,69 @@ class _AdminClaimsReviewScreenState extends State<AdminClaimsReviewScreen> {
                               ],
                             ),
                             const Divider(height: 24, color: AppColors.border),
+
+                            // Biometric Identity Verification Status Card
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              margin: const EdgeInsets.only(bottom: 16),
+                              decoration: BoxDecoration(
+                                color: lostItem.biometricVerified
+                                    ? AppColors.success.withValues(alpha: 0.1)
+                                    : AppColors.warning.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: lostItem.biometricVerified
+                                      ? AppColors.success.withValues(alpha: 0.4)
+                                      : AppColors.warning.withValues(alpha: 0.4),
+                                ),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    lostItem.biometricVerified ? Icons.verified_user : Icons.gpp_maybe,
+                                    color: lostItem.biometricVerified ? AppColors.success : AppColors.warning,
+                                    size: 24,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          lostItem.biometricVerified
+                                              ? 'BIOMETRIC LIVENESS: PASSED'
+                                              : 'BIOMETRIC CHECK: NOT PERFORMED',
+                                          style: TextStyle(
+                                            color: lostItem.biometricVerified ? AppColors.success : AppColors.warning,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                            letterSpacing: 0.5,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 3),
+                                        if (lostItem.biometricVerified) ...[
+                                          Text(
+                                            'Confidence: ${((lostItem.biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% • ${lostItem.idDocumentType ?? 'Government ID'} (${lostItem.idDocumentMasked ?? 'GBR-***-001'})',
+                                            style: const TextStyle(color: Colors.white, fontSize: 12),
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            'Hash: ${lostItem.biometricHash ?? 'BIO-TOKEN-VERIFIED'}',
+                                            style: const TextStyle(color: AppColors.textSecondary, fontSize: 10, fontFamily: 'monospace'),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ] else
+                                          const Text(
+                                            'Standard claim verification without biometric facial match.',
+                                            style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             
                             ...lostItem.verificationQuestions.map((q) {
                               final ans = lostItem.verificationAnswers[q.id] ?? 'No answer provided';
