@@ -85,6 +85,11 @@ class LostItem {
   final String? verificationSerialNumber;
   final List<ChatMessage> messages;
   final String? storageLocation;
+  final bool biometricVerified;
+  final double? biometricConfidence;
+  final String? biometricHash;
+  final String? idDocumentType;
+  final String? idDocumentMasked;
 
   LostItem({
     required this.id,
@@ -109,6 +114,11 @@ class LostItem {
     this.verificationSerialNumber,
     this.messages = const [],
     this.storageLocation,
+    this.biometricVerified = false,
+    this.biometricConfidence,
+    this.biometricHash,
+    this.idDocumentType,
+    this.idDocumentMasked,
   });
 
   Map<String, dynamic> toMap() {
@@ -134,6 +144,11 @@ class LostItem {
       'verificationSerialNumber': verificationSerialNumber,
       'messages': messages.map((m) => m.toMap()).toList(),
       'storageLocation': storageLocation,
+      'biometricVerified': biometricVerified,
+      'biometricConfidence': biometricConfidence,
+      'biometricHash': biometricHash,
+      'idDocumentType': idDocumentType,
+      'idDocumentMasked': idDocumentMasked,
     };
   }
 
@@ -167,6 +182,11 @@ class LostItem {
               .toList() ??
           [],
       storageLocation: map['storageLocation'],
+      biometricVerified: map['biometricVerified'] ?? false,
+      biometricConfidence: (map['biometricConfidence'] as num?)?.toDouble(),
+      biometricHash: map['biometricHash'],
+      idDocumentType: map['idDocumentType'],
+      idDocumentMasked: map['idDocumentMasked'],
     );
   }
 
@@ -192,6 +212,11 @@ class LostItem {
     String? verificationSerialNumber,
     List<ChatMessage>? messages,
     String? storageLocation,
+    bool? biometricVerified,
+    double? biometricConfidence,
+    String? biometricHash,
+    String? idDocumentType,
+    String? idDocumentMasked,
   }) {
     return LostItem(
       id: id,
@@ -216,6 +241,11 @@ class LostItem {
       verificationSerialNumber: verificationSerialNumber ?? this.verificationSerialNumber,
       messages: messages ?? this.messages,
       storageLocation: storageLocation ?? this.storageLocation,
+      biometricVerified: biometricVerified ?? this.biometricVerified,
+      biometricConfidence: biometricConfidence ?? this.biometricConfidence,
+      biometricHash: biometricHash ?? this.biometricHash,
+      idDocumentType: idDocumentType ?? this.idDocumentType,
+      idDocumentMasked: idDocumentMasked ?? this.idDocumentMasked,
     );
   }
 }

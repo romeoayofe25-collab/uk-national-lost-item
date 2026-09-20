@@ -474,6 +474,11 @@ class ItemsService extends ChangeNotifier {
     required Map<String, String> answers,
     required String? serialNumber,
     required List<String> proofDocs,
+    bool biometricVerified = false,
+    double? biometricConfidence,
+    String? biometricHash,
+    String? idDocumentType,
+    String? idDocumentMasked,
   }) async {
     final idx = _mockItems.indexWhere((item) => item.id == itemId);
     if (idx == -1) return false;
@@ -482,45 +487,74 @@ class ItemsService extends ChangeNotifier {
       await Future.delayed(const Duration(milliseconds: 600));
       final current = _mockItems[idx];
       
-      // Update item with verification answers
+      final verificationMessages = <ChatMessage>[
+        ...current.messages,
+        ChatMessage(
+          id: 'msg_sys_verif_${DateTime.now().millisecondsSinceEpoch}',
+          senderId: 'system',
+          senderName: 'System Alert',
+          senderRole: 'system',
+          text: 'Ownership verification proof submitted. Under Administration Board review.',
+          timestamp: DateTime.now(),
+        ),
+      ];
+
+      if (biometricVerified) {
+        verificationMessages.add(
+          ChatMessage(
+            id: 'msg_sys_bio_${DateTime.now().millisecondsSinceEpoch + 1}',
+            senderId: 'system',
+            senderName: 'Security Protocol',
+            senderRole: 'system',
+            text: 'Biometric Identity Liveness Verified (${idDocumentType ?? 'Government ID'}: ${idDocumentMasked ?? 'CONFIDENTIAL'}, ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% confidence score). Cryptographic hash registered.',
+            timestamp: DateTime.now(),
+          ),
+        );
+      }
+
+      // Update item with verification answers and biometric data
       final updated = current.copyWith(
         status: 'underReview',
         verificationAnswers: answers,
         verificationSerialNumber: serialNumber,
         proofDocuments: [...current.proofDocuments, ...proofDocs],
-        messages: [
-          ...current.messages,
-          ChatMessage(
-            id: 'msg_sys_verif_${DateTime.now().millisecondsSinceEpoch}',
-            senderId: 'system',
-            senderName: 'System Alert',
-            senderRole: 'system',
-            text: 'Ownership verification proof submitted. Under Administration Board review.',
-            timestamp: DateTime.now(),
-          ),
-        ],
+        biometricVerified: biometricVerified,
+        biometricConfidence: biometricConfidence,
+        biometricHash: biometricHash,
+        idDocumentType: idDocumentType,
+        idDocumentMasked: idDocumentMasked,
+        messages: verificationMessages,
       );
       _mockItems[idx] = updated;
       notifyListeners();
       
-      // Auto-simulate Admin Review to make it ready for collection after 5 seconds
-      _simulateAdminApproval(itemId);
       return true;
     } else {
       try {
         final current = _mockItems[idx];
-        final updatedMap = {
+        final updatedMap = <String, dynamic>{
           'status': 'underReview',
           'verificationAnswers': answers,
           'verificationSerialNumber': serialNumber,
           'proofDocuments': FieldValue.arrayUnion(proofDocs),
+          'biometricVerified': biometricVerified,
         };
+        if (biometricConfidence != null) updatedMap['biometricConfidence'] = biometricConfidence;
+        if (biometricHash != null) updatedMap['biometricHash'] = biometricHash;
+        if (idDocumentType != null) updatedMap['idDocumentType'] = idDocumentType;
+        if (idDocumentMasked != null) updatedMap['idDocumentMasked'] = idDocumentMasked;
+
         await _db.collection('lost_items').doc(itemId).update(updatedMap);
         _mockItems[idx] = current.copyWith(
           status: 'underReview',
           verificationAnswers: answers,
           verificationSerialNumber: serialNumber,
           proofDocuments: [...current.proofDocuments, ...proofDocs],
+          biometricVerified: biometricVerified,
+          biometricConfidence: biometricConfidence,
+          biometricHash: biometricHash,
+          idDocumentType: idDocumentType,
+          idDocumentMasked: idDocumentMasked,
         );
         notifyListeners();
         return true;
@@ -529,62 +563,6 @@ class ItemsService extends ChangeNotifier {
         return false;
       }
     }
-  }
-
-  // Support simulator to trigger the next stages for demonstration/testing
-  void _simulateAdminApproval(String itemId) {
-    Timer(const Duration(seconds: 5), () {
-      final idx = _mockItems.indexWhere((item) => item.id == itemId);
-      if (idx == -1) return;
-      final current = _mockItems[idx];
-      if (current.status == 'underReview') {
-        _mockItems[idx] = current.copyWith(
-          status: 'readyForCollection',
-          secureCollectionPin: '491-032',
-          messages: [
-            ...current.messages,
-            ChatMessage(
-              id: 'msg_sys_approved_${DateTime.now().millisecondsSinceEpoch}',
-              senderId: 'system',
-              senderName: 'System Alert',
-              senderRole: 'system',
-              text: 'Ownership verified! Secure collection voucher generated. Please collect your item from Kings Cross customer support desk.',
-              timestamp: DateTime.now(),
-            ),
-            ChatMessage(
-              id: 'msg_admin_approved_${DateTime.now().millisecondsSinceEpoch}',
-              senderId: 'admin_uid',
-              senderName: 'James (Admin)',
-              senderRole: 'admin',
-              text: 'Hello Sarah, your claim has been approved. The item is securely stored in Lockbox #4. Present the QR code on your screen to retrieve it.',
-              timestamp: DateTime.now(),
-            ),
-          ],
-        );
-
-        // Also trigger status update on corresponding found item to release the reward!
-        final fIdx = _mockFoundItems.indexWhere((item) => item.title == current.title && item.status == 'deposited');
-        if (fIdx != -1) {
-          final fCurrent = _mockFoundItems[fIdx];
-          _mockFoundItems[fIdx] = fCurrent.copyWith(
-            status: 'matched',
-            messages: [
-              ...fCurrent.messages,
-              ChatMessage(
-                id: 'f_msg_matched_${DateTime.now().millisecondsSinceEpoch}',
-                senderId: 'system',
-                senderName: 'System Alert',
-                senderRole: 'system',
-                text: 'Item matched with owner claim! Reward is held in escrow pending collection.',
-                timestamp: DateTime.now(),
-              )
-            ]
-          );
-        }
-
-        notifyListeners();
-      }
-    });
   }
 
   // Simulate drop-off scanned / handed over by desk representative

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
 import '../../core/services/items_service.dart';
+import 'biometric_scan_screen.dart';
 
 class OwnerVerificationScreen extends StatefulWidget {
   final String itemId;
@@ -17,6 +18,7 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
   final Map<String, TextEditingController> _controllers = {};
   final _serialController = TextEditingController();
   final List<String> _uploadedDocs = [];
+  BiometricScanResult? _biometricResult;
   bool _isSubmitting = false;
 
   @override
@@ -26,6 +28,26 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
     }
     _serialController.dispose();
     super.dispose();
+  }
+
+  Future<void> _openBiometricScanner() async {
+    final result = await Navigator.of(context).push<BiometricScanResult>(
+      MaterialPageRoute(
+        builder: (context) => const BiometricScanScreen(),
+      ),
+    );
+
+    if (result != null && mounted) {
+      setState(() {
+        _biometricResult = result;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Biometric verification confirmed for ${result.documentType}!'),
+          backgroundColor: AppColors.success,
+        ),
+      );
+    }
   }
 
   void _submit(dynamic item) async {
@@ -58,6 +80,11 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
       answers: answers,
       serialNumber: _serialController.text.trim().isEmpty ? null : _serialController.text.trim(),
       proofDocs: _uploadedDocs,
+      biometricVerified: _biometricResult?.isVerified ?? false,
+      biometricConfidence: _biometricResult?.confidence,
+      biometricHash: _biometricResult?.biometricHash,
+      idDocumentType: _biometricResult?.documentType,
+      idDocumentMasked: _biometricResult?.documentMasked,
     );
 
     if (mounted) {
@@ -122,18 +149,32 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
               ),
               const SizedBox(height: 8),
               const Text(
-                'The Admin Board has flagged a potential matching item in storage. Answer the security queries below to confirm ownership.',
+                'The Admin Board has flagged a potential matching item in storage. Complete the identity and security queries below to confirm ownership.',
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 13, height: 1.4),
               ),
               const SizedBox(height: 20),
 
-              // Dynamic Admin Security Questions
+              // Biometric Identity Check Card (Rule 18 Strong Verification)
+              _buildBiometricSection(),
+              const SizedBox(height: 16),
+
+              // Dynamic Admin Security Questions Card
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      const Text(
+                        'ADMIN SECURITY QUESTIONS',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.0,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
                       ...item.verificationQuestions.map((q) {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 16.0),
@@ -308,6 +349,136 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildBiometricSection() {
+    if (_biometricResult != null) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.success.withValues(alpha: 0.5), width: 1.5),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.success.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.verified_user, color: AppColors.success, size: 22),
+                    ),
+                    const SizedBox(width: 12),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'BIOMETRICS VERIFIED ✓',
+                          style: TextStyle(color: AppColors.success, fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          'Liveness Score: 98.4% Confidence',
+                          style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                TextButton(
+                  onPressed: _openBiometricScanner,
+                  child: const Text('Retake', style: TextStyle(color: AppColors.primary, fontSize: 12)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            const Divider(color: AppColors.border, height: 1),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                const Icon(Icons.badge, color: AppColors.textSecondary, size: 16),
+                const SizedBox(width: 8),
+                Text(
+                  'ID Linked: ${_biometricResult!.documentType}',
+                  style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Text(
+                  _biometricResult!.documentMasked,
+                  style: const TextStyle(color: AppColors.textSecondary, fontSize: 12, fontFamily: 'monospace'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.face_retouching_natural, color: AppColors.primary, size: 22),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'BIOMETRIC IDENTITY CHECK',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Required for high-value claims (Rule 18)',
+                      style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'Complete a 15-second facial liveness scan matched against your Government ID to prevent fraudulent claims.',
+            style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.4),
+          ),
+          const SizedBox(height: 14),
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size.fromHeight(40),
+              backgroundColor: AppColors.primary,
+            ),
+            icon: const Icon(Icons.camera_front, size: 18),
+            label: const Text('Start Biometric Face Scan', style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: _openBiometricScanner,
+          ),
+        ],
       ),
     );
   }
