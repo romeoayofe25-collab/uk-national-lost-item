@@ -59,12 +59,25 @@ class IntermediaryDashboardScreen extends StatelessWidget {
                           letterSpacing: 0.5,
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.logout, color: AppColors.textSecondary),
-                        onPressed: () {
-                          authProvider.signOut();
-                          context.go('/');
-                        },
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Badge(
+                              isLabelVisible: itemsService.unreadNotificationsCount > 0,
+                              label: Text('${itemsService.unreadNotificationsCount}'),
+                              child: const Icon(Icons.notifications_outlined, color: AppColors.textPrimary),
+                            ),
+                            tooltip: 'Notifications',
+                            onPressed: () => context.push('/notifications'),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.logout, color: AppColors.textSecondary),
+                            onPressed: () {
+                              authProvider.signOut();
+                              context.go('/');
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),

@@ -1,7 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:uk_national_lost_item/core/models/lost_item_model.dart';
 import 'package:uk_national_lost_item/core/models/fraud_report_model.dart';
+import 'package:uk_national_lost_item/core/models/notification_model.dart';
 import 'package:uk_national_lost_item/core/services/items_service.dart';
+import 'package:uk_national_lost_item/features/common/notifications_screen.dart';
 import 'package:uk_national_lost_item/main.dart';
 
 void main() {
@@ -283,5 +287,119 @@ void main() {
       expect(updatedReport.status, 'dismissed');
     });
   });
+
+  group('In-App Notification Center & Audit Activity Feed (Rules 1, 4 & 7)', () {
+    test('AppNotification model serialization, deserialization, and copyWith', () {
+      final notif = AppNotification(
+        id: 'notif_test_1',
+        title: 'Custody Handover Complete',
+        message: 'Item has been handed over safely at Kings Cross Counter.',
+        timestamp: DateTime(2026, 9, 23, 10, 0),
+        category: 'custody',
+        type: 'custodyDeposited',
+        isRead: false,
+        relatedItemId: 'iphone_13_pro',
+        actionRoute: '/intermediary',
+      );
+
+      expect(notif.id, 'notif_test_1');
+      expect(notif.category, 'custody');
+      expect(notif.isRead, isFalse);
+
+      final map = notif.toMap();
+      expect(map['title'], 'Custody Handover Complete');
+      expect(map['category'], 'custody');
+      expect(map['relatedItemId'], 'iphone_13_pro');
+
+      final restored = AppNotification.fromMap(map, 'notif_test_1');
+      expect(restored.id, 'notif_test_1');
+      expect(restored.title, notif.title);
+      expect(restored.category, notif.category);
+      expect(restored.type, notif.type);
+
+      final readNotif = notif.copyWith(isRead: true);
+      expect(readNotif.isRead, isTrue);
+      expect(readNotif.title, notif.title);
+    });
+
+    test('ItemsService initializes notifications, handles read toggles and removal', () {
+      final service = ItemsService();
+
+      expect(service.notifications.isNotEmpty, isTrue);
+      final initialUnread = service.unreadNotificationsCount;
+      expect(initialUnread, greaterThan(0));
+
+      final firstUnread = service.notifications.firstWhere((n) => !n.isRead);
+      service.markNotificationAsRead(firstUnread.id);
+      expect(service.unreadNotificationsCount, initialUnread - 1);
+
+      service.markAllNotificationsAsRead();
+      expect(service.unreadNotificationsCount, 0);
+
+      final initialTotal = service.notifications.length;
+      service.removeNotification(firstUnread.id);
+      expect(service.notifications.length, initialTotal - 1);
+    });
+
+    test('ItemsService automatically generates notifications on system actions', () async {
+      final service = ItemsService();
+      final initialCount = service.notifications.length;
+
+      // 1. Check in item generates custody notification
+      await service.checkInItem(
+        foundItemId: 'blue_backpack',
+        storageLocation: 'Shelf A-4',
+      );
+      expect(service.notifications.length, initialCount + 1);
+      expect(service.notifications.first.category, 'custody');
+
+      // 2. Submit fraud report generates security notification
+      await service.submitFraudReport(
+        reportedItemId: 'iphone_13_pro',
+        reportedItemTitle: 'iPhone 13 Pro',
+        reportedUserId: 'suspicious_claimant_1',
+        reportedUserName: 'Mark Davies',
+        reporterId: 'sarah_jenkins_uid',
+        reporterRole: 'owner',
+        category: 'extortionBidding',
+        description: 'Unsolicited request for private wire transfer before dropping off device.',
+        severity: 'high',
+      );
+      expect(service.notifications.first.category, 'security');
+      expect(service.notifications.first.type, 'securityAlert');
+    });
+
+    testWidgets('NotificationsScreen displays tabs, notifications, and handles mark all read', (tester) async {
+      final service = ItemsService();
+
+      await tester.pumpWidget(
+        ChangeNotifierProvider<ItemsService>.value(
+          value: service,
+          child: const MaterialApp(
+            home: NotificationsScreen(),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify title and tabs
+      expect(find.text('Audit Activity Feed'), findsOneWidget);
+      expect(find.text('All'), findsOneWidget);
+      expect(find.text('Claims & Custody'), findsOneWidget);
+      expect(find.text('Rewards'), findsOneWidget);
+      expect(find.text('Security'), findsOneWidget);
+
+      // Verify mark all read button
+      final markAllButton = find.text('Mark All Read');
+      expect(markAllButton, findsOneWidget);
+
+      await tester.tap(markAllButton);
+      await tester.pumpAndSettle();
+
+      expect(service.unreadNotificationsCount, 0);
+    });
+  });
 }
+
 

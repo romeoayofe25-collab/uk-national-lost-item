@@ -5,6 +5,7 @@ import '../models/lost_item_model.dart';
 import '../models/found_item_model.dart';
 import '../models/claim_model.dart';
 import '../models/fraud_report_model.dart';
+import '../models/notification_model.dart';
 import 'auth_service.dart';
 
 class ItemsService extends ChangeNotifier {
@@ -22,16 +23,22 @@ class ItemsService extends ChangeNotifier {
   // In-memory mock fraud and incident reports
   final List<FraudReport> _mockFraudReports = [];
 
+  // In-memory mock notifications & audit feed
+  final List<AppNotification> _mockNotifications = [];
+
   ItemsService() {
     _seedMockItems();
     _seedMockFoundItemsAndClaims();
     _seedMockFraudReports();
+    _seedMockNotifications();
   }
 
   List<LostItem> get items => List.unmodifiable(_mockItems);
   List<FoundItem> get foundItems => List.unmodifiable(_mockFoundItems);
   List<ClaimTransaction> get claims => List.unmodifiable(_mockClaims);
   List<FraudReport> get fraudReports => List.unmodifiable(_mockFraudReports);
+  List<AppNotification> get notifications => List.unmodifiable(_mockNotifications);
+  int get unreadNotificationsCount => _mockNotifications.where((n) => !n.isRead).length;
 
   // Seed the initial mock items for local prototyping
   void _seedMockItems() {
@@ -532,6 +539,20 @@ class ItemsService extends ChangeNotifier {
         messages: verificationMessages,
       );
       _mockItems[idx] = updated;
+
+      if (biometricVerified) {
+        addNotification(
+          title: 'Biometric Identity Verified (${idDocumentType ?? 'Government ID'})',
+          message: 'Biometric liveness confirmed with ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% match. Cryptographic token registered.',
+          type: 'biometricVerified',
+          category: 'claims',
+          relatedItemId: itemId,
+          relatedItemTitle: current.title,
+          recipientRole: 'owner',
+          actionRoute: '/owner/details/$itemId',
+        );
+      }
+
       notifyListeners();
       
       return true;
@@ -822,6 +843,17 @@ class ItemsService extends ChangeNotifier {
         itemId: current.id,
       ));
 
+      addNotification(
+        title: 'Partner Desk Deposit Confirmed',
+        message: '${current.title} was physically inspected and securely stored in $storageLocation.',
+        type: 'custodyDeposited',
+        category: 'custody',
+        relatedItemId: foundItemId,
+        relatedItemTitle: current.title,
+        recipientRole: 'finder',
+        actionRoute: '/finder/claims',
+      );
+
       notifyListeners();
       return true;
     } else {
@@ -908,6 +940,17 @@ class ItemsService extends ChangeNotifier {
           }
         }
       }
+
+      addNotification(
+        title: 'Handover Complete - Reward Released!',
+        message: 'Owner physically collected ${current.title}. Reward released to your available balance (Rule 14).',
+        type: 'escrowReleased',
+        category: 'rewards',
+        relatedItemId: lostItemId,
+        relatedItemTitle: current.title,
+        recipientRole: 'finder',
+        actionRoute: '/finder/claims',
+      );
 
       notifyListeners();
       return true;
@@ -1020,6 +1063,27 @@ class ItemsService extends ChangeNotifier {
         ));
       }
     }
+
+    addNotification(
+      title: 'Reward Officially Determined: £${rewardAmount.toStringAsFixed(2)}',
+      message: 'Admin Board has reviewed verification and locked £${rewardAmount.toStringAsFixed(2)} in escrow pending collection (Rule 14).',
+      type: 'rewardAssessed',
+      category: 'rewards',
+      relatedItemId: lostItemId,
+      relatedItemTitle: current.title,
+      recipientRole: 'owner',
+      actionRoute: '/owner/collection/$lostItemId',
+    );
+    addNotification(
+      title: 'Collection Voucher Ready',
+      message: 'Secure collection voucher & QR PIN code issued for ${current.title}. Please collect from customer support desk.',
+      type: 'voucherReady',
+      category: 'custody',
+      relatedItemId: lostItemId,
+      relatedItemTitle: current.title,
+      recipientRole: 'owner',
+      actionRoute: '/owner/collection/$lostItemId',
+    );
 
     notifyListeners();
     return true;
@@ -1168,6 +1232,17 @@ class ItemsService extends ChangeNotifier {
       );
     }
 
+    addNotification(
+      title: 'Security Alert: ${newReport.categoryLabel}',
+      message: 'Incident #${newReport.id} logged for ${newReport.reportedItemTitle}. Under prioritized review (Rule 11).',
+      type: 'securityAlert',
+      category: 'security',
+      relatedItemId: reportedItemId,
+      relatedItemTitle: reportedItemTitle,
+      recipientRole: 'admin',
+      actionRoute: '/admin',
+    );
+
     notifyListeners();
     return true;
   }
@@ -1248,5 +1323,143 @@ class ItemsService extends ChangeNotifier {
 
     notifyListeners();
     return true;
+  }
+
+  // --- IN-APP NOTIFICATION & AUDIT FEED (RULES 1, 4 & 7) ---
+
+  void _seedMockNotifications() {
+    _mockNotifications.addAll([
+      AppNotification(
+        id: 'notif_1',
+        title: 'Official Reward Determined: £20.00',
+        message: 'The Admin Board assessed and locked an official £20.00 escrow reward for the recovery of iPhone 13 Pro (Rule 14).',
+        type: 'rewardAssessed',
+        category: 'rewards',
+        relatedItemId: 'iphone_13_pro',
+        relatedItemTitle: 'iPhone 13 Pro',
+        recipientRole: 'owner',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 25)),
+        isRead: false,
+        actionRoute: '/owner/details/iphone_13_pro',
+      ),
+      AppNotification(
+        id: 'notif_2',
+        title: 'Secure Collection Voucher Issued',
+        message: 'Your ownership verification was verified. Collection PIN and QR voucher generated for Kings Cross customer desk.',
+        type: 'voucherReady',
+        category: 'custody',
+        relatedItemId: 'iphone_13_pro',
+        relatedItemTitle: 'iPhone 13 Pro',
+        recipientRole: 'owner',
+        timestamp: DateTime.now().subtract(const Duration(hours: 1)),
+        isRead: false,
+        actionRoute: '/owner/collection/iphone_13_pro',
+      ),
+      AppNotification(
+        id: 'notif_3',
+        title: 'Custody Check-in Verified',
+        message: 'Blue Canvas Backpack was inspected and safely deposited into King\'s Cross Partner Locker #42.',
+        type: 'custodyDeposited',
+        category: 'custody',
+        relatedItemId: 'blue_backpack',
+        relatedItemTitle: 'Blue Canvas Backpack',
+        recipientRole: 'finder',
+        timestamp: DateTime.now().subtract(const Duration(hours: 3)),
+        isRead: false,
+        actionRoute: '/finder/claims',
+      ),
+      AppNotification(
+        id: 'notif_4',
+        title: 'Biometric Liveness Confirmed (98.4%)',
+        message: 'Facial contour alignment and liveness blink check passed. Cryptographic identity token generated for your claim.',
+        type: 'biometricVerified',
+        category: 'claims',
+        relatedItemId: 'iphone_13_pro',
+        relatedItemTitle: 'iPhone 13 Pro',
+        recipientRole: 'owner',
+        timestamp: DateTime.now().subtract(const Duration(hours: 4)),
+        isRead: true,
+        actionRoute: '/owner/details/iphone_13_pro',
+      ),
+      AppNotification(
+        id: 'notif_5',
+        title: 'Reward Payout Released: £45.00',
+        message: 'Owner completed collection of Black Leather Wallet. Escrow reward transferred to your available balance.',
+        type: 'escrowReleased',
+        category: 'rewards',
+        relatedItemId: 'mock_wallet_returned',
+        relatedItemTitle: 'Black Leather Wallet',
+        recipientRole: 'finder',
+        timestamp: DateTime.now().subtract(const Duration(days: 1)),
+        isRead: true,
+        actionRoute: '/finder/claims',
+      ),
+      AppNotification(
+        id: 'notif_6',
+        title: 'Priority Security Alert Logged',
+        message: 'Admin Board initiated investigation on Case #1042 following an off-platform payment report (Rule 11).',
+        type: 'securityAlert',
+        category: 'security',
+        relatedItemId: 'iphone_13_pro',
+        relatedItemTitle: 'iPhone 13 Pro',
+        recipientRole: 'admin',
+        timestamp: DateTime.now().subtract(const Duration(hours: 2)),
+        isRead: false,
+        actionRoute: '/admin',
+      ),
+    ]);
+  }
+
+  void markNotificationAsRead(String id) {
+    final idx = _mockNotifications.indexWhere((n) => n.id == id);
+    if (idx != -1 && !_mockNotifications[idx].isRead) {
+      _mockNotifications[idx] = _mockNotifications[idx].copyWith(isRead: true);
+      notifyListeners();
+    }
+  }
+
+  void markAllNotificationsAsRead() {
+    bool changed = false;
+    for (int i = 0; i < _mockNotifications.length; i++) {
+      if (!_mockNotifications[i].isRead) {
+        _mockNotifications[i] = _mockNotifications[i].copyWith(isRead: true);
+        changed = true;
+      }
+    }
+    if (changed) {
+      notifyListeners();
+    }
+  }
+
+  void removeNotification(String id) {
+    _mockNotifications.removeWhere((n) => n.id == id);
+    notifyListeners();
+  }
+
+  void addNotification({
+    required String title,
+    required String message,
+    required String type,
+    required String category,
+    String? relatedItemId,
+    String? relatedItemTitle,
+    String recipientRole = 'all',
+    String? actionRoute,
+  }) {
+    final newNotif = AppNotification(
+      id: 'notif_${DateTime.now().millisecondsSinceEpoch}',
+      title: title,
+      message: message,
+      type: type,
+      category: category,
+      relatedItemId: relatedItemId,
+      relatedItemTitle: relatedItemTitle,
+      recipientRole: recipientRole,
+      timestamp: DateTime.now(),
+      isRead: false,
+      actionRoute: actionRoute,
+    );
+    _mockNotifications.insert(0, newNotif);
+    notifyListeners();
   }
 }

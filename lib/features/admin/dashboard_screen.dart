@@ -32,6 +32,15 @@ class AdminDashboardScreen extends StatelessWidget {
         title: const Text('UK National Lost-Item Admin Console'),
         actions: [
           IconButton(
+            icon: Badge(
+              isLabelVisible: itemsService.unreadNotificationsCount > 0,
+              label: Text('${itemsService.unreadNotificationsCount}'),
+              child: const Icon(Icons.notifications_outlined, color: AppColors.textPrimary),
+            ),
+            tooltip: 'Notifications',
+            onPressed: () => context.push('/notifications'),
+          ),
+          IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await authProvider.signOut();

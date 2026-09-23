@@ -31,6 +31,7 @@ import 'features/admin/claims_review_screen.dart';
 import 'features/admin/disputes_panel_screen.dart';
 import 'features/admin/chat_monitor_screen.dart';
 import 'features/admin/centre_manager_screen.dart';
+import 'features/common/notifications_screen.dart';
 
 
 void main() {
@@ -97,6 +98,10 @@ class _MyAppState extends State<MyApp> {
         GoRoute(
           path: '/suspended',
           builder: (context, state) => const SuspendedScreen(),
+        ),
+        GoRoute(
+          path: '/notifications',
+          builder: (context, state) => const NotificationsScreen(),
         ),
         GoRoute(
           path: '/owner',
