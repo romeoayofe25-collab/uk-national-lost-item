@@ -50,12 +50,14 @@ workflows:
         script: flutter analyze
       - name: Run automated tests
         script: flutter test
-      - name: Install Pods
+      - name: Build iOS App (Device)
         script: |
-          cd ios
-          pod install
-      - name: Build iOS App (Simulator)
-        script: |
-          flutter build ios --simulator --no-codesign
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir -p Payload
+          cp -r Runner.app Payload/
+          zip -r uk_national_lost_item_unsigned.ipa Payload || true
     artifacts:
-      - build/ios/iphonesimulator/*.app
+      - build/ios/iphoneos/*.app
+      - build/ios/iphoneos/*.ipa
+
