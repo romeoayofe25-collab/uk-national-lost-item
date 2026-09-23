@@ -32,6 +32,12 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setCurrentUserForTesting(AppUser user) {
+    _currentUser = user;
+    _status = AuthStatus.authenticated;
+    notifyListeners();
+  }
+
   // Sign In
   Future<bool> signIn(String email, String password) async {
     _isLoading = true;
@@ -112,7 +118,6 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await Future.delayed(const Duration(milliseconds: 500));
       AuthService.purgeBiometricData(_currentUser!.email);
       _currentUser = _currentUser!.copyWith(
         verificationTier: 'tier2_contact',

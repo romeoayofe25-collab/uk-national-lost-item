@@ -487,7 +487,22 @@ void main() {
       final auth = AuthProvider();
       final items = ItemsService();
 
-      await auth.signIn('owner@test.com', 'password123');
+      auth.setCurrentUserForTesting(
+        AppUser(
+          uid: 'owner_uid',
+          email: 'owner@test.com',
+          displayName: 'Sarah Jenkins',
+          role: 'owner',
+          trustScore: 98,
+          status: 'active',
+          verificationTier: 'tier3_biometric',
+          phoneNumberMasked: '+44 7911 ***892',
+          biometricConsentGiven: true,
+          biometricHash: 'sha256_mock_hash_test_token_8899',
+          idDocumentType: 'UK Passport',
+          idDocumentMasked: 'GBR-PAS-***-1948',
+        ),
+      );
 
       await tester.pumpWidget(
         MultiProvider(
@@ -518,7 +533,9 @@ void main() {
       final purgeBtn = find.text('Purge Biometric Data (Article 17)');
       expect(purgeBtn, findsOneWidget);
 
-      // Tap Purge Biometric Data and verify modal dialog
+      // Scroll to and tap Purge Biometric Data and verify modal dialog
+      await tester.ensureVisible(purgeBtn);
+      await tester.pumpAndSettle();
       await tester.tap(purgeBtn);
       await tester.pumpAndSettle();
 
