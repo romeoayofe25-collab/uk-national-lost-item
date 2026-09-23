@@ -53,3 +53,8 @@ Keys/
 *.env
 *.pem
 *.key
+
+# Local Agent Rules & Internal Planning Documents (Not needed to launch app)
+.agents/
+Designs/
+Markdowns/
