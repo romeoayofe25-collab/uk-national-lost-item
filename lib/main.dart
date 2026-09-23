@@ -32,6 +32,7 @@ import 'features/admin/disputes_panel_screen.dart';
 import 'features/admin/chat_monitor_screen.dart';
 import 'features/admin/centre_manager_screen.dart';
 import 'features/common/notifications_screen.dart';
+import 'features/common/profile_screen.dart';
 
 
 void main() {
@@ -102,6 +103,10 @@ class _MyAppState extends State<MyApp> {
         GoRoute(
           path: '/notifications',
           builder: (context, state) => const NotificationsScreen(),
+        ),
+        GoRoute(
+          path: '/profile',
+          builder: (context, state) => const ProfileScreen(),
         ),
         GoRoute(
           path: '/owner',

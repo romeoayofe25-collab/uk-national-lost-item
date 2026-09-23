@@ -68,6 +68,11 @@ class FinderDashboardScreen extends StatelessWidget {
                             onPressed: () => context.push('/notifications'),
                           ),
                           IconButton(
+                            icon: const Icon(Icons.account_circle_outlined, color: AppColors.textPrimary),
+                            tooltip: 'Profile & Privacy',
+                            onPressed: () => context.push('/profile'),
+                          ),
+                          IconButton(
                             icon: const Icon(Icons.logout, color: AppColors.textSecondary),
                             onPressed: () {
                               authProvider.signOut();
@@ -85,61 +90,66 @@ class FinderDashboardScreen extends StatelessWidget {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 26,
-                          backgroundColor: AppColors.primary,
-                          child: Icon(Icons.person_pin, color: Colors.white, size: 28),
-                        ),
-                        const SizedBox(width: 16.0),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Hello, ${user?.displayName ?? 'Marcus'}!',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 4.0),
-                              Row(
-                                children: [
-                                  const Text(
-                                    'Trust Score: ',
-                                    style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                  child: InkWell(
+                    onTap: () => context.push('/profile'),
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: Row(
+                        children: [
+                          const CircleAvatar(
+                            radius: 26,
+                            backgroundColor: AppColors.primary,
+                            child: Icon(Icons.person_pin, color: Colors.white, size: 28),
+                          ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Hello, ${user?.displayName ?? 'Marcus'}!',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
                                   ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.success.withValues(alpha: 0.15),
-                                      borderRadius: BorderRadius.circular(12),
+                                ),
+                                const SizedBox(height: 4.0),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'Trust Score: ',
+                                      style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                                     ),
-                                    child: const Text(
-                                      'Very Reliable (95 Pts)',
-                                      style: TextStyle(
-                                        color: AppColors.success,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.success.withValues(alpha: 0.15),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: const Text(
+                                        'Very Reliable (95 Pts)',
+                                        style: TextStyle(
+                                          color: AppColors.success,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          const Icon(Icons.arrow_forward_ios, size: 14, color: AppColors.textSecondary),
+                        ],
+                      ),
                     ),
                   ),
                 ),

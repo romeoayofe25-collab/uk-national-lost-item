@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:uk_national_lost_item/core/models/user_model.dart';
 import 'package:uk_national_lost_item/core/models/lost_item_model.dart';
 import 'package:uk_national_lost_item/core/models/fraud_report_model.dart';
 import 'package:uk_national_lost_item/core/models/notification_model.dart';
+import 'package:uk_national_lost_item/core/services/auth_provider.dart';
 import 'package:uk_national_lost_item/core/services/items_service.dart';
 import 'package:uk_national_lost_item/features/common/notifications_screen.dart';
+import 'package:uk_national_lost_item/features/common/profile_screen.dart';
 import 'package:uk_national_lost_item/main.dart';
 
 void main() {
@@ -398,6 +401,137 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(service.unreadNotificationsCount, 0);
+    });
+  });
+
+  group('User Profile, Biometric Privacy & GDPR Data Rights Center (Rules 2 & 13)', () {
+    test('AppUser model handles verification tiers, biometric tokens, and erasure copyWith', () {
+      final user = AppUser(
+        uid: 'user_privacy_test',
+        email: 'privacy@lostitem.org.uk',
+        displayName: 'Dr. John Watson',
+        role: 'owner',
+        trustScore: 99,
+        verificationTier: 'tier3_biometric',
+        phoneNumberMasked: '+44 7900 ***111',
+        biometricConsentGiven: true,
+        biometricHash: 'sha256_mock_watson_token_4455',
+        idDocumentType: 'UK Driving Licence',
+        idDocumentMasked: 'WATS-987-***-UK',
+      );
+
+      expect(user.isBiometricVerified, isTrue);
+      expect(user.tierLabel, 'Tier 3: Biometric & ID Verified');
+      expect(user.phoneNumberMasked, '+44 7900 ***111');
+
+      final map = user.toMap();
+      expect(map['verificationTier'], 'tier3_biometric');
+      expect(map['biometricHash'], 'sha256_mock_watson_token_4455');
+      expect(map['biometricConsentGiven'], isTrue);
+
+      final restored = AppUser.fromMap(map, 'user_privacy_test');
+      expect(restored.verificationTier, user.verificationTier);
+      expect(restored.biometricHash, user.biometricHash);
+      expect(restored.isBiometricVerified, isTrue);
+
+      // Test GDPR Article 17 erasure copyWith
+      final purged = user.copyWith(
+        verificationTier: 'tier2_contact',
+        clearBiometrics: true,
+      );
+      expect(purged.verificationTier, 'tier2_contact');
+      expect(purged.tierLabel, 'Tier 2: Contact Verified');
+      expect(purged.biometricHash, isNull);
+      expect(purged.idDocumentType, isNull);
+      expect(purged.idDocumentMasked, isNull);
+      expect(purged.biometricConsentGiven, isFalse);
+      expect(purged.isBiometricVerified, isFalse);
+      expect(purged.displayName, user.displayName);
+    });
+
+    test('AuthProvider GDPR SAR export and Article 17 biometric purge', () async {
+      final auth = AuthProvider();
+      final items = ItemsService();
+
+      final signedIn = await auth.signIn('owner@test.com', 'password123');
+      expect(signedIn, isTrue);
+      expect(auth.currentUser?.isBiometricVerified, isTrue);
+      expect(auth.currentUser?.verificationTier, 'tier3_biometric');
+
+      // 1. Consent toggle
+      final consentUpdated = await auth.updateBiometricConsent(false);
+      expect(consentUpdated, isTrue);
+      expect(auth.currentUser?.biometricConsentGiven, isFalse);
+
+      // 2. GDPR Article 15 Subject Access Report export
+      final sarReport = auth.generateGDPRSubjectAccessReport(items);
+      expect(sarReport.containsKey('exportTimestamp'), isTrue);
+      expect(sarReport['dataController'], contains('Administration Board'));
+      expect(sarReport.containsKey('userProfile'), isTrue);
+      expect(sarReport.containsKey('reportedLostItems'), isTrue);
+      expect(sarReport.containsKey('ledgerTransactions'), isTrue);
+      expect(sarReport.containsKey('systemNotifications'), isTrue);
+
+      // 3. GDPR Article 17 Right to Erasure
+      final purged = await auth.purgeBiometricData(items);
+      expect(purged, isTrue);
+      expect(auth.currentUser?.verificationTier, 'tier2_contact');
+      expect(auth.currentUser?.biometricHash, isNull);
+      expect(auth.currentUser?.isBiometricVerified, isFalse);
+
+      // Verify audit security notification emitted
+      expect(items.notifications.any((n) => n.title.contains('GDPR Right to Erasure')), isTrue);
+    });
+
+    testWidgets('ProfileScreen renders privacy badges, cryptographic vault, and handles erasure dialog', (tester) async {
+      final auth = AuthProvider();
+      final items = ItemsService();
+
+      await auth.signIn('owner@test.com', 'password123');
+
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<AuthProvider>.value(value: auth),
+            ChangeNotifierProvider<ItemsService>.value(value: items),
+          ],
+          child: const MaterialApp(
+            home: ProfileScreen(),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify title and user info
+      expect(find.text('User Profile & Privacy Center'), findsOneWidget);
+      expect(find.text('Sarah Jenkins'), findsOneWidget);
+      expect(find.text('Tier 3: Biometric & ID Verified'), findsOneWidget);
+
+      // Verify Cryptographic Security and Rule 13 Privacy cards
+      expect(find.text('Biometric & Cryptographic Security'), findsOneWidget);
+      expect(find.text('How Others See Your Profile (Rule 13)'), findsOneWidget);
+      expect(find.text('GDPR Data Rights Center'), findsOneWidget);
+
+      // Verify GDPR action buttons
+      expect(find.text('Export SAR Package (Article 15)'), findsOneWidget);
+      final purgeBtn = find.text('Purge Biometric Data (Article 17)');
+      expect(purgeBtn, findsOneWidget);
+
+      // Tap Purge Biometric Data and verify modal dialog
+      await tester.tap(purgeBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.text('GDPR Article 17 Erasure'), findsOneWidget);
+      final confirmBtn = find.text('Confirm Erasure');
+      expect(confirmBtn, findsOneWidget);
+
+      await tester.tap(confirmBtn);
+      await tester.pumpAndSettle();
+
+      // Verify user tier demoted and biometric data wiped
+      expect(auth.currentUser?.verificationTier, 'tier2_contact');
+      expect(find.text('Tier 2: Contact Verified'), findsOneWidget);
     });
   });
 }

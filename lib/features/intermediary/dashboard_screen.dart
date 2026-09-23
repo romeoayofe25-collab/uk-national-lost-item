@@ -71,6 +71,11 @@ class IntermediaryDashboardScreen extends StatelessWidget {
                             onPressed: () => context.push('/notifications'),
                           ),
                           IconButton(
+                            icon: const Icon(Icons.account_circle_outlined, color: AppColors.textPrimary),
+                            tooltip: 'Profile & Privacy',
+                            onPressed: () => context.push('/profile'),
+                          ),
+                          IconButton(
                             icon: const Icon(Icons.logout, color: AppColors.textSecondary),
                             onPressed: () {
                               authProvider.signOut();

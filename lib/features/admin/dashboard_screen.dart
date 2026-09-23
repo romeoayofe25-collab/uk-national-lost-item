@@ -41,6 +41,11 @@ class AdminDashboardScreen extends StatelessWidget {
             onPressed: () => context.push('/notifications'),
           ),
           IconButton(
+            icon: const Icon(Icons.account_circle_outlined),
+            tooltip: 'Profile & Privacy',
+            onPressed: () => context.push('/profile'),
+          ),
+          IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await authProvider.signOut();
