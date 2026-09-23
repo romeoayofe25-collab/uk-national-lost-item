@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/lost_item_model.dart';
 import '../models/found_item_model.dart';
 import '../models/claim_model.dart';
+import '../models/fraud_report_model.dart';
 import 'auth_service.dart';
 
 class ItemsService extends ChangeNotifier {
@@ -18,14 +19,19 @@ class ItemsService extends ChangeNotifier {
   // In-memory mock claim transactions
   final List<ClaimTransaction> _mockClaims = [];
 
+  // In-memory mock fraud and incident reports
+  final List<FraudReport> _mockFraudReports = [];
+
   ItemsService() {
     _seedMockItems();
     _seedMockFoundItemsAndClaims();
+    _seedMockFraudReports();
   }
 
   List<LostItem> get items => List.unmodifiable(_mockItems);
   List<FoundItem> get foundItems => List.unmodifiable(_mockFoundItems);
   List<ClaimTransaction> get claims => List.unmodifiable(_mockClaims);
+  List<FraudReport> get fraudReports => List.unmodifiable(_mockFraudReports);
 
   // Seed the initial mock items for local prototyping
   void _seedMockItems() {
@@ -1056,6 +1062,190 @@ class ItemsService extends ChangeNotifier {
   Future<bool> adminActivateUser({required String email}) async {
     await Future.delayed(const Duration(milliseconds: 300));
     AuthService.activateUser(email);
+    notifyListeners();
+    return true;
+  }
+
+  // --- FRAUD & SECURITY INCIDENT REPORTING (RULE 11) ---
+
+  void _seedMockFraudReports() {
+    _mockFraudReports.addAll([
+      FraudReport(
+        id: 'rep_1042',
+        reportedItemId: 'iphone_13_pro',
+        reportedItemTitle: 'iPhone 13 Pro',
+        reportedUserId: 'suspicious_claimant_1',
+        reportedUserName: 'Mark Davies',
+        reporterId: 'sarah_jenkins_uid',
+        reporterRole: 'owner',
+        category: 'extortionBidding',
+        description: 'Received unsolicited message requesting £150 private bank transfer outside the app before allowing intermediary drop-off.',
+        evidenceNotes: 'Sort code 04-00-04, Account 82910394 offered in external note.',
+        status: 'pendingReview',
+        severity: 'high',
+        timestamp: DateTime.now().subtract(const Duration(hours: 3)),
+      ),
+      FraudReport(
+        id: 'rep_1043',
+        reportedItemId: 'leather_wallet',
+        reportedItemTitle: 'Leather Bi-fold Wallet',
+        reportedUserId: 'finder_unknown_99',
+        reportedUserName: 'Dave G.',
+        reporterId: 'desk_agent_euston',
+        reporterRole: 'intermediary',
+        category: 'stolenGoods',
+        description: 'Custody check-in discrepancy: Wallet matches police report of pickpocket incident in Euston Station yesterday. Contents partially removed.',
+        evidenceNotes: 'PNC Crime Ref: CAD-4829-0826.',
+        status: 'investigating',
+        severity: 'high',
+        timestamp: DateTime.now().subtract(const Duration(hours: 5)),
+      ),
+      FraudReport(
+        id: 'rep_1044',
+        reportedItemId: 'blue_backpack',
+        reportedItemTitle: 'Blue Canvas Backpack',
+        reportedUserId: 'claimant_fake_2',
+        reportedUserName: 'Alex Smith',
+        reporterId: 'desk_agent_kings_cross',
+        reporterRole: 'intermediary',
+        category: 'fakeProof',
+        description: 'Claimant submitted photo receipt with visibly edited serial number font and mismatched purchase timestamp.',
+        evidenceNotes: 'Receipt shows 2024 font artifact over 2026 header.',
+        status: 'pendingReview',
+        severity: 'medium',
+        timestamp: DateTime.now().subtract(const Duration(hours: 12)),
+      ),
+    ]);
+  }
+
+  Future<bool> submitFraudReport({
+    required String reportedItemId,
+    required String reportedItemTitle,
+    String? reportedUserId,
+    String? reportedUserName,
+    required String reporterId,
+    required String reporterRole,
+    required String category,
+    required String description,
+    String? evidenceNotes,
+    String severity = 'medium',
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    final newReport = FraudReport(
+      id: 'rep_${DateTime.now().millisecondsSinceEpoch}',
+      reportedItemId: reportedItemId,
+      reportedItemTitle: reportedItemTitle,
+      reportedUserId: reportedUserId,
+      reportedUserName: reportedUserName,
+      reporterId: reporterId,
+      reporterRole: reporterRole,
+      category: category,
+      description: description,
+      evidenceNotes: evidenceNotes,
+      status: 'pendingReview',
+      severity: severity,
+      timestamp: DateTime.now(),
+    );
+
+    _mockFraudReports.insert(0, newReport);
+
+    // If matching lost item exists, append security alert system chat message
+    final idx = _mockItems.indexWhere((i) => i.id == reportedItemId);
+    if (idx != -1) {
+      final current = _mockItems[idx];
+      _mockItems[idx] = current.copyWith(
+        messages: [
+          ...current.messages,
+          ChatMessage(
+            id: 'msg_sys_fraud_${DateTime.now().millisecondsSinceEpoch}',
+            senderId: 'system',
+            senderName: 'Security Protocol',
+            senderRole: 'system',
+            text: 'Security Alert: Incident report #${newReport.id} (${newReport.categoryLabel}) submitted to the Admin Board. Claim is under prioritized review.',
+            timestamp: DateTime.now(),
+          ),
+        ],
+      );
+    }
+
+    notifyListeners();
+    return true;
+  }
+
+  Future<bool> adminResolveFraudReport({
+    required String reportId,
+    required String action, // 'freezeCase', 'suspendUser', 'dismiss', 'resolve'
+    String? adminNotes,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    final rIdx = _mockFraudReports.indexWhere((r) => r.id == reportId);
+    if (rIdx == -1) return false;
+
+    final report = _mockFraudReports[rIdx];
+
+    if (action == 'freezeCase') {
+      // 1. Lock the associated lost item to underReview
+      final iIdx = _mockItems.indexWhere((i) => i.id == report.reportedItemId);
+      if (iIdx != -1) {
+        final current = _mockItems[iIdx];
+        _mockItems[iIdx] = current.copyWith(
+          status: 'underReview',
+          messages: [
+            ...current.messages,
+            ChatMessage(
+              id: 'msg_sys_frozen_${DateTime.now().millisecondsSinceEpoch}',
+              senderId: 'system',
+              senderName: 'Security Protocol',
+              senderRole: 'system',
+              text: 'Admin Notice: Case and escrow locked pending fraud investigation (${report.categoryLabel}). Physical collection voucher held.',
+              timestamp: DateTime.now(),
+            ),
+          ],
+        );
+      }
+
+      // 2. Put corresponding found item escrow into held status
+      final fIdx = _mockFoundItems.indexWhere((i) => i.id == report.reportedItemId || i.title == report.reportedItemTitle);
+      if (fIdx != -1) {
+        for (int i = 0; i < _mockClaims.length; i++) {
+          if (_mockClaims[i].itemId == _mockFoundItems[fIdx].id) {
+            _mockClaims[i] = ClaimTransaction(
+              id: _mockClaims[i].id,
+              title: 'LOCKED ESCROW: ${_mockClaims[i].title}',
+              amount: _mockClaims[i].amount,
+              type: _mockClaims[i].type,
+              status: 'pending',
+              timestamp: DateTime.now(),
+              itemId: _mockClaims[i].itemId,
+            );
+          }
+        }
+      }
+
+      _mockFraudReports[rIdx] = report.copyWith(
+        status: 'frozen',
+        actionTaken: adminNotes ?? 'Case frozen & reward escrow locked by Admin Board',
+      );
+    } else if (action == 'suspendUser') {
+      if (report.reportedUserId != null) {
+        AuthService.suspendUser(report.reportedUserId!);
+      }
+      _mockFraudReports[rIdx] = report.copyWith(
+        status: 'resolved',
+        actionTaken: adminNotes ?? 'Reported user suspended and credentials revoked.',
+      );
+    } else if (action == 'dismiss') {
+      _mockFraudReports[rIdx] = report.copyWith(
+        status: 'dismissed',
+        actionTaken: adminNotes ?? 'Dismissed after administrative verification. False alarm.',
+      );
+    } else {
+      _mockFraudReports[rIdx] = report.copyWith(
+        status: 'resolved',
+        actionTaken: adminNotes ?? 'Resolved by Admin Board.',
+      );
+    }
+
     notifyListeners();
     return true;
   }

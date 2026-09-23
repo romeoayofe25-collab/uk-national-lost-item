@@ -5,6 +5,7 @@ import '../../core/theme/theme.dart';
 import '../../core/services/auth_provider.dart';
 import '../../core/services/items_service.dart';
 import '../../core/models/lost_item_model.dart';
+import '../../core/widgets/report_incident_modal.dart';
 
 class OwnerAdminChatScreen extends StatefulWidget {
   final String itemId;
@@ -93,6 +94,21 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/owner/details/${item.id}'),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.flag_outlined, color: AppColors.warning),
+            tooltip: 'Report Violation / Suspicious Behavior',
+            onPressed: () {
+              ReportIncidentModal.show(
+                context,
+                itemId: item.id,
+                itemTitle: item.title,
+                reporterRole: 'owner',
+                reporterId: authProvider.currentUser?.uid ?? 'sarah_jenkins_uid',
+              );
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Column(

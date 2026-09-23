@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
 import '../../core/services/items_service.dart';
 import '../../core/models/lost_item_model.dart';
+import '../../core/widgets/report_incident_modal.dart';
 
 class LostItemDetailsScreen extends StatelessWidget {
   final String itemId;
@@ -31,6 +32,21 @@ class LostItemDetailsScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/owner'),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shield_outlined, color: AppColors.warning),
+            tooltip: 'Report Fraud / Suspicious Activity',
+            onPressed: () {
+              ReportIncidentModal.show(
+                context,
+                itemId: item.id,
+                itemTitle: item.title,
+                reporterRole: 'owner',
+                reporterId: 'sarah_jenkins_uid',
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -103,6 +119,27 @@ class LostItemDetailsScreen extends StatelessWidget {
               ),
               onPressed: () {
                 context.go('/owner/chat/${item.id}');
+              },
+            ),
+            const SizedBox(height: 12.0),
+
+            // Report Fraud / Suspicious Activity Button
+            OutlinedButton.icon(
+              icon: const Icon(Icons.shield_outlined, color: AppColors.danger, size: 18),
+              label: const Text('Report Suspicious Activity / Fraud Alert'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.danger,
+                side: BorderSide(color: AppColors.danger.withValues(alpha: 0.5)),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+              onPressed: () {
+                ReportIncidentModal.show(
+                  context,
+                  itemId: item.id,
+                  itemTitle: item.title,
+                  reporterRole: 'owner',
+                  reporterId: 'sarah_jenkins_uid',
+                );
               },
             ),
           ],

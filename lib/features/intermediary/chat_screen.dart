@@ -4,6 +4,7 @@ import '../../core/theme/theme.dart';
 import '../../core/services/items_service.dart';
 import '../../core/services/auth_provider.dart';
 import '../../core/models/lost_item_model.dart';
+import '../../core/widgets/report_incident_modal.dart';
 
 class IntermediaryChatScreen extends StatefulWidget {
   final String itemId;
@@ -109,6 +110,21 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.flag_outlined, color: AppColors.warning),
+            tooltip: 'Report Custody Discrepancy / Incident',
+            onPressed: () {
+              ReportIncidentModal.show(
+                context,
+                itemId: widget.itemId,
+                itemTitle: title,
+                reporterRole: 'intermediary',
+                reporterId: 'desk_agent_euston',
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(

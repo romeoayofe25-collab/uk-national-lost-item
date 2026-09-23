@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:uk_national_lost_item/core/models/lost_item_model.dart';
+import 'package:uk_national_lost_item/core/models/fraud_report_model.dart';
 import 'package:uk_national_lost_item/core/services/items_service.dart';
 import 'package:uk_national_lost_item/main.dart';
 
@@ -173,4 +174,114 @@ void main() {
       expect(find.text('Admin'), findsOneWidget);
     });
   });
+
+  group('Fraud & Suspicious Activity Incident Reporting (Rule 11)', () {
+    late ItemsService service;
+
+    setUp(() {
+      service = ItemsService();
+    });
+
+    test('creates and serializes FraudReport correctly', () {
+      final report = FraudReport(
+        id: 'rep_test_101',
+        reportedItemId: 'iphone_13_pro',
+        reportedItemTitle: 'iPhone 13 Pro',
+        reportedUserId: 'usr_bad_actor',
+        reportedUserName: 'Suspicious User',
+        reporterId: 'sarah_jenkins_uid',
+        reporterRole: 'owner',
+        category: 'extortionBidding',
+        description: 'Demanded cash payout outside of app before returning.',
+        evidenceNotes: 'Off-platform contact note left in message',
+        status: 'pendingReview',
+        severity: 'high',
+        timestamp: DateTime(2026, 9, 23, 12, 0),
+      );
+
+      expect(report.id, 'rep_test_101');
+      expect(report.categoryLabel, 'Reward Extortion / Off-Platform Demand');
+      expect(report.severity, 'high');
+
+      final map = report.toMap();
+      expect(map['category'], 'extortionBidding');
+      expect(map['reportedItemId'], 'iphone_13_pro');
+      expect(map['status'], 'pendingReview');
+
+      final restored = FraudReport.fromMap(map, report.id);
+      expect(restored.id, report.id);
+      expect(restored.reportedItemTitle, report.reportedItemTitle);
+      expect(restored.category, report.category);
+    });
+
+    test('submitFraudReport registers incident and inserts audit security message', () async {
+      final initialCount = service.fraudReports.length;
+
+      final success = await service.submitFraudReport(
+        reportedItemId: 'iphone_13_pro',
+        reportedItemTitle: 'iPhone 13 Pro',
+        reportedUserId: 'suspicious_claimant_1',
+        reportedUserName: 'Mark Davies',
+        reporterId: 'sarah_jenkins_uid',
+        reporterRole: 'owner',
+        category: 'extortionBidding',
+        description: 'Unsolicited request for private wire transfer before dropping off device.',
+        severity: 'high',
+      );
+
+      expect(success, isTrue);
+      expect(service.fraudReports.length, initialCount + 1);
+
+      final latestReport = service.fraudReports.first;
+      expect(latestReport.reportedItemId, 'iphone_13_pro');
+      expect(latestReport.category, 'extortionBidding');
+      expect(latestReport.status, 'pendingReview');
+
+      // Verify security alert appended to lost item messages
+      final item = service.getItemById('iphone_13_pro')!;
+      final alertMsg = item.messages.last;
+      expect(alertMsg.senderRole, 'system');
+      expect(alertMsg.text, contains('Security Alert: Incident report'));
+      expect(alertMsg.text, contains('Reward Extortion'));
+    });
+
+    test('adminResolveFraudReport executes freezeCase locking item and escrow', () async {
+      final report = service.fraudReports.first;
+
+      final resolved = await service.adminResolveFraudReport(
+        reportId: report.id,
+        action: 'freezeCase',
+        adminNotes: 'Case frozen and collection pin invalidated pending police verification',
+      );
+
+      expect(resolved, isTrue);
+
+      final updatedReport = service.fraudReports.firstWhere((r) => r.id == report.id);
+      expect(updatedReport.status, 'frozen');
+      expect(updatedReport.actionTaken, contains('Case frozen'));
+
+      // Check item status is underReview
+      final item = service.getItemById(report.reportedItemId);
+      if (item != null) {
+        expect(item.status, 'underReview');
+        expect(item.messages.any((m) => m.text.contains('Case and escrow locked')), isTrue);
+      }
+    });
+
+    test('adminResolveFraudReport dismisses false alarm properly', () async {
+      final report = service.fraudReports.first;
+
+      final dismissed = await service.adminResolveFraudReport(
+        reportId: report.id,
+        action: 'dismiss',
+        adminNotes: 'Dismissed - verified legitimate after admin investigation',
+      );
+
+      expect(dismissed, isTrue);
+
+      final updatedReport = service.fraudReports.firstWhere((r) => r.id == report.id);
+      expect(updatedReport.status, 'dismissed');
+    });
+  });
 }
+

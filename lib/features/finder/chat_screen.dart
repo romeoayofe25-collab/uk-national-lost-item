@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/theme/theme.dart';
 import '../../core/services/items_service.dart';
 import '../../core/services/auth_provider.dart';
+import '../../core/widgets/report_incident_modal.dart';
 
 class FinderChatScreen extends StatefulWidget {
   final String foundItemId;
@@ -70,6 +71,7 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
   @override
   Widget build(BuildContext context) {
     final itemsService = Provider.of<ItemsService>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
     final item = itemsService.getFoundItemById(widget.foundItemId);
     final isPaused = itemsService.isChatPaused(widget.foundItemId);
 
@@ -96,6 +98,21 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.flag_outlined, color: AppColors.warning),
+            tooltip: 'Report Fraud / Suspicious Behavior',
+            onPressed: () {
+              ReportIncidentModal.show(
+                context,
+                itemId: item.id,
+                itemTitle: item.title,
+                reporterRole: 'finder',
+                reporterId: authProvider.currentUser?.uid ?? 'finder_uid_david',
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(
