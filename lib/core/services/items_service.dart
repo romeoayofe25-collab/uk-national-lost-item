@@ -1462,4 +1462,44 @@ class ItemsService extends ChangeNotifier {
     _mockNotifications.insert(0, newNotif);
     notifyListeners();
   }
+
+  // GDPR Article 17 Right to Erasure - Cascade biometric data removal
+  Future<void> purgeUserBiometrics(String userEmail) async {
+    bool itemsChanged = false;
+    for (int i = 0; i < _mockItems.length; i++) {
+      if (_mockItems[i].biometricVerified) {
+        _mockItems[i] = _mockItems[i].copyWith(
+          biometricVerified: false,
+          biometricConfidence: null,
+          biometricHash: null,
+          idDocumentType: null,
+          idDocumentMasked: null,
+          messages: [
+            ..._mockItems[i].messages,
+            ChatMessage(
+              id: 'msg_sys_erasure_${DateTime.now().millisecondsSinceEpoch}',
+              senderId: 'system',
+              senderName: 'Privacy Protocol',
+              senderRole: 'system',
+              text: 'GDPR Article 17: User requested erasure of biometric tokens and proof credentials. Raw cryptographic tokens purged.',
+              timestamp: DateTime.now(),
+            ),
+          ],
+        );
+        itemsChanged = true;
+      }
+    }
+
+    addNotification(
+      title: 'GDPR Right to Erasure Completed',
+      message: 'All cryptographic biometric hashes and verification tokens have been permanently purged (GDPR Article 17).',
+      type: 'securityAlert',
+      category: 'security',
+      actionRoute: '/profile',
+    );
+
+    if (itemsChanged) {
+      notifyListeners();
+    }
+  }
 }

@@ -18,6 +18,14 @@ class AuthService {
       role: 'owner',
       trustScore: 98,
       status: 'active',
+      verificationTier: 'tier3_biometric',
+      phoneNumberMasked: '+44 7911 ***892',
+      biometricConsentGiven: true,
+      biometricHash: 'sha256_mock_hash_test_token_8899',
+      idDocumentType: 'UK Passport',
+      idDocumentMasked: 'GBR-PAS-***-1948',
+      biometricRegisteredAt: DateTime(2026, 8, 1, 14, 20),
+      dataRetentionConsentDate: DateTime(2026, 8, 1, 14, 20),
     ),
     'finder@test.com': AppUser(
       uid: 'finder_uid',
@@ -26,6 +34,10 @@ class AuthService {
       role: 'finder',
       trustScore: 95,
       status: 'active',
+      verificationTier: 'tier2_contact',
+      phoneNumberMasked: '+44 7700 ***123',
+      biometricConsentGiven: false,
+      dataRetentionConsentDate: DateTime(2026, 8, 10, 11, 0),
     ),
     'intermediary@test.com': AppUser(
       uid: 'intermediary_uid',
@@ -34,6 +46,14 @@ class AuthService {
       role: 'intermediary',
       trustScore: 100,
       status: 'active',
+      verificationTier: 'tier3_biometric',
+      phoneNumberMasked: '+44 20 7946 ***4',
+      idDocumentType: 'Station Officer ID',
+      idDocumentMasked: 'UK-INT-***-901',
+      biometricConsentGiven: true,
+      biometricHash: 'sha256_mock_hash_intermediary_772',
+      biometricRegisteredAt: DateTime(2026, 7, 15, 9, 30),
+      dataRetentionConsentDate: DateTime(2026, 7, 15, 9, 30),
     ),
     'admin@test.com': AppUser(
       uid: 'admin_uid',
@@ -42,6 +62,14 @@ class AuthService {
       role: 'admin',
       trustScore: 100,
       status: 'active',
+      verificationTier: 'tier3_biometric',
+      phoneNumberMasked: '+44 800 *** 0199',
+      idDocumentType: 'Admin Board Credential',
+      idDocumentMasked: 'UK-ADM-***-001',
+      biometricConsentGiven: true,
+      biometricHash: 'sha256_mock_hash_admin_001',
+      biometricRegisteredAt: DateTime(2026, 6, 1, 8, 0),
+      dataRetentionConsentDate: DateTime(2026, 6, 1, 8, 0),
     ),
     'suspended@test.com': AppUser(
       uid: 'suspended_uid',
@@ -50,6 +78,9 @@ class AuthService {
       role: 'owner',
       trustScore: 45,
       status: 'suspended',
+      verificationTier: 'tier1_basic',
+      phoneNumberMasked: '+44 7000 ***999',
+      biometricConsentGiven: false,
     ),
   };
 
@@ -145,6 +176,27 @@ class AuthService {
     if (_mockUsers.containsKey(cleanEmail)) {
       final u = _mockUsers[cleanEmail]!;
       _mockUsers[cleanEmail] = u.copyWith(status: 'active');
+    }
+  }
+
+  static void purgeBiometricData(String email) {
+    final cleanEmail = email.trim().toLowerCase();
+    if (_mockUsers.containsKey(cleanEmail)) {
+      final u = _mockUsers[cleanEmail]!;
+      _mockUsers[cleanEmail] = u.copyWith(
+        verificationTier: 'tier2_contact',
+        clearBiometrics: true,
+      );
+    }
+  }
+
+  static void updateBiometricConsent(String email, bool consent) {
+    final cleanEmail = email.trim().toLowerCase();
+    if (_mockUsers.containsKey(cleanEmail)) {
+      final u = _mockUsers[cleanEmail]!;
+      _mockUsers[cleanEmail] = u.copyWith(
+        biometricConsentGiven: consent,
+      );
     }
   }
 }

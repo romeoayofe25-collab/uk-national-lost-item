@@ -40,6 +40,11 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             onPressed: () => context.push('/notifications'),
           ),
           IconButton(
+            icon: const Icon(Icons.account_circle_outlined, color: AppColors.textPrimary),
+            tooltip: 'Profile & Privacy',
+            onPressed: () => context.push('/profile'),
+          ),
+          IconButton(
             icon: const Icon(Icons.logout, color: AppColors.textSecondary),
             onPressed: () async {
               await authProvider.signOut();
@@ -109,54 +114,59 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           children: [
             // User greeting and Trust Level badge card
             Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 26,
-                      backgroundColor: AppColors.primary,
-                      child: Icon(Icons.person, color: Colors.white, size: 28),
-                    ),
-                    const SizedBox(width: 16.0),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Hello, $displayName!',
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          const SizedBox(height: 6.0),
-                          Row(
-                            children: [
-                              const Text(
-                                'Trust Level: ',
-                                style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: AppColors.success.withValues(alpha: 0.15),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  'Excellent ($trustScore Pts)',
-                                  style: const TextStyle(
-                                    color: AppColors.success,
-                                    fontSize: 12,
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: () => context.push('/profile'),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                        radius: 26,
+                        backgroundColor: AppColors.primary,
+                        child: Icon(Icons.person, color: Colors.white, size: 28),
+                      ),
+                      const SizedBox(width: 16.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Hello, $displayName!',
+                              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
+                            ),
+                            const SizedBox(height: 6.0),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Trust Level: ',
+                                  style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.success.withValues(alpha: 0.15),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    'Excellent ($trustScore Pts)',
+                                    style: const TextStyle(
+                                      color: AppColors.success,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      const Icon(Icons.arrow_forward_ios, size: 14, color: AppColors.textSecondary),
+                    ],
+                  ),
                 ),
               ),
             ),
