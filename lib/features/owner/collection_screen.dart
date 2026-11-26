@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 import '../../core/services/items_service.dart';
 
 class CollectionDetailsScreen extends StatelessWidget {
@@ -79,6 +80,8 @@ class CollectionDetailsScreen extends StatelessWidget {
                       style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
                       textAlign: TextAlign.center,
                     ),
+                    const SizedBox(height: 12),
+                    const SimulatedTag(label: 'SIMULATED QR CODE'),
                     const SizedBox(height: 20),
 
                     // Stylized QR code box

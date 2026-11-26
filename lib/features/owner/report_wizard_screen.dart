@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 import '../../core/services/items_service.dart';
 
 class ReportWizardScreen extends StatefulWidget {
@@ -254,7 +255,7 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
           items: const [
             DropdownMenuItem(value: 'Electronics', child: Text('Electronics (Smartphone, Laptop)')),
             DropdownMenuItem(value: 'Personal Accessories', child: Text('Personal Accessories (Wallet, Bag)')),
-            DropdownMenuItem(value: 'Documents', child: Text('Documents (Passport, License)')),
+            DropdownMenuItem(value: 'Documents', child: Text('Documents (Passport, Licence)')),
             DropdownMenuItem(value: 'Keys', child: Text('Keys')),
             DropdownMenuItem(value: 'Clothing', child: Text('Clothing')),
             DropdownMenuItem(value: 'Other', child: Text('Other')),
@@ -319,7 +320,7 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
             border: Border.all(color: AppColors.border, width: 1),
           ),
           child: const Text(
-            'This value is used internally by the Admin Board to assess return safety and standardized reward options. It is not shared with finders or open to negotiation.',
+            'This value is used internally by the Admin Board to assess return safety and standardised reward options. It is not shared with finders or open to negotiation.',
             style: TextStyle(color: AppColors.textSecondary, fontSize: 12, height: 1.3),
           ),
         ),
@@ -384,7 +385,12 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
           ),
         ),
         const SizedBox(height: 20),
-        const Text('MAP LOCATION PIN', style: TextStyle(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.bold)),
+        const Row(
+          children: [
+            Expanded(child: Text('MAP LOCATION PIN', style: TextStyle(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.bold))),
+            SimulatedTag(),
+          ],
+        ),
         const SizedBox(height: 8),
         Container(
           height: 160,
@@ -493,7 +499,12 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
           style: TextStyle(color: AppColors.textSecondary, fontSize: 12, height: 1.4),
         ),
         const SizedBox(height: 20),
-        const Text('Item Photos (Optional)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        const Row(
+          children: [
+            Expanded(child: Text('Item Photos (Optional)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            SimulatedTag(),
+          ],
+        ),
         const SizedBox(height: 10),
         Row(
           children: [
@@ -569,7 +580,12 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
           ],
         ),
         const SizedBox(height: 20),
-        const Text('Proof of Ownership / Receipt (Optional)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        const Row(
+          children: [
+            Expanded(child: Text('Proof of Ownership / Receipt (Optional)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            SimulatedTag(),
+          ],
+        ),
         const SizedBox(height: 10),
         Row(
           children: [
@@ -686,7 +702,7 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
               SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Filing fraudulent lost claims is an offense under the UK Theft Act 1968. Repeated false listings will result in automatic trust penalty and account lockouts.',
+                  'Making a false lost-item report can be a criminal offence. In a real service, repeated false listings would lower the trust score and lead to suspension.',
                   style: TextStyle(color: AppColors.warning, fontSize: 12, height: 1.4),
                 ),
               ),

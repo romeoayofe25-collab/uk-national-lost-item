@@ -17,14 +17,14 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
       'lockers': 10,
       'occupied': 2,
       'isAuthorized': true,
-      'status': 'Verified Partner',
+      'status': 'Demo Partner',
     },
     {
       'name': 'Euston Support Desk',
       'lockers': 6,
       'occupied': 0,
       'isAuthorized': true,
-      'status': 'Verified Partner',
+      'status': 'Demo Partner',
     },
     {
       'name': 'St Pancras Reception',
@@ -44,14 +44,14 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
     setState(() {
       final isAuth = _mockCentres[index]['isAuthorized'] as bool;
       _mockCentres[index]['isAuthorized'] = !isAuth;
-      _mockCentres[index]['status'] = !isAuth ? 'Verified Partner' : 'Suspended Partner';
+      _mockCentres[index]['status'] = !isAuth ? 'Demo Partner' : 'Suspended Partner';
       _isProcessing = false;
     });
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${_mockCentres[index]['name']} authorization status updated!'),
+          content: Text('${_mockCentres[index]['name']} authorisation status updated.'),
           backgroundColor: AppColors.success,
         ),
       );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 import '../../core/services/items_service.dart';
 
 class AdminClaimsReviewScreen extends StatefulWidget {
@@ -267,6 +268,8 @@ class _AdminClaimsReviewScreenState extends State<AdminClaimsReviewScreen> {
                                             style: const TextStyle(color: AppColors.textSecondary, fontSize: 10, fontFamily: 'monospace'),
                                             overflow: TextOverflow.ellipsis,
                                           ),
+                                          const SizedBox(height: 6),
+                                          const SimulatedTag(),
                                         ] else
                                           const Text(
                                             'Standard claim verification without biometric facial match.',

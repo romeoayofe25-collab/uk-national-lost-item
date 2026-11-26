@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 import '../../core/services/items_service.dart';
 
 class IntermediaryHandoverScreen extends StatefulWidget {
@@ -53,7 +54,7 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Item successfully returned to owner. Escrow reward released!'),
+          content: Text('Item returned to owner. Demo reward released to the finder.'),
           backgroundColor: AppColors.success,
         ),
       );
@@ -95,7 +96,7 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Verification Shield Header (Rule 19 Compliance)
+                  // Verification Shield Header
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -112,7 +113,7 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Rule 19 Handover Verification',
+                                'Handover verification',
                                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
                               ),
                               SizedBox(height: 4),
@@ -165,7 +166,7 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                   CheckboxListTile(
                     value: _verifiedId,
                     title: const Text(
-                      'Physically verify owner\'s Photo ID (Passport or Driving License) matches profile name.',
+                      'Physically verify owner\'s Photo ID (Passport or Driving Licence) matches profile name.',
                       style: TextStyle(color: Colors.white, fontSize: 13),
                     ),
                     activeColor: AppColors.primary,
@@ -215,7 +216,15 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                       textAlign: TextAlign.center,
                     ),
                   ],
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
+                  const Center(child: SimulatedTag(label: 'SIMULATED REWARD RELEASE')),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'No real money moves in this prototype.',
+                    style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
 
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(

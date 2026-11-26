@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 
 class OwnerMapScreen extends StatefulWidget {
   const OwnerMapScreen({super.key});
@@ -26,7 +27,7 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
       'hours': 'Mon-Sun | 08:00 - 22:00',
       'position': const Offset(650, 450),
       'distance': '0.2 miles',
-      'status': 'Verified Partner',
+      'status': 'Demo Partner',
       'lockers': '10 active lockers',
       'isAuthorized': true,
       'instructions': 'Located next to ticket gates, Platform 9.',
@@ -38,10 +39,10 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
       'hours': 'Mon-Sat | 09:00 - 20:00',
       'position': const Offset(350, 600),
       'distance': '0.4 miles',
-      'status': 'Verified Partner',
+      'status': 'Demo Partner',
       'lockers': '6 active lockers',
       'isAuthorized': true,
-      'instructions': 'Inside main concourse behind WHSmith.',
+      'instructions': 'Inside the main concourse, next to the ticket office.',
     },
     {
       'id': 'c3',
@@ -194,6 +195,7 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                           ),
                         ),
                       ),
+                      const SimulatedTag(label: 'SIMULATED MAP'),
                     ],
                   ),
                   const SizedBox(height: 16),

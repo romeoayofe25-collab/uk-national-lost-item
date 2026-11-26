@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 import '../../core/services/items_service.dart';
 
 class ReportFoundItemScreen extends StatefulWidget {
@@ -319,7 +320,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
         ),
         const SizedBox(height: 8),
         const Text(
-          'Pinpoint where and when you found this item to aid matching algorithms.',
+          'Record where and when you found this item.',
           style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
         ),
         const SizedBox(height: 20),
@@ -390,10 +391,17 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
         ),
         const SizedBox(height: 16),
 
-        // Stylized Mock Map
-        const Text(
-          'Pinpoint Map Location (Simulated GPS Pin)',
-          style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+        // Drawn example map; no location service is used
+        const Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Map location',
+                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SimulatedTag(),
+          ],
         ),
         const SizedBox(height: 8),
         Container(
@@ -427,7 +435,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                     Text(
-                      'GPS Coordinates: 51.5308° N, 0.1238° W',
+                      'Example pin. Your device location is not used.',
                       style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
                     ),
                   ],
@@ -443,7 +451,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Text(
-                    'GPS LOCK ACTIVE',
+                    'EXAMPLE PIN',
                     style: TextStyle(color: AppColors.success, fontSize: 10, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -465,7 +473,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
         ),
         const SizedBox(height: 8),
         
-        // PII & Rule 5 Warning Notice
+        // Personal details warning
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
@@ -483,7 +491,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Rule 5 Compliant: Data Protection Warning',
+                      'Data protection warning',
                       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                     SizedBox(height: 4),
@@ -510,16 +518,23 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
         ),
         const SizedBox(height: 20),
 
-        const Text(
-          'Photo Upload (Optional)',
-          style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+        const Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Photo Upload (Optional)',
+                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SimulatedTag(),
+          ],
         ),
         const SizedBox(height: 8),
         Row(
           children: [
             ElevatedButton.icon(
               icon: const Icon(Icons.add_a_photo),
-              label: const Text('Mock Attach Photo'),
+              label: const Text('Attach photo (simulated)'),
               onPressed: () {
                 setState(() {
                   _photos.add('mock_photo_url_${_photos.length + 1}.jpg');
@@ -532,7 +547,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
             const SizedBox(width: 16),
             Expanded(
               child: Text(
-                '${_photos.length} photos uploaded',
+                '${_photos.length} photos attached',
                 style: const TextStyle(color: AppColors.textSecondary),
               ),
             ),
@@ -552,7 +567,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
         ),
         const SizedBox(height: 8),
         const Text(
-          'Verify all inputs are correct before finalizing. False declarations are punishable.',
+          'Check all inputs are correct before finalising. False declarations are punishable.',
           style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
         ),
         const SizedBox(height: 20),
@@ -574,7 +589,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
               _summaryRow('Public Desc', _publicDescriptionController.text),
               _summaryRow('Date Found', '${_dateFound.day}/${_dateFound.month}/${_dateFound.year}'),
               _summaryRow('Time Found', _timeFound),
-              _summaryRow('Location', _locationFound.isEmpty ? 'Kings Cross Station (GPS Lock)' : _locationFound),
+              _summaryRow('Location', _locationFound.isEmpty ? 'Kings Cross Station (example)' : _locationFound),
               _summaryRow('Private Details', _privateDetailsController.text.isEmpty ? 'None provided' : _privateDetailsController.text),
               _summaryRow('Photos count', '${_photos.length}'),
             ],

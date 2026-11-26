@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 import '../../core/services/items_service.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/models/user_model.dart';
@@ -90,7 +91,7 @@ class _AdminDisputesPanelScreenState extends State<AdminDisputesPanelScreen> {
               ),
               const Tab(
                 icon: Icon(Icons.local_police_outlined, size: 20),
-                text: 'Police Stolen DB',
+                text: 'Stolen Check',
               ),
             ],
           ),
@@ -185,7 +186,7 @@ class _AdminDisputesPanelScreenState extends State<AdminDisputesPanelScreen> {
                       ),
                       const SizedBox(height: 2),
                       const Text(
-                        'Admin Board holds sole authority to freeze cases, lock reward escrow, and revoke user access (Rule 1).',
+                        'Admin Board holds sole authority to freeze cases, lock reward escrow and revoke user access.',
                         style: TextStyle(color: Colors.white70, fontSize: 11),
                       ),
                     ],
@@ -542,30 +543,30 @@ class _AdminDisputesPanelScreenState extends State<AdminDisputesPanelScreen> {
     );
   }
 
-  // --- TAB 3: POLICE STOLEN PROPERTY REGISTER (RULE 11) ---
+  // --- TAB 3: EXAMPLE STOLEN-PROPERTY CHECK (illustrative, no outside connection) ---
   Widget _buildPoliceStolenDbTab(BuildContext context) {
     final List<Map<String, String>> mockPoliceRecords = [
       {
         'title': 'iPhone 13 Pro 128GB (Graphite)',
         'serial': '357283109482716',
-        'pncRef': 'PNC-2026-LON-9410',
-        'force': 'British Transport Police (Kings Cross)',
+        'pncRef': 'EX-2026-0941',
+        'force': 'Example force A',
         'status': 'FLAGGED STOLEN (MATCHED CLAIM)',
         'reportedDate': '2026-08-01',
       },
       {
         'title': 'MacBook Pro 16 M2 Max',
         'serial': 'C02G8192MD6R',
-        'pncRef': 'PNC-2026-MET-4819',
-        'force': 'Metropolitan Police (Camden)',
+        'pncRef': 'EX-2026-0482',
+        'force': 'Example force B',
         'status': 'ACTIVE STOLEN REPORT',
         'reportedDate': '2026-07-28',
       },
       {
         'title': 'Rolex Submariner Date',
         'serial': 'R82910398',
-        'pncRef': 'PNC-2026-MET-1129',
-        'force': 'City of London Police',
+        'pncRef': 'EX-2026-0113',
+        'force': 'Example force C',
         'status': 'ACTIVE STOLEN REPORT',
         'reportedDate': '2026-07-15',
       },
@@ -599,14 +600,16 @@ class _AdminDisputesPanelScreenState extends State<AdminDisputesPanelScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'POLICE NATIONAL COMPUTER (PNC) GATEWAY',
+                        'EXAMPLE STOLEN-PROPERTY CHECK',
                         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.lightBlueAccent, fontSize: 12, letterSpacing: 0.8),
                       ),
                       SizedBox(height: 2),
                       Text(
-                        'Automated cross-referencing against UK National Stolen Property Register to prevent criminal laundering of goods (Rule 11).',
+                        'Illustrative only. A real service would check items against police stolen-property records. This prototype has no connection to any police system, and these records are invented.',
                         style: TextStyle(color: Colors.white70, fontSize: 11),
                       ),
+                      SizedBox(height: 6),
+                      SimulatedTag(),
                     ],
                   ),
                 ),
@@ -619,7 +622,7 @@ class _AdminDisputesPanelScreenState extends State<AdminDisputesPanelScreen> {
           TextField(
             style: const TextStyle(fontSize: 13, color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Search serial number, IMEI, or PNC Reference...',
+              hintText: 'Search serial number, IMEI or reference...',
               hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.35), fontSize: 12),
               prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary, size: 18),
               filled: true,

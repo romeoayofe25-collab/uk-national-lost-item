@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 
 class BiometricScanResult {
   final bool isVerified;
@@ -124,26 +125,10 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
       appBar: AppBar(
         backgroundColor: Colors.black.withValues(alpha: 0.8),
         title: const Text('Biometric Identity Check'),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.lock, color: AppColors.primary, size: 14),
-                SizedBox(width: 4),
-                Text(
-                  '256-Bit Encrypted',
-                  style: TextStyle(color: AppColors.primary, fontSize: 11, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 16),
+            child: Center(child: SimulatedTag()),
           ),
         ],
       ),
@@ -350,6 +335,11 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
                 Text(
                   subtitle,
                   style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.3),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Simulated scan. The camera is not used.',
+                  style: TextStyle(color: AppColors.warning, fontSize: 11, fontWeight: FontWeight.w600),
                 ),
               ],
             ),

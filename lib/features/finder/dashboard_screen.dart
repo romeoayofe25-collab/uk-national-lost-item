@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
 import '../../core/services/items_service.dart';
 import '../../core/services/auth_provider.dart';
+import '../../core/widgets/simulated_tag.dart';
 
 class FinderDashboardScreen extends StatelessWidget {
   const FinderDashboardScreen({super.key});
@@ -169,15 +170,7 @@ class FinderDashboardScreen extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        const Text(
-                          'SIMULATED PLATFORM WALLET',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: AppColors.textSecondary,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.0,
-                          ),
-                        ),
+                        const SimulatedTag(label: 'SIMULATED WALLET'),
                         const SizedBox(height: 16.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

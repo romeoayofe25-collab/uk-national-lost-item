@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 import '../../core/services/items_service.dart';
 import '../../core/models/found_item_model.dart';
 import '../../core/models/lost_item_model.dart';
@@ -58,7 +59,7 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
     setState(() => _processing = false);
 
     if (result == null) {
-      setState(() => _errorMsg = 'PIN not recognized. Verify format (e.g. DEP-XXX or XXX-XXX).');
+      setState(() => _errorMsg = 'PIN not recognised. Check the format (e.g. DEP-XXX or XXX-XXX).');
     } else {
       if (result is FoundItem) {
         if (mounted) {
@@ -90,6 +91,10 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 12),
+                child: Center(child: SimulatedTag(label: 'SIMULATED SCANNER')),
+              ),
               // Simulated Camera Viewfinder
               Expanded(
                 flex: 4,

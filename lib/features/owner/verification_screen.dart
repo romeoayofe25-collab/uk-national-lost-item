@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
 import '../../core/services/items_service.dart';
+import '../../core/widgets/simulated_tag.dart';
 import 'biometric_scan_screen.dart';
 
 class OwnerVerificationScreen extends StatefulWidget {
@@ -43,7 +44,7 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Biometric verification confirmed for ${result.documentType}!'),
+          content: Text('Simulated identity check attached (${result.documentType}).'),
           backgroundColor: AppColors.success,
         ),
       );
@@ -117,7 +118,7 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
 
     if (item == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Verification Center')),
+        appBar: AppBar(title: const Text('Verification Centre')),
         body: const Center(child: Text('Item not found.')),
       );
     }
@@ -129,7 +130,7 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verification Center'),
+        title: const Text('Verification Centre'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/owner/details/${widget.itemId}'),
@@ -154,7 +155,7 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Biometric Identity Check Card (Rule 18 Strong Verification)
+              // Biometric Identity Check Card
               _buildBiometricSection(),
               const SizedBox(height: 16),
 
@@ -200,9 +201,17 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                       const SizedBox(height: 8),
 
                       // Purchase proof upload field
-                      const Text(
-                        'Upload Additional Proof of Purchase (Optional)',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      const Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Upload Additional Proof of Purchase (Optional)',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          SimulatedTag(),
+                        ],
                       ),
                       const SizedBox(height: 4),
                       const Text(
@@ -326,7 +335,7 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Filing false claims is a criminal offense under the UK Theft Act 1968 and Fraud Act 2006. Any attempt to claim items fraudulently is recorded, and the associated accounts are permanently blacklisted and referred to the authorities.',
+                      'Making a false claim can be a criminal offence. In a real service, fraudulent claims would be recorded, the accounts suspended and serious cases passed to the police.',
                       style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.4),
                     ),
                   ],
@@ -391,6 +400,8 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                           'Liveness Score: 98.4% Confidence',
                           style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
                         ),
+                        SizedBox(height: 6),
+                        SimulatedTag(),
                       ],
                     ),
                   ],
@@ -455,12 +466,13 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                     ),
                     SizedBox(height: 2),
                     Text(
-                      'Required for high-value claims (Rule 18)',
+                      'Required for high-value claims',
                       style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
                     ),
                   ],
                 ),
               ),
+              const SimulatedTag(),
             ],
           ),
           const SizedBox(height: 12),

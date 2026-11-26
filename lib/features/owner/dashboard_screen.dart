@@ -251,7 +251,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Verified Partner Desks',
+                              'Demo Partner Desks',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,

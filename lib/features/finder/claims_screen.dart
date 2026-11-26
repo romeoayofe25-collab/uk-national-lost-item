@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/theme.dart';
 import '../../core/services/items_service.dart';
+import '../../core/widgets/simulated_tag.dart';
 
 class ClaimsScreen extends StatefulWidget {
   const ClaimsScreen({super.key});
@@ -22,7 +23,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Withdrawal initiated! Funds will credit your registered UK bank account within 2 hours.'),
+          content: Text('Demo: withdrawal simulated. No real money moves in this prototype.'),
           backgroundColor: AppColors.success,
         ),
       );
@@ -78,6 +79,8 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                   ),
                   child: Column(
                     children: [
+                      const SimulatedTag(label: 'SIMULATED WALLET'),
+                      const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -143,7 +146,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // Compliance footnote (Rule 11 & 14)
+                // Reward rules footnote
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -157,7 +160,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                       SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'Compliance note: Reward assessments are controlled solely by the Admin Board. Finders cannot request specific amounts or bargain privately (Rules 11 & 14). Available balances are released only after owner pickup confirmation.',
+                          'Note: rewards are set only by the Admin Board. Finders cannot ask for a specific amount or bargain privately. Balances are released only after the owner collects the item.',
                           style: TextStyle(color: AppColors.textSecondary, fontSize: 11, height: 1.4),
                         ),
                       ),

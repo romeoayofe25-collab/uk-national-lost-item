@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 import '../../core/services/items_service.dart';
 import '../../core/models/found_item_model.dart';
 
@@ -293,6 +294,8 @@ class _DropOffScreenState extends State<DropOffScreen> {
                 'SCAN AT DESK TO COMPLETE HANDOVER',
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 10, fontWeight: FontWeight.bold),
               ),
+              const SizedBox(height: 8),
+              const SimulatedTag(label: 'SIMULATED QR CODE'),
             ],
           ),
         ),
@@ -328,7 +331,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                 type: MaterialType.transparency,
                 child: CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('I have labeled the item with my found reference ID.', style: TextStyle(color: Colors.white, fontSize: 13)),
+                  title: const Text('I have labelled the item with my found reference ID.', style: TextStyle(color: Colors.white, fontSize: 13)),
                   value: _checkedTag,
                   activeColor: AppColors.warning,
                   onChanged: (val) => setState(() => _checkedTag = val ?? false),
