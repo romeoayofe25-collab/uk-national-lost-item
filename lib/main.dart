@@ -31,6 +31,7 @@ import 'features/admin/claims_review_screen.dart';
 import 'features/admin/disputes_panel_screen.dart';
 import 'features/admin/chat_monitor_screen.dart';
 import 'features/admin/centre_manager_screen.dart';
+import 'features/common/about_screen.dart';
 import 'features/common/notifications_screen.dart';
 import 'features/common/profile_screen.dart';
 
@@ -64,9 +65,10 @@ class _MyAppState extends State<MyApp> {
 
         final isLoggingIn = state.matchedLocation == '/';
         final isRegistering = state.matchedLocation == '/register';
+        final isAbout = state.matchedLocation == '/about';
 
         if (!isAuthenticated && !isSuspended) {
-          if (isLoggingIn || isRegistering) return null;
+          if (isLoggingIn || isRegistering || isAbout) return null;
           return '/';
         }
 
@@ -99,6 +101,10 @@ class _MyAppState extends State<MyApp> {
         GoRoute(
           path: '/suspended',
           builder: (context, state) => const SuspendedScreen(),
+        ),
+        GoRoute(
+          path: '/about',
+          builder: (context, state) => const AboutScreen(),
         ),
         GoRoute(
           path: '/notifications',
@@ -269,6 +275,28 @@ class _MyAppState extends State<MyApp> {
         theme: AppTheme.darkTheme,
         routerConfig: _router,
         debugShowCheckedModeBanner: false,
+        builder: (context, child) => Stack(
+          children: [
+            child ?? const SizedBox.shrink(),
+            // App-wide marker. IgnorePointer lets every tap reach the app below.
+            const Positioned.fill(
+              child: IgnorePointer(
+                child: Banner(
+                  message: 'PROTOTYPE',
+                  location: BannerLocation.topEnd,
+                  color: AppColors.warning,
+                  textStyle: TextStyle(
+                    color: Color(0xFF1A1A1A),
+                    fontSize: 8.5,
+                    fontWeight: FontWeight.w900,
+                    height: 1.0,
+                  ),
+                  child: SizedBox.expand(),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
