@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/lost_item_model.dart';
 import '../models/found_item_model.dart';
 import '../models/claim_model.dart';
@@ -8,9 +7,14 @@ import '../models/fraud_report_model.dart';
 import '../models/notification_model.dart';
 import 'auth_service.dart';
 
+/// The in-memory demo data layer for the prototype.
+///
+/// Holds every lost and found report, reward transaction, fraud report and
+/// notification, seeded at start-up and lost on restart. Screens read and
+/// change this data only through this class, so it is the seam where a real
+/// backend would connect. (The example desk list is the exception: it is
+/// written into the map and desk-manager screens.)
 class ItemsService extends ChangeNotifier {
-  FirebaseFirestore get _db => FirebaseFirestore.instance;
-
   // In-memory mock lost items database
   final List<LostItem> _mockItems = [];
   
@@ -236,70 +240,39 @@ class ItemsService extends ChangeNotifier {
     required List<String> proofDocuments,
     required String? serialNumber,
   }) async {
-    if (AuthService.useMock) {
-      await Future.delayed(const Duration(milliseconds: 500));
-      final newId = 'item_mock_${DateTime.now().millisecondsSinceEpoch}';
-      final newItem = LostItem(
-        id: newId,
-        title: title,
-        category: category,
-        brand: brand,
-        colour: colour,
-        uniqueMarks: uniqueMarks,
-        estimatedValue: estimatedValue,
-        dateLost: dateLost,
-        timeLost: timeLost,
-        lastKnownLocation: lastKnownLocation,
-        latitude: latitude,
-        longitude: longitude,
-        photos: photos,
-        proofDocuments: proofDocuments,
-        serialNumber: serialNumber,
-        status: 'searching',
-        messages: [
-          ChatMessage(
-            id: 'msg_sys_init',
-            senderId: 'system',
-            senderName: 'System Alert',
-            senderRole: 'system',
-            text: 'Lost item report submitted successfully. Search is in progress.',
-            timestamp: DateTime.now(),
-          ),
-        ],
-      );
-      _mockItems.add(newItem);
-      notifyListeners();
-      return true;
-    } else {
-      try {
-        final docRef = _db.collection('lost_items').doc();
-        final newItem = LostItem(
-          id: docRef.id,
-          title: title,
-          category: category,
-          brand: brand,
-          colour: colour,
-          uniqueMarks: uniqueMarks,
-          estimatedValue: estimatedValue,
-          dateLost: dateLost,
-          timeLost: timeLost,
-          lastKnownLocation: lastKnownLocation,
-          latitude: latitude,
-          longitude: longitude,
-          photos: photos,
-          proofDocuments: proofDocuments,
-          serialNumber: serialNumber,
-          status: 'searching',
-        );
-        await docRef.set(newItem.toMap());
-        _mockItems.add(newItem);
-        notifyListeners();
-        return true;
-      } catch (e) {
-        debugPrint('Error reporting lost item to Firebase: $e');
-        return false;
-      }
-    }
+    await Future.delayed(const Duration(milliseconds: 500));
+    final newId = 'item_mock_${DateTime.now().millisecondsSinceEpoch}';
+    final newItem = LostItem(
+      id: newId,
+      title: title,
+      category: category,
+      brand: brand,
+      colour: colour,
+      uniqueMarks: uniqueMarks,
+      estimatedValue: estimatedValue,
+      dateLost: dateLost,
+      timeLost: timeLost,
+      lastKnownLocation: lastKnownLocation,
+      latitude: latitude,
+      longitude: longitude,
+      photos: photos,
+      proofDocuments: proofDocuments,
+      serialNumber: serialNumber,
+      status: 'searching',
+      messages: [
+        ChatMessage(
+          id: 'msg_sys_init',
+          senderId: 'system',
+          senderName: 'System Alert',
+          senderRole: 'system',
+          text: 'Lost item report submitted successfully. Search is in progress.',
+          timestamp: DateTime.now(),
+        ),
+      ],
+    );
+    _mockItems.add(newItem);
+    notifyListeners();
+    return true;
   }
 
   // Report a new found item
@@ -317,68 +290,38 @@ class ItemsService extends ChangeNotifier {
     double? longitude,
     required List<String> photos,
   }) async {
-    if (AuthService.useMock) {
-      await Future.delayed(const Duration(milliseconds: 500));
-      final newId = 'found_mock_${DateTime.now().millisecondsSinceEpoch}';
-      final newItem = FoundItem(
-        id: newId,
-        title: title,
-        category: category,
-        brand: brand,
-        colour: colour,
-        publicDescription: publicDescription,
-        privateDetails: privateDetails,
-        dateFound: dateFound,
-        timeFound: timeFound,
-        locationFound: locationFound,
-        latitude: latitude,
-        longitude: longitude,
-        photos: photos,
-        status: 'heldByFinder',
-        rewardAmount: 15.00, // Simulated admin designated base reward
-        messages: [
-          ChatMessage(
-            id: 'f_msg_sys_init',
-            senderId: 'system',
-            senderName: 'System Alert',
-            senderRole: 'system',
-            text: 'Found item report submitted successfully. Please proceed to drop off the item.',
-            timestamp: DateTime.now(),
-          ),
-        ],
-      );
-      _mockFoundItems.add(newItem);
-      notifyListeners();
-      return true;
-    } else {
-      try {
-        final docRef = _db.collection('found_items').doc();
-        final newItem = FoundItem(
-          id: docRef.id,
-          title: title,
-          category: category,
-          brand: brand,
-          colour: colour,
-          publicDescription: publicDescription,
-          privateDetails: privateDetails,
-          dateFound: dateFound,
-          timeFound: timeFound,
-          locationFound: locationFound,
-          latitude: latitude,
-          longitude: longitude,
-          photos: photos,
-          status: 'heldByFinder',
-          rewardAmount: 15.00,
-        );
-        await docRef.set(newItem.toMap());
-        _mockFoundItems.add(newItem);
-        notifyListeners();
-        return true;
-      } catch (e) {
-        debugPrint('Error reporting found item to Firebase: $e');
-        return false;
-      }
-    }
+    await Future.delayed(const Duration(milliseconds: 500));
+    final newId = 'found_mock_${DateTime.now().millisecondsSinceEpoch}';
+    final newItem = FoundItem(
+      id: newId,
+      title: title,
+      category: category,
+      brand: brand,
+      colour: colour,
+      publicDescription: publicDescription,
+      privateDetails: privateDetails,
+      dateFound: dateFound,
+      timeFound: timeFound,
+      locationFound: locationFound,
+      latitude: latitude,
+      longitude: longitude,
+      photos: photos,
+      status: 'heldByFinder',
+      rewardAmount: 15.00, // Simulated admin designated base reward
+      messages: [
+        ChatMessage(
+          id: 'f_msg_sys_init',
+          senderId: 'system',
+          senderName: 'System Alert',
+          senderRole: 'system',
+          text: 'Found item report submitted successfully. Please proceed to drop off the item.',
+          timestamp: DateTime.now(),
+        ),
+      ],
+    );
+    _mockFoundItems.add(newItem);
+    notifyListeners();
+    return true;
   }
 
   // Select a drop-off centre and transition found item to 'awaitingDeposit'
@@ -389,57 +332,31 @@ class ItemsService extends ChangeNotifier {
     final idx = _mockFoundItems.indexWhere((item) => item.id == foundItemId);
     if (idx == -1) return false;
 
-    if (AuthService.useMock) {
-      await Future.delayed(const Duration(milliseconds: 500));
-      final current = _mockFoundItems[idx];
-      
-      // Update item state to awaitingDeposit
-      final updated = current.copyWith(
-        status: 'awaitingDeposit',
-        dropOffCentreName: centreName,
-        dropOffTimestamp: DateTime.now(),
-        secureDepositPin: 'DEP-${100 + idx * 73}',
-        messages: [
-          ...current.messages,
-          ChatMessage(
-            id: 'f_msg_sys_dep_${DateTime.now().millisecondsSinceEpoch}',
-            senderId: 'system',
-            senderName: 'System Alert',
-            senderRole: 'system',
-            text: 'Drop-off selection confirmed: $centreName. Secure deposit voucher generated.',
-            timestamp: DateTime.now(),
-          ),
-        ],
-      );
-      _mockFoundItems[idx] = updated;
-      
-      notifyListeners();
-      return true;
-    } else {
-      try {
-        final current = _mockFoundItems[idx];
-        final pin = 'DEP-${100 + idx * 73}';
-        await _db.collection('found_items').doc(foundItemId).update({
-          'status': 'awaitingDeposit',
-          'dropOffCentreName': centreName,
-          'dropOffTimestamp': FieldValue.serverTimestamp(),
-          'secureDepositPin': pin,
-        });
-        
-        final updated = current.copyWith(
-          status: 'awaitingDeposit',
-          dropOffCentreName: centreName,
-          dropOffTimestamp: DateTime.now(),
-          secureDepositPin: pin,
-        );
-        _mockFoundItems[idx] = updated;
-        notifyListeners();
-        return true;
-      } catch (e) {
-        debugPrint('Error selecting drop-off centre in Firebase: $e');
-        return false;
-      }
-    }
+    await Future.delayed(const Duration(milliseconds: 500));
+    final current = _mockFoundItems[idx];
+    
+    // Update item state to awaitingDeposit
+    final updated = current.copyWith(
+      status: 'awaitingDeposit',
+      dropOffCentreName: centreName,
+      dropOffTimestamp: DateTime.now(),
+      secureDepositPin: 'DEP-${100 + idx * 73}',
+      messages: [
+        ...current.messages,
+        ChatMessage(
+          id: 'f_msg_sys_dep_${DateTime.now().millisecondsSinceEpoch}',
+          senderId: 'system',
+          senderName: 'System Alert',
+          senderRole: 'system',
+          text: 'Drop-off selection confirmed: $centreName. Secure deposit voucher generated.',
+          timestamp: DateTime.now(),
+        ),
+      ],
+    );
+    _mockFoundItems[idx] = updated;
+    
+    notifyListeners();
+    return true;
   }
 
   // Withdraw available wallet funds
@@ -496,100 +413,65 @@ class ItemsService extends ChangeNotifier {
     final idx = _mockItems.indexWhere((item) => item.id == itemId);
     if (idx == -1) return false;
 
-    if (AuthService.useMock) {
-      await Future.delayed(const Duration(milliseconds: 600));
-      final current = _mockItems[idx];
-      
-      final verificationMessages = <ChatMessage>[
-        ...current.messages,
+    await Future.delayed(const Duration(milliseconds: 600));
+    final current = _mockItems[idx];
+    
+    final verificationMessages = <ChatMessage>[
+      ...current.messages,
+      ChatMessage(
+        id: 'msg_sys_verif_${DateTime.now().millisecondsSinceEpoch}',
+        senderId: 'system',
+        senderName: 'System Alert',
+        senderRole: 'system',
+        text: 'Ownership verification proof submitted. Under Administration Board review.',
+        timestamp: DateTime.now(),
+      ),
+    ];
+
+    if (biometricVerified) {
+      verificationMessages.add(
         ChatMessage(
-          id: 'msg_sys_verif_${DateTime.now().millisecondsSinceEpoch}',
+          id: 'msg_sys_bio_${DateTime.now().millisecondsSinceEpoch + 1}',
           senderId: 'system',
-          senderName: 'System Alert',
+          senderName: 'Security Protocol',
           senderRole: 'system',
-          text: 'Ownership verification proof submitted. Under Administration Board review.',
+          text: 'Biometric Identity Liveness Verified (${idDocumentType ?? 'Government ID'}: ${idDocumentMasked ?? 'CONFIDENTIAL'}, ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% confidence score). Cryptographic hash registered.',
           timestamp: DateTime.now(),
         ),
-      ];
-
-      if (biometricVerified) {
-        verificationMessages.add(
-          ChatMessage(
-            id: 'msg_sys_bio_${DateTime.now().millisecondsSinceEpoch + 1}',
-            senderId: 'system',
-            senderName: 'Security Protocol',
-            senderRole: 'system',
-            text: 'Biometric Identity Liveness Verified (${idDocumentType ?? 'Government ID'}: ${idDocumentMasked ?? 'CONFIDENTIAL'}, ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% confidence score). Cryptographic hash registered.',
-            timestamp: DateTime.now(),
-          ),
-        );
-      }
-
-      // Update item with verification answers and biometric data
-      final updated = current.copyWith(
-        status: 'underReview',
-        verificationAnswers: answers,
-        verificationSerialNumber: serialNumber,
-        proofDocuments: [...current.proofDocuments, ...proofDocs],
-        biometricVerified: biometricVerified,
-        biometricConfidence: biometricConfidence,
-        biometricHash: biometricHash,
-        idDocumentType: idDocumentType,
-        idDocumentMasked: idDocumentMasked,
-        messages: verificationMessages,
       );
-      _mockItems[idx] = updated;
-
-      if (biometricVerified) {
-        addNotification(
-          title: 'Biometric Identity Verified (${idDocumentType ?? 'Government ID'})',
-          message: 'Biometric liveness confirmed with ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% match. Cryptographic token registered.',
-          type: 'biometricVerified',
-          category: 'claims',
-          relatedItemId: itemId,
-          relatedItemTitle: current.title,
-          recipientRole: 'owner',
-          actionRoute: '/owner/details/$itemId',
-        );
-      }
-
-      notifyListeners();
-      
-      return true;
-    } else {
-      try {
-        final current = _mockItems[idx];
-        final updatedMap = <String, dynamic>{
-          'status': 'underReview',
-          'verificationAnswers': answers,
-          'verificationSerialNumber': serialNumber,
-          'proofDocuments': FieldValue.arrayUnion(proofDocs),
-          'biometricVerified': biometricVerified,
-        };
-        if (biometricConfidence != null) updatedMap['biometricConfidence'] = biometricConfidence;
-        if (biometricHash != null) updatedMap['biometricHash'] = biometricHash;
-        if (idDocumentType != null) updatedMap['idDocumentType'] = idDocumentType;
-        if (idDocumentMasked != null) updatedMap['idDocumentMasked'] = idDocumentMasked;
-
-        await _db.collection('lost_items').doc(itemId).update(updatedMap);
-        _mockItems[idx] = current.copyWith(
-          status: 'underReview',
-          verificationAnswers: answers,
-          verificationSerialNumber: serialNumber,
-          proofDocuments: [...current.proofDocuments, ...proofDocs],
-          biometricVerified: biometricVerified,
-          biometricConfidence: biometricConfidence,
-          biometricHash: biometricHash,
-          idDocumentType: idDocumentType,
-          idDocumentMasked: idDocumentMasked,
-        );
-        notifyListeners();
-        return true;
-      } catch (e) {
-        debugPrint('Error updating verification in Firebase: $e');
-        return false;
-      }
     }
+
+    // Update item with verification answers and biometric data
+    final updated = current.copyWith(
+      status: 'underReview',
+      verificationAnswers: answers,
+      verificationSerialNumber: serialNumber,
+      proofDocuments: [...current.proofDocuments, ...proofDocs],
+      biometricVerified: biometricVerified,
+      biometricConfidence: biometricConfidence,
+      biometricHash: biometricHash,
+      idDocumentType: idDocumentType,
+      idDocumentMasked: idDocumentMasked,
+      messages: verificationMessages,
+    );
+    _mockItems[idx] = updated;
+
+    if (biometricVerified) {
+      addNotification(
+        title: 'Biometric Identity Verified (${idDocumentType ?? 'Government ID'})',
+        message: 'Biometric liveness confirmed with ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% match. Cryptographic token registered.',
+        type: 'biometricVerified',
+        category: 'claims',
+        relatedItemId: itemId,
+        relatedItemTitle: current.title,
+        recipientRole: 'owner',
+        actionRoute: '/owner/details/$itemId',
+      );
+    }
+
+    notifyListeners();
+    
+    return true;
   }
 
   // Simulate drop-off scanned / handed over by desk representative
@@ -689,23 +571,9 @@ class ItemsService extends ChangeNotifier {
       ));
     }
 
-    if (AuthService.useMock) {
-      _mockItems[idx] = current.copyWith(messages: newMessages);
-      notifyListeners();
-      return true;
-    } else {
-      try {
-        await _db.collection('lost_items').doc(itemId).update({
-          'messages': newMessages.map((m) => m.toMap()).toList(),
-        });
-        _mockItems[idx] = current.copyWith(messages: newMessages);
-        notifyListeners();
-        return true;
-      } catch (e) {
-        debugPrint('Error updating messages in Firebase: $e');
-        return false;
-      }
-    }
+    _mockItems[idx] = current.copyWith(messages: newMessages);
+    notifyListeners();
+    return true;
   }
 
   // Send support message in found item chat
@@ -746,23 +614,9 @@ class ItemsService extends ChangeNotifier {
       ));
     }
 
-    if (AuthService.useMock) {
-      _mockFoundItems[idx] = current.copyWith(messages: newMessages);
-      notifyListeners();
-      return true;
-    } else {
-      try {
-        await _db.collection('found_items').doc(foundItemId).update({
-          'messages': newMessages.map((m) => m.toMap()).toList(),
-        });
-        _mockFoundItems[idx] = current.copyWith(messages: newMessages);
-        notifyListeners();
-        return true;
-      } catch (e) {
-        debugPrint('Error updating found item messages in Firebase: $e');
-        return false;
-      }
-    }
+    _mockFoundItems[idx] = current.copyWith(messages: newMessages);
+    notifyListeners();
+    return true;
   }
 
   // PII Scrubbing regex implementation
@@ -813,69 +667,48 @@ class ItemsService extends ChangeNotifier {
     final idx = _mockFoundItems.indexWhere((item) => item.id == foundItemId);
     if (idx == -1) return false;
 
-    if (AuthService.useMock) {
-      await Future.delayed(const Duration(milliseconds: 500));
-      final current = _mockFoundItems[idx];
-      _mockFoundItems[idx] = current.copyWith(
-        status: 'deposited',
-        storageLocation: storageLocation,
-        messages: [
-          ...current.messages,
-          ChatMessage(
-            id: 'f_msg_sys_checkin_${DateTime.now().millisecondsSinceEpoch}',
-            senderId: 'system',
-            senderName: 'System Alert',
-            senderRole: 'system',
-            text: 'Physical check-in completed. Assigned to $storageLocation.',
-            timestamp: DateTime.now(),
-          ),
-        ],
-      );
+    await Future.delayed(const Duration(milliseconds: 500));
+    final current = _mockFoundItems[idx];
+    _mockFoundItems[idx] = current.copyWith(
+      status: 'deposited',
+      storageLocation: storageLocation,
+      messages: [
+        ...current.messages,
+        ChatMessage(
+          id: 'f_msg_sys_checkin_${DateTime.now().millisecondsSinceEpoch}',
+          senderId: 'system',
+          senderName: 'System Alert',
+          senderRole: 'system',
+          text: 'Physical check-in completed. Assigned to $storageLocation.',
+          timestamp: DateTime.now(),
+        ),
+      ],
+    );
 
-      // Add a simulated pending escrow transaction to the ledger now that physical deposit is verified
-      _mockClaims.add(ClaimTransaction(
-        id: 'tx_mock_${DateTime.now().millisecondsSinceEpoch}',
-        title: 'Pending Match: ${current.title}',
-        amount: current.rewardAmount,
-        type: 'escrowCredit',
-        status: 'pending',
-        timestamp: DateTime.now(),
-        itemId: current.id,
-      ));
+    // Add a simulated pending escrow transaction to the ledger now that physical deposit is verified
+    _mockClaims.add(ClaimTransaction(
+      id: 'tx_mock_${DateTime.now().millisecondsSinceEpoch}',
+      title: 'Pending Match: ${current.title}',
+      amount: current.rewardAmount,
+      type: 'escrowCredit',
+      status: 'pending',
+      timestamp: DateTime.now(),
+      itemId: current.id,
+    ));
 
-      addNotification(
-        title: 'Partner Desk Deposit Confirmed',
-        message: '${current.title} was physically inspected and securely stored in $storageLocation.',
-        type: 'custodyDeposited',
-        category: 'custody',
-        relatedItemId: foundItemId,
-        relatedItemTitle: current.title,
-        recipientRole: 'finder',
-        actionRoute: '/finder/claims',
-      );
+    addNotification(
+      title: 'Partner Desk Deposit Confirmed',
+      message: '${current.title} was physically inspected and securely stored in $storageLocation.',
+      type: 'custodyDeposited',
+      category: 'custody',
+      relatedItemId: foundItemId,
+      relatedItemTitle: current.title,
+      recipientRole: 'finder',
+      actionRoute: '/finder/claims',
+    );
 
-      notifyListeners();
-      return true;
-    } else {
-      try {
-        final current = _mockFoundItems[idx];
-        await _db.collection('found_items').doc(foundItemId).update({
-          'status': 'deposited',
-          'storageLocation': storageLocation,
-        });
-        
-        final updated = current.copyWith(
-          status: 'deposited',
-          storageLocation: storageLocation,
-        );
-        _mockFoundItems[idx] = updated;
-        notifyListeners();
-        return true;
-      } catch (e) {
-        debugPrint('Error checking in item in Firebase: $e');
-        return false;
-      }
-    }
+    notifyListeners();
+    return true;
   }
 
   // Handover verification and return confirmation
@@ -889,84 +722,70 @@ class ItemsService extends ChangeNotifier {
 
     if (current.secureCollectionPin != pin) return false;
 
-    if (AuthService.useMock) {
-      await Future.delayed(const Duration(milliseconds: 500));
-      _mockItems[idx] = current.copyWith(
+    await Future.delayed(const Duration(milliseconds: 500));
+    _mockItems[idx] = current.copyWith(
+      status: 'returned',
+      messages: [
+        ...current.messages,
+        ChatMessage(
+          id: 'msg_sys_handover_${DateTime.now().millisecondsSinceEpoch}',
+          senderId: 'system',
+          senderName: 'System Alert',
+          senderRole: 'system',
+          text: 'Physical handover verification complete. Item released to owner.',
+          timestamp: DateTime.now(),
+        ),
+      ],
+    );
+
+    // Release reward to finder
+    final fIdx = _mockFoundItems.indexWhere((item) => item.title == current.title && (item.status == 'matched' || item.status == 'deposited'));
+    if (fIdx != -1) {
+      final fCurrent = _mockFoundItems[fIdx];
+      _mockFoundItems[fIdx] = fCurrent.copyWith(
         status: 'returned',
         messages: [
-          ...current.messages,
+          ...fCurrent.messages,
           ChatMessage(
-            id: 'msg_sys_handover_${DateTime.now().millisecondsSinceEpoch}',
+            id: 'f_msg_returned_${DateTime.now().millisecondsSinceEpoch}',
             senderId: 'system',
             senderName: 'System Alert',
             senderRole: 'system',
-            text: 'Physical handover verification complete. Item released to owner.',
+            text: 'Item returned to owner. Reward released to available balance!',
             timestamp: DateTime.now(),
-          ),
-        ],
+          )
+        ]
       );
 
-      // Release reward to finder
-      final fIdx = _mockFoundItems.indexWhere((item) => item.title == current.title && (item.status == 'matched' || item.status == 'deposited'));
-      if (fIdx != -1) {
-        final fCurrent = _mockFoundItems[fIdx];
-        _mockFoundItems[fIdx] = fCurrent.copyWith(
-          status: 'returned',
-          messages: [
-            ...fCurrent.messages,
-            ChatMessage(
-              id: 'f_msg_returned_${DateTime.now().millisecondsSinceEpoch}',
-              senderId: 'system',
-              senderName: 'System Alert',
-              senderRole: 'system',
-              text: 'Item returned to owner. Reward released to available balance!',
-              timestamp: DateTime.now(),
-            )
-          ]
-        );
-
-        // Update transaction status
-        for (int i = 0; i < _mockClaims.length; i++) {
-          if (_mockClaims[i].itemId == fCurrent.id && _mockClaims[i].status == 'pending') {
-            _mockClaims[i] = ClaimTransaction(
-              id: _mockClaims[i].id,
-              title: 'Reward Released: ${fCurrent.title}',
-              amount: _mockClaims[i].amount,
-              type: 'rewardRelease',
-              status: 'available',
-              timestamp: DateTime.now(),
-              itemId: _mockClaims[i].itemId,
-            );
-          }
+      // Update transaction status
+      for (int i = 0; i < _mockClaims.length; i++) {
+        if (_mockClaims[i].itemId == fCurrent.id && _mockClaims[i].status == 'pending') {
+          _mockClaims[i] = ClaimTransaction(
+            id: _mockClaims[i].id,
+            title: 'Reward Released: ${fCurrent.title}',
+            amount: _mockClaims[i].amount,
+            type: 'rewardRelease',
+            status: 'available',
+            timestamp: DateTime.now(),
+            itemId: _mockClaims[i].itemId,
+          );
         }
       }
-
-      addNotification(
-        title: 'Handover Complete - Reward Released!',
-        message: 'Owner physically collected ${current.title}. Reward released to your available balance.',
-        type: 'escrowReleased',
-        category: 'rewards',
-        relatedItemId: lostItemId,
-        relatedItemTitle: current.title,
-        recipientRole: 'finder',
-        actionRoute: '/finder/claims',
-      );
-
-      notifyListeners();
-      return true;
-    } else {
-      try {
-        await _db.collection('lost_items').doc(lostItemId).update({
-          'status': 'returned',
-        });
-        _mockItems[idx] = current.copyWith(status: 'returned');
-        notifyListeners();
-        return true;
-      } catch (e) {
-        debugPrint('Error hand-over in Firebase: $e');
-        return false;
-      }
     }
+
+    addNotification(
+      title: 'Handover Complete - Reward Released!',
+      message: 'Owner physically collected ${current.title}. Reward released to your available balance.',
+      type: 'escrowReleased',
+      category: 'rewards',
+      relatedItemId: lostItemId,
+      relatedItemTitle: current.title,
+      recipientRole: 'finder',
+      actionRoute: '/finder/claims',
+    );
+
+    notifyListeners();
+    return true;
   }
 
   // --- ADMIN CONTROL CENTRE METHODS ---
