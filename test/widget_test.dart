@@ -7,8 +7,12 @@ import 'package:uk_national_lost_item/core/models/fraud_report_model.dart';
 import 'package:uk_national_lost_item/core/models/notification_model.dart';
 import 'package:uk_national_lost_item/core/services/auth_provider.dart';
 import 'package:uk_national_lost_item/core/services/items_service.dart';
+import 'package:uk_national_lost_item/core/widgets/simulated_tag.dart';
+import 'package:uk_national_lost_item/features/common/about_screen.dart';
 import 'package:uk_national_lost_item/features/common/notifications_screen.dart';
 import 'package:uk_national_lost_item/features/common/profile_screen.dart';
+import 'package:uk_national_lost_item/features/finder/claims_screen.dart';
+import 'package:uk_national_lost_item/features/owner/biometric_scan_screen.dart';
 import 'package:uk_national_lost_item/main.dart';
 
 void main() {
@@ -173,16 +177,72 @@ void main() {
       expect(find.text('Email Address'), findsOneWidget);
       expect(find.text('Password'), findsOneWidget);
 
-      // Verify Role Switcher for Developer Testing
-      expect(find.text('DEVELOPER DIRECT ROLE LOGIN'), findsOneWidget);
+      // Verify the demo role buttons
+      expect(find.text('EXPLORE THE DEMO AS'), findsOneWidget);
       expect(find.text('Owner'), findsOneWidget);
       expect(find.text('Finder'), findsOneWidget);
       expect(find.text('Intermediary'), findsOneWidget);
       expect(find.text('Admin'), findsOneWidget);
+
+      // Verify the demo note and the app-wide prototype ribbon
+      expect(find.textContaining('Demo accounts accept any password'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate((w) => w is Banner && w.message == 'PROTOTYPE'),
+        findsOneWidget,
+      );
     });
   });
 
-  group('Fraud & Suspicious Activity Incident Reporting (Rule 11)', () {
+  group('Prototype labelling', () {
+    testWidgets('About screen renders the prototype notice', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: AboutScreen()));
+      await tester.pumpAndSettle();
+
+      expect(find.text('About this prototype'), findsOneWidget);
+      expect(find.textContaining('portfolio prototype by Martin Adegbola Traore'), findsOneWidget);
+      expect(find.textContaining('Nothing here is live'), findsOneWidget);
+      expect(find.textContaining('not affiliated with any police force'), findsOneWidget);
+    });
+
+    testWidgets('About screen opens from the sign-in screen without signing in', (tester) async {
+      await tester.pumpWidget(const MyApp());
+      await tester.pumpAndSettle();
+
+      final aboutLink = find.text('About this prototype');
+      await tester.ensureVisible(aboutLink);
+      await tester.pumpAndSettle();
+      await tester.tap(aboutLink);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AboutScreen), findsOneWidget);
+      expect(find.textContaining('Nothing here is live'), findsOneWidget);
+    });
+
+    testWidgets('Identity scan is marked as simulated', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: BiometricScanScreen()));
+      // The scan reticle animates forever, so pump a frame instead of settling.
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.byType(SimulatedTag), findsWidgets);
+      expect(find.text('Simulated scan. The camera is not used.'), findsOneWidget);
+      expect(find.text('256-Bit Encrypted'), findsNothing);
+    });
+
+    testWidgets('Finder wallet is marked as simulated', (tester) async {
+      await tester.pumpWidget(
+        ChangeNotifierProvider<ItemsService>(
+          create: (_) => ItemsService(),
+          child: const MaterialApp(home: ClaimsScreen()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SimulatedTag), findsWidgets);
+      expect(find.text('SIMULATED WALLET'), findsOneWidget);
+    });
+  });
+
+  group('Fraud & Suspicious Activity Incident Reporting', () {
     late ItemsService service;
 
     setUp(() {
@@ -291,7 +351,7 @@ void main() {
     });
   });
 
-  group('In-App Notification Center & Audit Activity Feed (Rules 1, 4 & 7)', () {
+  group('In-App Notification Centre & Audit Activity Feed', () {
     test('AppNotification model serialization, deserialization, and copyWith', () {
       final notif = AppNotification(
         id: 'notif_test_1',
@@ -404,7 +464,7 @@ void main() {
     });
   });
 
-  group('User Profile, Biometric Privacy & GDPR Data Rights Center (Rules 2 & 13)', () {
+  group('User Profile, Biometric Privacy & GDPR Data Rights Centre', () {
     test('AppUser model handles verification tiers, biometric tokens, and erasure copyWith', () {
       final user = AppUser(
         uid: 'user_privacy_test',
@@ -480,7 +540,7 @@ void main() {
       expect(auth.currentUser?.isBiometricVerified, isFalse);
 
       // Verify audit security notification emitted
-      expect(items.notifications.any((n) => n.title.contains('GDPR Right to Erasure')), isTrue);
+      expect(items.notifications.any((n) => n.title.contains('Demo erasure completed')), isTrue);
     });
 
     testWidgets('ProfileScreen renders privacy badges, cryptographic vault, and handles erasure dialog', (tester) async {
@@ -519,14 +579,14 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify title and user info
-      expect(find.text('User Profile & Privacy Center'), findsOneWidget);
+      expect(find.text('User Profile & Privacy Centre'), findsOneWidget);
       expect(find.text('Sarah Jenkins'), findsOneWidget);
       expect(find.text('Tier 3: Biometric & ID Verified'), findsOneWidget);
 
-      // Verify Cryptographic Security and Rule 13 Privacy cards
+      // Verify the identity, privacy and data-rights cards
       expect(find.text('Biometric & Cryptographic Security'), findsOneWidget);
-      expect(find.text('How Others See Your Profile (Rule 13)'), findsOneWidget);
-      expect(find.text('GDPR Data Rights Center'), findsOneWidget);
+      expect(find.text('How others see your profile'), findsOneWidget);
+      expect(find.text('GDPR Data Rights Centre'), findsOneWidget);
 
       // Verify GDPR action buttons
       expect(find.text('Export SAR Package (Article 15)'), findsOneWidget);

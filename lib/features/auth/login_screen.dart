@@ -54,6 +54,17 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Widget _roleButton(String label, String email) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        backgroundColor: AppColors.primary,
+      ),
+      onPressed: () => _devLogin(email),
+      child: Text(label, style: const TextStyle(fontSize: 11)),
+    );
+  }
+
   void _routeUser(AuthProvider authProvider) {
     final user = authProvider.currentUser;
     if (user != null) {
@@ -105,7 +116,45 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 48.0),
+                const SizedBox(height: 32.0),
+                Text(
+                  'EXPLORE THE DEMO AS',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textSecondary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _roleButton('Owner', 'owner@test.com'),
+                    _roleButton('Finder', 'finder@test.com'),
+                    _roleButton('Intermediary', 'intermediary@test.com'),
+                    _roleButton('Admin', 'admin@test.com'),
+                  ],
+                ),
+                const SizedBox(height: 8.0),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.danger.withValues(alpha: 0.15),
+                    foregroundColor: AppColors.danger,
+                    side: const BorderSide(color: AppColors.danger),
+                  ),
+                  onPressed: () => _devLogin('suspended@test.com'),
+                  child: const Text('Suspended account', style: TextStyle(fontSize: 12)),
+                ),
+                const SizedBox(height: 8.0),
+                TextButton.icon(
+                  onPressed: () => context.push('/about'),
+                  icon: const Icon(Icons.info_outline, size: 18, color: AppColors.warning),
+                  label: const Text(
+                    'About this prototype',
+                    style: TextStyle(color: AppColors.warning, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 24.0),
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -145,67 +194,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () => context.go('/register'),
                           child: const Text('Create an Account'),
                         ),
+                        const SizedBox(height: 8.0),
+                        const Text(
+                          'Demo accounts accept any password. New accounts last until the app restarts.',
+                          style: TextStyle(color: AppColors.textSecondary, fontSize: 12, height: 1.4),
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 32.0),
-                Text(
-                  'DEVELOPER DIRECT ROLE LOGIN',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textSecondary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        backgroundColor: AppColors.surface,
-                      ),
-                      onPressed: () => _devLogin('owner@test.com'),
-                      child: const Text('Owner', style: TextStyle(fontSize: 11)),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        backgroundColor: AppColors.surface,
-                      ),
-                      onPressed: () => _devLogin('finder@test.com'),
-                      child: const Text('Finder', style: TextStyle(fontSize: 11)),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        backgroundColor: AppColors.surface,
-                      ),
-                      onPressed: () => _devLogin('intermediary@test.com'),
-                      child: const Text('Intermediary', style: TextStyle(fontSize: 11)),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        backgroundColor: AppColors.surface,
-                      ),
-                      onPressed: () => _devLogin('admin@test.com'),
-                      child: const Text('Admin', style: TextStyle(fontSize: 11)),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.danger.withValues(alpha: 0.15),
-                    foregroundColor: AppColors.danger,
-                    side: const BorderSide(color: AppColors.danger),
-                  ),
-                  onPressed: () => _devLogin('suspended@test.com'),
-                  child: const Text('Suspended Test Account', style: TextStyle(fontSize: 12)),
-                ),
+                const SizedBox(height: 24.0),
               ],
             ),
           ),

@@ -454,7 +454,7 @@ class ItemsService extends ChangeNotifier {
     // Add a cashOut transaction that nullifies available amounts
     _mockClaims.add(ClaimTransaction(
       id: 'tx_out_${DateTime.now().millisecondsSinceEpoch}',
-      title: 'Withdrawal to Bank Account',
+      title: 'Withdrawal (simulated)',
       amount: availableAmount,
       type: 'cashOut',
       status: 'completed',
@@ -943,7 +943,7 @@ class ItemsService extends ChangeNotifier {
 
       addNotification(
         title: 'Handover Complete - Reward Released!',
-        message: 'Owner physically collected ${current.title}. Reward released to your available balance (Rule 14).',
+        message: 'Owner physically collected ${current.title}. Reward released to your available balance.',
         type: 'escrowReleased',
         category: 'rewards',
         relatedItemId: lostItemId,
@@ -1066,7 +1066,7 @@ class ItemsService extends ChangeNotifier {
 
     addNotification(
       title: 'Reward Officially Determined: £${rewardAmount.toStringAsFixed(2)}',
-      message: 'Admin Board has reviewed verification and locked £${rewardAmount.toStringAsFixed(2)} in escrow pending collection (Rule 14).',
+      message: 'Admin Board has reviewed verification and locked £${rewardAmount.toStringAsFixed(2)} in escrow pending collection.',
       type: 'rewardAssessed',
       category: 'rewards',
       relatedItemId: lostItemId,
@@ -1130,7 +1130,7 @@ class ItemsService extends ChangeNotifier {
     return true;
   }
 
-  // --- FRAUD & SECURITY INCIDENT REPORTING (RULE 11) ---
+  // --- FRAUD & SECURITY INCIDENT REPORTING ---
 
   void _seedMockFraudReports() {
     _mockFraudReports.addAll([
@@ -1225,7 +1225,7 @@ class ItemsService extends ChangeNotifier {
             senderId: 'system',
             senderName: 'Security Protocol',
             senderRole: 'system',
-            text: 'Security Alert: Incident report #${newReport.id} (${newReport.categoryLabel}) submitted to the Admin Board. Claim is under prioritized review.',
+            text: 'Security Alert: Incident report #${newReport.id} (${newReport.categoryLabel}) submitted to the Admin Board. Claim is under priority review.',
             timestamp: DateTime.now(),
           ),
         ],
@@ -1234,7 +1234,7 @@ class ItemsService extends ChangeNotifier {
 
     addNotification(
       title: 'Security Alert: ${newReport.categoryLabel}',
-      message: 'Incident #${newReport.id} logged for ${newReport.reportedItemTitle}. Under prioritized review (Rule 11).',
+      message: 'Incident #${newReport.id} logged for ${newReport.reportedItemTitle}. Under priority review.',
       type: 'securityAlert',
       category: 'security',
       relatedItemId: reportedItemId,
@@ -1325,14 +1325,14 @@ class ItemsService extends ChangeNotifier {
     return true;
   }
 
-  // --- IN-APP NOTIFICATION & AUDIT FEED (RULES 1, 4 & 7) ---
+  // --- IN-APP NOTIFICATION & AUDIT FEED ---
 
   void _seedMockNotifications() {
     _mockNotifications.addAll([
       AppNotification(
         id: 'notif_1',
         title: 'Official Reward Determined: £20.00',
-        message: 'The Admin Board assessed and locked an official £20.00 escrow reward for the recovery of iPhone 13 Pro (Rule 14).',
+        message: 'The Admin Board assessed and locked an official £20.00 escrow reward for the recovery of iPhone 13 Pro.',
         type: 'rewardAssessed',
         category: 'rewards',
         relatedItemId: 'iphone_13_pro',
@@ -1397,7 +1397,7 @@ class ItemsService extends ChangeNotifier {
       AppNotification(
         id: 'notif_6',
         title: 'Priority Security Alert Logged',
-        message: 'Admin Board initiated investigation on Case #1042 following an off-platform payment report (Rule 11).',
+        message: 'Admin Board initiated investigation on Case #1042 following an off-platform payment report.',
         type: 'securityAlert',
         category: 'security',
         relatedItemId: 'iphone_13_pro',
@@ -1481,7 +1481,7 @@ class ItemsService extends ChangeNotifier {
               senderId: 'system',
               senderName: 'Privacy Protocol',
               senderRole: 'system',
-              text: 'GDPR Article 17: User requested erasure of biometric tokens and proof credentials. Raw cryptographic tokens purged.',
+              text: 'Demo: the user asked for their identity scan data to be erased. Demo tokens removed.',
               timestamp: DateTime.now(),
             ),
           ],
@@ -1491,8 +1491,8 @@ class ItemsService extends ChangeNotifier {
     }
 
     addNotification(
-      title: 'GDPR Right to Erasure Completed',
-      message: 'All cryptographic biometric hashes and verification tokens have been permanently purged (GDPR Article 17).',
+      title: 'Demo erasure completed',
+      message: 'Demo identity tokens were removed from this account. No real data was held.',
       type: 'securityAlert',
       category: 'security',
       actionRoute: '/profile',

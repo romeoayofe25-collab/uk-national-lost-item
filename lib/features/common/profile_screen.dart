@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
 import '../../core/services/auth_provider.dart';
 import '../../core/services/items_service.dart';
+import '../../core/widgets/simulated_tag.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -87,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
                     ),
                     child: const Text(
-                      'This package contains all personal records, verification history, and activity ledgers stored under your account in compliance with the UK Data Protection Act 2018.',
+                      'Demo only: this export lists the demo records the app holds in memory for this account. Nothing is stored anywhere else.',
                       style: TextStyle(fontSize: 12, color: AppColors.secondary, height: 1.4),
                     ),
                   ),
@@ -173,10 +174,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 10),
               Text(
-                '• All cryptographic SHA-256 tokens and ID credentials will be permanently deleted.\n'
+                '• The demo identity token and ID details are removed from this account.\n'
                 '• Your account will revert to Tier 2 (Contact Verified).\n'
                 '• Active item claims will require re-verification.\n'
-                '• Anonymized ledger entries are legally retained for recovery fraud dispute audit trails.',
+                '• In a real service, anonymised records might be kept for fraud disputes.',
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 12, height: 1.5),
               ),
             ],
@@ -198,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(ok
-                          ? 'Biometric data and cryptographic tokens successfully purged.'
+                          ? 'Demo: identity scan data removed from this account.'
                           : 'Failed to purge data. Please try again.'),
                       backgroundColor: ok ? AppColors.success : AppColors.danger,
                     ),
@@ -224,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Profile & Privacy Center'),
+        title: const Text('User Profile & Privacy Centre'),
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline, color: AppColors.textSecondary),
@@ -232,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Operated under UK Data Protection Act 2018 & UK GDPR.'),
+                  content: Text('Prototype: shows how data rights could work. No personal data is collected or stored.'),
                   duration: Duration(seconds: 2),
                 ),
               );
@@ -397,7 +398,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               const SizedBox(height: 16),
 
-              // 2. Biometric Security & Cryptographic Token Vault (Rules 2 & 18)
+              // 2. Biometric Security & Cryptographic Token Vault
               Card(
                 color: AppColors.surface,
                 shape: RoundedRectangleBorder(
@@ -413,14 +414,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: const [
                           Icon(Icons.fingerprint, color: AppColors.secondary, size: 20),
                           SizedBox(width: 8),
-                          Text(
-                            'Biometric & Cryptographic Security',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          Expanded(
+                            child: Text(
+                              'Biometric & Cryptographic Security',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
+                          SimulatedTag(),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -499,7 +503,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         const SizedBox(height: 10),
                       ],
-                      // Privacy Callout (Rule 2)
+                      // Privacy callout
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -508,7 +512,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
                         ),
                         child: const Text(
-                          'Zero Raw Photography: In strict compliance with Rule 2, facial photos are never retained on central cloud servers. Only irreversible cryptographic tokens verify identity during property handovers.',
+                          'Design intent: facial photos would never be retained. This prototype takes no photos.',
                           style: TextStyle(fontSize: 11, color: AppColors.secondary, height: 1.4),
                         ),
                       ),
@@ -516,7 +520,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SwitchListTile(
                         contentPadding: EdgeInsets.zero,
                         title: const Text('Biometric Matching Consent', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
-                        subtitle: const Text('Authorize cryptographic matching during claim disputes', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+                        subtitle: const Text('Allow identity matching during claim disputes', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
                         value: user?.biometricConsentGiven ?? false,
                         activeThumbColor: AppColors.secondary,
                         onChanged: (val) {
@@ -530,7 +534,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               const SizedBox(height: 16),
 
-              // 3. Privacy & PII Transparency (Rules 4 & 13)
+              // 3. Privacy & PII Transparency
               Card(
                 color: AppColors.surface,
                 shape: RoundedRectangleBorder(
@@ -547,7 +551,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Icon(Icons.visibility_off_outlined, color: AppColors.warning, size: 20),
                           SizedBox(width: 8),
                           Text(
-                            'How Others See Your Profile (Rule 13)',
+                            'How others see your profile',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -584,14 +588,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: const [
                           Icon(Icons.gavel_outlined, color: AppColors.secondary, size: 20),
                           SizedBox(width: 8),
-                          Text(
-                            'GDPR Data Rights Center',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          Expanded(
+                            child: Text(
+                              'GDPR Data Rights Centre',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
+                          SimulatedTag(),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -638,6 +645,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
 
               const SizedBox(height: 24),
+
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.warning,
+                  side: const BorderSide(color: AppColors.warning),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                icon: const Icon(Icons.info_outline, size: 18),
+                label: const Text('About this prototype', style: TextStyle(fontWeight: FontWeight.bold)),
+                onPressed: () => context.push('/about'),
+              ),
+              const SizedBox(height: 12),
 
               // 5. Sign Out Button
               SizedBox(
