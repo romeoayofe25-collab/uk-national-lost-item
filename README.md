@@ -149,7 +149,7 @@ The tests in `test/widget_test.dart` cover the data models; the service logic fo
 
 Two pipelines run on pushes and pull requests to `main`, both on Flutter 3.44.2:
 
-- **GitHub Actions** (`.github/workflows/build.yml`): analyse, then build an Android debug APK and an unsigned iOS app.
+- **GitHub Actions** (`.github/workflows/build.yml`): analyse and test, then build an Android debug APK and an unsigned iOS app.
 - **Codemagic** (`codemagic.yaml`): analyse, test, then build Android and unsigned iOS.
 
 Nothing is signed for release. The Android release build uses the debug key, iOS builds are unsigned, and nothing is published to an app store.
