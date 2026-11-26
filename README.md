@@ -64,6 +64,8 @@ At no point do the owner and the finder see each other's details or message each
 
 ## What is real and what is simulated
 
+In the app, every screen carries a PROTOTYPE ribbon, each simulated feature is marked SIMULATED, and "About this prototype" is linked from the sign-in and profile screens.
+
 | Feature | In this prototype |
 |---|---|
 | Sign-in and accounts | Five built-in demo accounts; any password works. New accounts last until the app restarts. |
@@ -129,7 +131,7 @@ All roles share the same demo data while the app is running. Sign out, sign in a
 
 ### A two-minute tour
 
-1. **Owner.** On the iPhone 13 Pro alert, tap **Provide Proof**. Run the simulated identity scan, answer the two questions and submit.
+1. **Owner.** On the iPhone 13 Pro alert, tap **Provide Proof**. Run the simulated identity scan, fill in the answers and the serial number (any text will do) and submit.
 2. **Admin.** Open the claim under "Pending claims verification review", set the reward and approve it.
 3. **Owner.** Open the iPhone 13 Pro report and go to its collection details. The collection PIN is `491-032`.
 4. **Desk staff.** Tap **Scan QR / PIN**, enter `491-032` and confirm the hand-over.
@@ -143,7 +145,7 @@ flutter analyze
 flutter test
 ```
 
-The tests in `test/widget_test.dart` cover the data models; the service logic for ownership verification, desk check-in, fraud reports, notifications and data-rights actions; and widget tests that the app opens on the sign-in screen and that the notifications and profile screens render and respond.
+The tests in `test/widget_test.dart` cover the data models; the service logic for ownership verification, desk check-in, fraud reports, notifications and data-rights actions; and widget tests that the app opens on the sign-in screen, that the notifications and profile screens render and respond, and that the prototype ribbon, the About screen and the SIMULATED tags appear.
 
 Two pipelines run on pushes and pull requests to `main`, both on Flutter 3.44.2:
 
