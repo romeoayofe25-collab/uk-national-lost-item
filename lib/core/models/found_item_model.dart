@@ -7,7 +7,7 @@ class FoundItem {
   final String? brand;
   final String? colour;
   final String publicDescription;
-  final String? privateDetails; // Hides unique details from public view (Rule 5)
+  final String? privateDetails; // Hidden from public view
   final DateTime dateFound;
   final String timeFound;
   final String locationFound;

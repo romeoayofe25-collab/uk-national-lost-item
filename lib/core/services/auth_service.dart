@@ -92,7 +92,7 @@ class AuthService {
       if (user != null) {
         return user;
       }
-      throw Exception('User not found in Mock database. Try owner@test.com, finder@test.com, or suspended@test.com.');
+      throw Exception('No demo account with that email. Use a role button, or owner@, finder@, intermediary@, admin@ or suspended@test.com.');
     } else {
       final UserCredential credential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),

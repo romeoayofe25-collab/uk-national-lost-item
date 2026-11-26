@@ -42,7 +42,7 @@ class FraudReport {
       case 'falseClaim':
         return 'Fraudulent Claim / Impersonating Owner';
       case 'unsafeMeeting':
-        return 'Attempted Direct Meetup / Rule 10 Violation';
+        return 'Attempted Direct Meetup';
       case 'harassment':
         return 'Abuse or Threatening Conduct';
       default:

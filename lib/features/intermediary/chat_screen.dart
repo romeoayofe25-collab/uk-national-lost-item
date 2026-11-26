@@ -147,7 +147,7 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Intermediary Logs: Staff communication is recorded. Direct finder-owner communication bridging is strictly prohibited (Rule 10). PII scrubbing filters are active.',
+                        'Intermediary Logs: Staff communication is recorded. Direct finder-owner communication is not allowed. PII scrubbing filters are active.',
                         style: TextStyle(color: AppColors.textSecondary, fontSize: 11, height: 1.4),
                       ),
                     ),

@@ -302,7 +302,7 @@ class LostItemDetailsScreen extends StatelessWidget {
               onPressed: () {
                 context.go('/owner/verify/${item.id}');
               },
-              child: const Text('Open Verification Center'),
+              child: const Text('Open Verification Centre'),
             ),
           ],
         ),

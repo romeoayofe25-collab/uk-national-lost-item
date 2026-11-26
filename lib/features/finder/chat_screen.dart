@@ -125,7 +125,7 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // Privacy and Redaction Scrub Warning (Rule 10 & 13)
+              // Privacy and redaction warning
               Container(
                 padding: const EdgeInsets.all(12),
                 color: AppColors.surface,
@@ -135,7 +135,7 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'PII Shield Active: Direct owner-finder communication is disabled. Messages are filtered for emails, phone numbers, and payment details to protect user privacy (Rules 10 & 13).',
+                        'PII Shield Active: Direct owner-finder communication is disabled. Messages are filtered for emails, phone numbers, and payment details to protect user privacy.',
                         style: TextStyle(color: AppColors.textSecondary, fontSize: 11, height: 1.4),
                       ),
                     ),

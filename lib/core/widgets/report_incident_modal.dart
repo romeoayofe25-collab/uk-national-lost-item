@@ -67,37 +67,37 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
     {
       'id': 'extortionBidding',
       'label': 'Reward Extortion / Demanding Payment',
-      'rule': 'Rule 9 & 14: Prohibition of private rewards & negotiation',
+      'rule': 'Private rewards and negotiation are not allowed',
       'icon': 'attach_money',
     },
     {
       'id': 'stolenGoods',
       'label': 'Suspected Stolen Property',
-      'rule': 'Rule 11: National Crime Prevention & Police Registry',
+      'rule': 'Possible stolen goods are reviewed by the Admin Board',
       'icon': 'warning',
     },
     {
       'id': 'fakeProof',
       'label': 'Fake Serial Number / Tampered Proof',
-      'rule': 'Rule 18: Verification integrity & anti-counterfeit checks',
+      'rule': 'Proof of ownership must be genuine',
       'icon': 'qr_code_scanner',
     },
     {
       'id': 'falseClaim',
       'label': 'Fraudulent Claim / Impersonating Owner',
-      'rule': 'Rule 11: Prevention of unauthorized item claims',
+      'rule': 'Only the real owner may claim an item',
       'icon': 'person_off',
     },
     {
       'id': 'unsafeMeeting',
       'label': 'Attempted Direct / Unsafe Meeting',
-      'rule': 'Rule 10 & 16: Return only via authorized drop-off desks',
+      'rule': 'Items are returned only through partner drop-off desks',
       'icon': 'location_off',
     },
     {
       'id': 'harassment',
       'label': 'Abusive or Coercive Language',
-      'rule': 'Rule 4: Monitored chat standards & user safety',
+      'rule': 'Chats are monitored to keep users safe',
       'icon': 'shield',
     },
   ];
@@ -230,7 +230,7 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Confidentiality Reassurance (Rule 2 & 13)
+                    // Confidentiality reassurance
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
@@ -245,7 +245,7 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              'Strictly Confidential (Rules 2 & 13): Your identity is protected. The reported party will never see this report or your contact details.',
+                              'Confidential: your identity is protected. The reported party will never see this report or your contact details.',
                               style: TextStyle(color: Colors.white70, fontSize: 11.5, height: 1.35),
                             ),
                           ),

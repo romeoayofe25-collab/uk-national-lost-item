@@ -193,7 +193,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     child: _buildPanelButton(
                       context,
                       title: 'Drop-off Centres',
-                      subtitle: 'Authorize & Monitor',
+                      subtitle: 'Authorise & Monitor',
                       icon: Icons.store,
                       color: AppColors.success,
                       route: '/admin/centres',
