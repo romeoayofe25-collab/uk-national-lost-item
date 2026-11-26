@@ -106,7 +106,7 @@ test/
 
 ## Run it
 
-You need the Flutter SDK (stable channel, Dart 3.12.2 or later) and an Android emulator or device. On a Mac you can also use the iOS simulator.
+You need Flutter 3.44.2, the version the pipelines use, and an Android emulator or device. On a Mac you can also use the iOS simulator. Newer Flutter releases run the app too, but from 3.47 the analyser flags the `package:flutter/material.dart` import in every file as deprecated.
 
 ```bash
 git clone https://github.com/romeoayofe25-collab/uk-national-lost-item.git
@@ -145,7 +145,7 @@ flutter test
 
 The tests in `test/widget_test.dart` cover the data models; the service logic for ownership verification, desk check-in, fraud reports, notifications and data-rights actions; and widget tests that the app opens on the sign-in screen and that the notifications and profile screens render and respond.
 
-Two pipelines run on pushes and pull requests to `main`:
+Two pipelines run on pushes and pull requests to `main`, both on Flutter 3.44.2:
 
 - **GitHub Actions** (`.github/workflows/build.yml`): analyse, then build an Android debug APK and an unsigned iOS app.
 - **Codemagic** (`codemagic.yaml`): analyse, test, then build Android and unsigned iOS.
