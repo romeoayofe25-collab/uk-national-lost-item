@@ -150,7 +150,7 @@ void main() {
           isTrue,
         );
         final bioMsg = updatedItem.messages.firstWhere(
-          (m) => m.text.contains('Biometric Identity Liveness Verified'),
+          (m) => m.text.contains('Simulated identity check passed'),
         );
         expect(bioMsg.senderRole, 'system');
         expect(bioMsg.text, contains('98.4%'));

@@ -465,7 +465,7 @@ class ItemsService extends ChangeNotifier {
           senderName: 'Security Protocol',
           senderRole: 'system',
           text:
-              'Biometric Identity Liveness Verified (${idDocumentType ?? 'Government ID'}: ${idDocumentMasked ?? 'CONFIDENTIAL'}, ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% confidence score). Cryptographic hash registered.',
+              'Simulated identity check passed (${idDocumentType ?? 'Government ID'}: ${idDocumentMasked ?? 'CONFIDENTIAL'}, ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% demo score). No camera or real ID check was used.',
           timestamp: DateTime.now(),
         ),
       );
