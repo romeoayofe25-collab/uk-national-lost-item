@@ -6,7 +6,7 @@ A prototype of a safer lost-property recovery service.
 
 ## See it
 
-- **Web demo:** _[PLACEHOLDER: web demo link]_
+- **Web demo:** [romeoayofe25-collab.github.io/uk-national-lost-item](https://romeoayofe25-collab.github.io/uk-national-lost-item/) (runs in the browser; reload to reset the demo data)
 - **Two-minute video:** _[PLACEHOLDER: video link]_
 - **Run it yourself:** see [Run it](#run-it).
 
@@ -84,7 +84,7 @@ In the app, every screen carries a PROTOTYPE ribbon, each simulated feature is m
 
 ## How it is built
 
-- **Flutter** (Dart 3.12), one code base for Android and iOS.
+- **Flutter** (Dart 3.12), one code base for Android, iOS and the web. On a wide screen the web version shows the app in a phone-width column.
 - **State:** `provider`, with two `ChangeNotifier` services: `AuthProvider` for the signed-in user and `ItemsService` for all demo data and actions.
 - **Navigation:** `go_router`, with 28 routes and a redirect that keeps each role on its own screens and sends a suspended account to its own page.
 - **Fonts:** `google_fonts`, which downloads the font files when the app first runs.
@@ -117,6 +117,8 @@ cd uk-national-lost-item
 flutter pub get
 flutter run
 ```
+
+To run it in Chrome instead, use `flutter run -d chrome`.
 
 On the sign-in screen, tap a role button, or type one of these addresses with any password:
 
@@ -152,6 +154,8 @@ Two pipelines run on pushes and pull requests to `main`, both on Flutter 3.44.2:
 
 - **GitHub Actions** (`.github/workflows/build.yml`): analyse and test, then build an Android debug APK and an unsigned iOS app.
 - **Codemagic** (`codemagic.yaml`): analyse, test, then build Android and unsigned iOS.
+
+A third workflow, `.github/workflows/deploy-web.yml`, builds the web version and publishes it to GitHub Pages on pushes to `main`.
 
 Nothing is signed for release. The Android release build uses the debug key, iOS builds are unsigned, and nothing is published to an app store.
 
