@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 import '../../core/services/items_service.dart';
 
 class IntermediaryHandoverScreen extends StatefulWidget {
@@ -10,10 +11,12 @@ class IntermediaryHandoverScreen extends StatefulWidget {
   const IntermediaryHandoverScreen({super.key, required this.lostItemId});
 
   @override
-  State<IntermediaryHandoverScreen> createState() => _IntermediaryHandoverScreenState();
+  State<IntermediaryHandoverScreen> createState() =>
+      _IntermediaryHandoverScreenState();
 }
 
-class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen> {
+class _IntermediaryHandoverScreenState
+    extends State<IntermediaryHandoverScreen> {
   final _formKey = GlobalKey<FormState>();
   final _pinController = TextEditingController();
 
@@ -32,7 +35,9 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
     if (!_formKey.currentState!.validate()) return;
     if (!_verifiedId || !_collectedSignature) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please check all verification requirements first.')),
+        const SnackBar(
+          content: Text('Please check all verification requirements first.'),
+        ),
       );
       return;
     }
@@ -53,13 +58,17 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Item successfully returned to owner. Escrow reward released!'),
+          content: Text(
+            'Item returned to owner. Demo reward released to the finder.',
+          ),
           backgroundColor: AppColors.success,
         ),
       );
       context.go('/intermediary');
     } else if (mounted) {
-      setState(() => _errorMsg = 'Incorrect Collection PIN. Please verify code.');
+      setState(
+        () => _errorMsg = 'Incorrect Collection PIN. Please verify code.',
+      );
     }
   }
 
@@ -71,14 +80,14 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
     if (item == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Item Handover')),
-        body: const Center(child: Text('Item not found', style: TextStyle(color: Colors.white))),
+        body: const Center(
+          child: Text('Item not found', style: TextStyle(color: Colors.white)),
+        ),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Confirm Owner Handover'),
-      ),
+      appBar: AppBar(title: const Text('Confirm Owner Handover')),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -95,12 +104,14 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Verification Shield Header (Rule 19 Compliance)
+                  // Verification Shield Header
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: AppColors.danger.withValues(alpha: 0.1),
-                      border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
+                      border: Border.all(
+                        color: AppColors.danger.withValues(alpha: 0.3),
+                      ),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: const Row(
@@ -112,13 +123,20 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Rule 19 Handover Verification',
-                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
+                                'Handover verification',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
                               ),
                               SizedBox(height: 4),
                               Text(
                                 'Perform physical checks to avoid false release or fraud.',
-                                style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 12,
+                                ),
                               ),
                             ],
                           ),
@@ -141,15 +159,26 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                       children: [
                         const Text(
                           'CLAIM & ITEM SUMMARY',
-                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textSecondary, letterSpacing: 0.5),
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textSecondary,
+                            letterSpacing: 0.5,
+                          ),
                         ),
                         const SizedBox(height: 12),
                         _detailRow('Item Name', item.title),
                         _detailRow('Category', item.category),
                         _detailRow('Brand', item.brand ?? 'N/A'),
                         _detailRow('Colour', item.colour ?? 'N/A'),
-                        _detailRow('Storage Loc', item.storageLocation ?? 'Locker #4'),
-                        _detailRow('Expected PIN', item.secureCollectionPin ?? 'None'),
+                        _detailRow(
+                          'Storage Loc',
+                          item.storageLocation ?? 'Locker #4',
+                        ),
+                        _detailRow(
+                          'Expected PIN',
+                          item.secureCollectionPin ?? 'None',
+                        ),
                       ],
                     ),
                   ),
@@ -158,19 +187,26 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                   // Checklists
                   const Text(
                     'SECURITY VERIFICATION CHECKLIST',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textSecondary, letterSpacing: 1.0),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textSecondary,
+                      letterSpacing: 1.0,
+                    ),
                   ),
                   const SizedBox(height: 8),
 
                   CheckboxListTile(
                     value: _verifiedId,
                     title: const Text(
-                      'Physically verify owner\'s Photo ID (Passport or Driving License) matches profile name.',
+                      'Physically verify owner\'s Photo ID (Passport or Driving Licence) matches profile name.',
                       style: TextStyle(color: Colors.white, fontSize: 13),
                     ),
                     activeColor: AppColors.primary,
                     onChanged: (val) {
-                      if (val != null) setState(() => _verifiedId = val);
+                      if (val != null) {
+                        setState(() => _verifiedId = val);
+                      }
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: EdgeInsets.zero,
@@ -184,7 +220,9 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                     ),
                     activeColor: AppColors.primary,
                     onChanged: (val) {
-                      if (val != null) setState(() => _collectedSignature = val);
+                      if (val != null) {
+                        setState(() => _collectedSignature = val);
+                      }
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: EdgeInsets.zero,
@@ -194,7 +232,12 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                   // Enter Collection PIN Code field
                   TextFormField(
                     controller: _pinController,
-                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                    ),
                     textAlign: TextAlign.center,
                     decoration: const InputDecoration(
                       labelText: 'Enter 6-Digit Collection PIN *',
@@ -211,11 +254,28 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                     const SizedBox(height: 8),
                     Text(
                       _errorMsg,
-                      style: const TextStyle(color: AppColors.danger, fontSize: 12, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: AppColors.danger,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ],
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
+                  const Center(
+                    child: SimulatedTag(label: 'SIMULATED REWARD RELEASE'),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'No real money moves in this prototype.',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 11,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
 
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -226,7 +286,13 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                     onPressed: _submitting ? null : _processHandover,
                     child: _submitting
                         ? const CircularProgressIndicator(color: Colors.black)
-                        : const Text('Complete Handover & Release Escrow', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                        : const Text(
+                            'Complete Handover & Release Escrow',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
                   ),
                 ],
               ),
@@ -247,7 +313,11 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
             width: 100,
             child: Text(
               '$label:',
-              style: const TextStyle(color: AppColors.textSecondary, fontSize: 13, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Expanded(

@@ -1,15 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
 
+/// In-memory demo accounts for the prototype.
+///
+/// There is no real sign-in: the five built-in accounts accept any password,
+/// and new registrations last only until the app restarts. This class is the
+/// seam where a real authentication service would connect.
 class AuthService {
-  // Toggle this to false when GoogleServices configuration files are loaded
-  static const bool useMock = true;
-
-  FirebaseAuth get _auth => FirebaseAuth.instance;
-  FirebaseFirestore get _db => FirebaseFirestore.instance;
-
-  // Mock Database in-memory map
+  // Demo accounts, keyed by email
   static final Map<String, AppUser> _mockUsers = {
     'owner@test.com': AppUser(
       uid: 'owner_uid',
@@ -86,26 +83,16 @@ class AuthService {
 
   // Sign In
   Future<AppUser?> signIn(String email, String password) async {
-    if (useMock) {
-      await Future.delayed(const Duration(milliseconds: 800)); // Simulate network latency
-      final user = _mockUsers[email.trim().toLowerCase()];
-      if (user != null) {
-        return user;
-      }
-      throw Exception('User not found in Mock database. Try owner@test.com, finder@test.com, or suspended@test.com.');
-    } else {
-      final UserCredential credential = await _auth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password,
-      );
-      if (credential.user != null) {
-        final doc = await _db.collection('users').doc(credential.user!.uid).get();
-        if (doc.exists && doc.data() != null) {
-          return AppUser.fromMap(doc.data()!, credential.user!.uid);
-        }
-      }
-      return null;
+    await Future.delayed(
+      const Duration(milliseconds: 800),
+    ); // Simulate network latency
+    final user = _mockUsers[email.trim().toLowerCase()];
+    if (user != null) {
+      return user;
     }
+    throw Exception(
+      'No demo account with that email. Use a role button, or owner@, finder@, intermediary@, admin@ or suspended@test.com.',
+    );
   }
 
   // Sign Up
@@ -116,50 +103,29 @@ class AuthService {
     required String role,
   }) async {
     final cleanEmail = email.trim().toLowerCase();
-    
-    if (useMock) {
-      await Future.delayed(const Duration(milliseconds: 800));
-      if (_mockUsers.containsKey(cleanEmail)) {
-        throw Exception('Account already exists in Mock database.');
-      }
-      
-      final newUser = AppUser(
-        uid: 'mock_uid_${DateTime.now().millisecondsSinceEpoch}',
-        email: cleanEmail,
-        displayName: displayName,
-        role: role,
-        trustScore: 100,
-        status: 'active',
+
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (_mockUsers.containsKey(cleanEmail)) {
+      throw Exception(
+        'An account with that email already exists in this demo.',
       );
-      
-      _mockUsers[cleanEmail] = newUser;
-      return newUser;
-    } else {
-      final UserCredential credential = await _auth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password,
-      );
-      
-      final newUser = AppUser(
-        uid: credential.user!.uid,
-        email: cleanEmail,
-        displayName: displayName,
-        role: role,
-        trustScore: 100,
-        status: 'active',
-      );
-      
-      await _db.collection('users').doc(credential.user!.uid).set(newUser.toMap());
-      return newUser;
     }
+
+    final newUser = AppUser(
+      uid: 'mock_uid_${DateTime.now().millisecondsSinceEpoch}',
+      email: cleanEmail,
+      displayName: displayName,
+      role: role,
+      trustScore: 100,
+      status: 'active',
+    );
+
+    _mockUsers[cleanEmail] = newUser;
+    return newUser;
   }
 
-  // Sign Out
-  Future<void> signOut() async {
-    if (!useMock) {
-      await _auth.signOut();
-    }
-  }
+  // Sign Out: nothing to clear, because the demo keeps no session outside memory.
+  Future<void> signOut() async {}
 
   static List<AppUser> get mockUsersList => _mockUsers.values.toList();
 
@@ -194,9 +160,7 @@ class AuthService {
     final cleanEmail = email.trim().toLowerCase();
     if (_mockUsers.containsKey(cleanEmail)) {
       final u = _mockUsers[cleanEmail]!;
-      _mockUsers[cleanEmail] = u.copyWith(
-        biometricConsentGiven: consent,
-      );
+      _mockUsers[cleanEmail] = u.copyWith(biometricConsentGiven: consent);
     }
   }
 }

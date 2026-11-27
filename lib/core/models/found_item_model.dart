@@ -7,7 +7,7 @@ class FoundItem {
   final String? brand;
   final String? colour;
   final String publicDescription;
-  final String? privateDetails; // Hides unique details from public view (Rule 5)
+  final String? privateDetails; // Hidden from public view
   final DateTime dateFound;
   final String timeFound;
   final String locationFound;
@@ -78,7 +78,9 @@ class FoundItem {
       colour: map['colour'],
       publicDescription: map['publicDescription'] ?? '',
       privateDetails: map['privateDetails'],
-      dateFound: DateTime.parse(map['dateFound'] ?? DateTime.now().toIso8601String()),
+      dateFound: DateTime.parse(
+        map['dateFound'] ?? DateTime.now().toIso8601String(),
+      ),
       timeFound: map['timeFound'] ?? '',
       locationFound: map['locationFound'] ?? '',
       latitude: (map['latitude'] as num?)?.toDouble(),
@@ -91,7 +93,8 @@ class FoundItem {
           ? DateTime.parse(map['dropOffTimestamp'])
           : null,
       rewardAmount: (map['rewardAmount'] ?? 0.0).toDouble(),
-      messages: (map['messages'] as List?)
+      messages:
+          (map['messages'] as List?)
               ?.map((m) => ChatMessage.fromMap(m))
               .toList() ??
           [],

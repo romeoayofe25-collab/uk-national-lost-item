@@ -8,10 +8,12 @@ class IntermediaryInventoryScreen extends StatefulWidget {
   const IntermediaryInventoryScreen({super.key});
 
   @override
-  State<IntermediaryInventoryScreen> createState() => _IntermediaryInventoryScreenState();
+  State<IntermediaryInventoryScreen> createState() =>
+      _IntermediaryInventoryScreenState();
 }
 
-class _IntermediaryInventoryScreenState extends State<IntermediaryInventoryScreen> {
+class _IntermediaryInventoryScreenState
+    extends State<IntermediaryInventoryScreen> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
 
@@ -72,9 +74,7 @@ class _IntermediaryInventoryScreenState extends State<IntermediaryInventoryScree
     }).toList();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Custody Storage Ledger'),
-      ),
+      appBar: AppBar(title: const Text('Custody Storage Ledger')),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -94,7 +94,10 @@ class _IntermediaryInventoryScreenState extends State<IntermediaryInventoryScree
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: 'Search by title, category, or locker...',
-                    prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+                    prefixIcon: const Icon(
+                      Icons.search,
+                      color: AppColors.textSecondary,
+                    ),
                     suffixIcon: _searchQuery.isNotEmpty
                         ? IconButton(
                             icon: const Icon(Icons.clear, color: Colors.white),
@@ -139,22 +142,40 @@ class _IntermediaryInventoryScreenState extends State<IntermediaryInventoryScree
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         item['title'],
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
                                       ),
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
                                         decoration: BoxDecoration(
-                                          color: (isLostClaim ? AppColors.warning : AppColors.primary).withValues(alpha: 0.15),
-                                          borderRadius: BorderRadius.circular(8),
+                                          color:
+                                              (isLostClaim
+                                                      ? AppColors.warning
+                                                      : AppColors.primary)
+                                                  .withValues(alpha: 0.15),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                         ),
                                         child: Text(
-                                          isLostClaim ? 'Ready for Pickup' : 'Deposited Stored',
+                                          isLostClaim
+                                              ? 'Ready for Pickup'
+                                              : 'Deposited Stored',
                                           style: TextStyle(
-                                            color: isLostClaim ? AppColors.warning : AppColors.primary,
+                                            color: isLostClaim
+                                                ? AppColors.warning
+                                                : AppColors.primary,
                                             fontSize: 11,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -165,26 +186,45 @@ class _IntermediaryInventoryScreenState extends State<IntermediaryInventoryScree
                                   const SizedBox(height: 8),
                                   Text(
                                     'Category: ${item['category']} • Location: ${item['location']}',
-                                    style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                                    style: const TextStyle(
+                                      color: AppColors.textSecondary,
+                                      fontSize: 13,
+                                    ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     'Logged: ${item['date'].day}/${item['date'].month}/${item['date'].year}',
-                                    style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                                    style: const TextStyle(
+                                      color: AppColors.textSecondary,
+                                      fontSize: 12,
+                                    ),
                                   ),
                                   const SizedBox(height: 12),
-                                  const Divider(color: AppColors.border, height: 1),
+                                  const Divider(
+                                    color: AppColors.border,
+                                    height: 1,
+                                  ),
                                   const SizedBox(height: 8),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
-                                          const Icon(Icons.storage, color: AppColors.textSecondary, size: 16),
+                                          const Icon(
+                                            Icons.storage,
+                                            color: AppColors.textSecondary,
+                                            size: 16,
+                                          ),
                                           const SizedBox(width: 6),
                                           Text(
                                             item['location'],
-                                            style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'monospace',
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -192,17 +232,47 @@ class _IntermediaryInventoryScreenState extends State<IntermediaryInventoryScree
                                         children: [
                                           if (isLostClaim)
                                             TextButton.icon(
-                                              style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-                                              icon: const Icon(Icons.check, color: AppColors.success, size: 16),
-                                              label: const Text('Handover', style: TextStyle(color: AppColors.success, fontSize: 13)),
-                                              onPressed: () => context.push('/intermediary/handover/${item['id']}'),
+                                              style: TextButton.styleFrom(
+                                                visualDensity:
+                                                    VisualDensity.compact,
+                                              ),
+                                              icon: const Icon(
+                                                Icons.check,
+                                                color: AppColors.success,
+                                                size: 16,
+                                              ),
+                                              label: const Text(
+                                                'Handover',
+                                                style: TextStyle(
+                                                  color: AppColors.success,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              onPressed: () => context.push(
+                                                '/intermediary/handover/${item['id']}',
+                                              ),
                                             ),
                                           const SizedBox(width: 8),
                                           TextButton.icon(
-                                            style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-                                            icon: const Icon(Icons.chat_bubble_outline, color: AppColors.primary, size: 16),
-                                            label: const Text('Chat Logs', style: TextStyle(color: AppColors.primary, fontSize: 13)),
-                                            onPressed: () => context.push('/intermediary/chat/${item['id']}'),
+                                            style: TextButton.styleFrom(
+                                              visualDensity:
+                                                  VisualDensity.compact,
+                                            ),
+                                            icon: const Icon(
+                                              Icons.chat_bubble_outline,
+                                              color: AppColors.primary,
+                                              size: 16,
+                                            ),
+                                            label: const Text(
+                                              'Chat Logs',
+                                              style: TextStyle(
+                                                color: AppColors.primary,
+                                                fontSize: 13,
+                                              ),
+                                            ),
+                                            onPressed: () => context.push(
+                                              '/intermediary/chat/${item['id']}',
+                                            ),
                                           ),
                                         ],
                                       ),

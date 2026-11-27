@@ -35,7 +35,10 @@ class AdminDashboardScreen extends StatelessWidget {
             icon: Badge(
               isLabelVisible: itemsService.unreadNotificationsCount > 0,
               label: Text('${itemsService.unreadNotificationsCount}'),
-              child: const Icon(Icons.notifications_outlined, color: AppColors.textPrimary),
+              child: const Icon(
+                Icons.notifications_outlined,
+                color: AppColors.textPrimary,
+              ),
             ),
             tooltip: 'Notifications',
             onPressed: () => context.push('/notifications'),
@@ -91,13 +94,18 @@ class AdminDashboardScreen extends StatelessWidget {
                           children: [
                             Text(
                               '${underReviewClaims.length}',
-                              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: AppColors.warning,
-                                fontSize: 26,
-                              ),
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(
+                                    color: AppColors.warning,
+                                    fontSize: 26,
+                                  ),
                             ),
                             const SizedBox(height: 4),
-                            const Text('Under Review', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+                            const Text(
+                              'Under Review',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 12),
+                            ),
                           ],
                         ),
                       ),
@@ -113,13 +121,18 @@ class AdminDashboardScreen extends StatelessWidget {
                           children: [
                             Text(
                               '$activeChatsCount',
-                              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: AppColors.primary,
-                                fontSize: 26,
-                              ),
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(
+                                    color: AppColors.primary,
+                                    fontSize: 26,
+                                  ),
                             ),
                             const SizedBox(height: 4),
-                            const Text('Active Chats', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+                            const Text(
+                              'Active Chats',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 12),
+                            ),
                           ],
                         ),
                       ),
@@ -135,13 +148,18 @@ class AdminDashboardScreen extends StatelessWidget {
                           children: [
                             Text(
                               '$suspendedUsersCount',
-                              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: AppColors.danger,
-                                fontSize: 26,
-                              ),
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(
+                                    color: AppColors.danger,
+                                    fontSize: 26,
+                                  ),
                             ),
                             const SizedBox(height: 4),
-                            const Text('Suspensions', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+                            const Text(
+                              'Suspensions',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 12),
+                            ),
                           ],
                         ),
                       ),
@@ -160,7 +178,7 @@ class AdminDashboardScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12.0),
-              
+
               Row(
                 children: [
                   Expanded(
@@ -193,7 +211,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     child: _buildPanelButton(
                       context,
                       title: 'Drop-off Centres',
-                      subtitle: 'Authorize & Monitor',
+                      subtitle: 'Authorise & Monitor',
                       icon: Icons.store,
                       color: AppColors.success,
                       route: '/admin/centres',
@@ -215,7 +233,10 @@ class AdminDashboardScreen extends StatelessWidget {
 
               if (underReviewClaims.isEmpty)
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 30,
+                    horizontal: 16,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.surface.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(16),
@@ -224,7 +245,10 @@ class AdminDashboardScreen extends StatelessWidget {
                   child: const Center(
                     child: Text(
                       'No claims currently pending verification.',
-                      style: TextStyle(color: AppColors.textSecondary, fontStyle: FontStyle.italic),
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ),
                 )
@@ -238,17 +262,29 @@ class AdminDashboardScreen extends StatelessWidget {
                     return Card(
                       margin: const EdgeInsets.only(bottom: 8.0),
                       child: ListTile(
-                        leading: const Icon(Icons.verified_user, color: AppColors.warning),
+                        leading: const Icon(
+                          Icons.verified_user,
+                          color: AppColors.warning,
+                        ),
                         title: Text(
                           item.title,
-                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                         subtitle: Text(
                           'Owner: Sarah Jenkins • Claim ID: #${item.id.hashCode.toString().substring(0, 4)}',
-                          style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 13,
+                          ),
                         ),
                         trailing: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.warning.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(12),
@@ -301,12 +337,19 @@ class AdminDashboardScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 2),
             Text(
               subtitle,
-              style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 12,
+              ),
             ),
           ],
         ),

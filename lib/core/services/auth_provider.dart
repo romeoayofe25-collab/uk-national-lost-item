@@ -3,16 +3,11 @@ import '../models/user_model.dart';
 import 'auth_service.dart';
 import 'items_service.dart';
 
-enum AuthStatus {
-  unauthenticated,
-  authenticating,
-  authenticated,
-  suspended,
-}
+enum AuthStatus { unauthenticated, authenticating, authenticated, suspended }
 
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
-  
+
   AppUser? _currentUser;
   AuthStatus _status = AuthStatus.unauthenticated;
   bool _isLoading = false;
@@ -141,9 +136,7 @@ class AuthProvider extends ChangeNotifier {
 
     try {
       AuthService.updateBiometricConsent(_currentUser!.email, consent);
-      _currentUser = _currentUser!.copyWith(
-        biometricConsentGiven: consent,
-      );
+      _currentUser = _currentUser!.copyWith(biometricConsentGiven: consent);
       notifyListeners();
       return true;
     } catch (e) {
@@ -154,11 +147,14 @@ class AuthProvider extends ChangeNotifier {
   }
 
   // GDPR Article 15 - Right of Access (Subject Access Request - SAR)
-  Map<String, dynamic> generateGDPRSubjectAccessReport(ItemsService itemsService) {
+  Map<String, dynamic> generateGDPRSubjectAccessReport(
+    ItemsService itemsService,
+  ) {
     return {
       'exportTimestamp': DateTime.now().toIso8601String(),
       'dataController': 'UK National Lost-Item Administration Board',
-      'legalBasis': 'UK GDPR Article 6(1)(b) Contractual Necessity & Article 9(2)(a) Explicit Consent',
+      'legalBasis':
+          'UK GDPR Article 6(1)(b) Contractual Necessity & Article 9(2)(a) Explicit Consent',
       'userProfile': {
         'uid': _currentUser?.uid,
         'email': _currentUser?.email,
@@ -171,14 +167,21 @@ class AuthProvider extends ChangeNotifier {
         'isBiometricVerified': _currentUser?.isBiometricVerified,
         'idDocumentType': _currentUser?.idDocumentType,
         'idDocumentMasked': _currentUser?.idDocumentMasked,
-        'biometricRegisteredAt': _currentUser?.biometricRegisteredAt?.toIso8601String(),
-        'dataRetentionConsentDate': _currentUser?.dataRetentionConsentDate?.toIso8601String(),
+        'biometricRegisteredAt': _currentUser?.biometricRegisteredAt
+            ?.toIso8601String(),
+        'dataRetentionConsentDate': _currentUser?.dataRetentionConsentDate
+            ?.toIso8601String(),
       },
       'reportedLostItems': itemsService.items.map((i) => i.toMap()).toList(),
-      'foundItemsLogged': itemsService.foundItems.map((f) => f.toMap()).toList(),
+      'foundItemsLogged': itemsService.foundItems
+          .map((f) => f.toMap())
+          .toList(),
       'ledgerTransactions': itemsService.claims.map((c) => c.toMap()).toList(),
-      'systemNotifications': itemsService.notifications.map((n) => n.toMap()).toList(),
-      'privacyNotice': 'Special-category biometric data is strictly hashed and can be purged upon request under Article 17.',
+      'systemNotifications': itemsService.notifications
+          .map((n) => n.toMap())
+          .toList(),
+      'privacyNotice':
+          'Special-category biometric data is strictly hashed and can be purged upon request under Article 17.',
     };
   }
 }

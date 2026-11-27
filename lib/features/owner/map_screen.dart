@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 
 class OwnerMapScreen extends StatefulWidget {
   const OwnerMapScreen({super.key});
@@ -10,14 +11,15 @@ class OwnerMapScreen extends StatefulWidget {
   State<OwnerMapScreen> createState() => _OwnerMapScreenState();
 }
 
-class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProviderStateMixin {
+class _OwnerMapScreenState extends State<OwnerMapScreen>
+    with SingleTickerProviderStateMixin {
   final _searchController = TextEditingController();
   String _searchQuery = '';
-  
+
   // Coordinates representing mock places on our Custom Canvas
   // Map dimensions are conceptually 1000 x 1000
   final Offset _userLocation = const Offset(500, 750); // Euston Road
-  
+
   final List<Map<String, dynamic>> _allCentres = [
     {
       'id': 'c1',
@@ -26,7 +28,7 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
       'hours': 'Mon-Sun | 08:00 - 22:00',
       'position': const Offset(650, 450),
       'distance': '0.2 miles',
-      'status': 'Verified Partner',
+      'status': 'Demo Partner',
       'lockers': '10 active lockers',
       'isAuthorized': true,
       'instructions': 'Located next to ticket gates, Platform 9.',
@@ -38,10 +40,10 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
       'hours': 'Mon-Sat | 09:00 - 20:00',
       'position': const Offset(350, 600),
       'distance': '0.4 miles',
-      'status': 'Verified Partner',
+      'status': 'Demo Partner',
       'lockers': '6 active lockers',
       'isAuthorized': true,
-      'instructions': 'Inside main concourse behind WHSmith.',
+      'instructions': 'Inside the main concourse, next to the ticket office.',
     },
     {
       'id': 'c3',
@@ -90,7 +92,8 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
     return _allCentres.where((c) {
       final name = c['name'].toString().toLowerCase();
       final address = c['address'].toString().toLowerCase();
-      return name.contains(_searchQuery.toLowerCase()) || address.contains(_searchQuery.toLowerCase());
+      return name.contains(_searchQuery.toLowerCase()) ||
+          address.contains(_searchQuery.toLowerCase());
     }).toList();
   }
 
@@ -104,20 +107,27 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
             child: GestureDetector(
               onTapDown: (details) {
                 // Determine if user tapped near any pin position
-                final RenderBox renderBox = context.findRenderObject() as RenderBox;
-                final localPos = renderBox.globalToLocal(details.globalPosition);
-                
+                final RenderBox renderBox =
+                    context.findRenderObject() as RenderBox;
+                final localPos = renderBox.globalToLocal(
+                  details.globalPosition,
+                );
+
                 // Conceptual mapping of screen width/height to 1000x1000 canvas
                 final screenWidth = renderBox.size.width;
                 final screenHeight = renderBox.size.height;
-                
+
                 for (var centre in _allCentres) {
                   final Offset pos = centre['position'];
                   final screenX = (pos.dx / 1000.0) * screenWidth;
                   final screenY = (pos.dy / 1000.0) * screenHeight;
-                  
-                  final distance = sqrt(pow(localPos.dx - screenX, 2) + pow(localPos.dy - screenY, 2));
-                  if (distance < 30.0) { // 30 pixels tap radius
+
+                  final distance = sqrt(
+                    pow(localPos.dx - screenX, 2) +
+                        pow(localPos.dy - screenY, 2),
+                  );
+                  if (distance < 30.0) {
+                    // 30 pixels tap radius
                     setState(() {
                       _selectedCentre = centre;
                       _drawDirections = true;
@@ -173,7 +183,10 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                       CircleAvatar(
                         backgroundColor: AppColors.surface,
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
                           onPressed: () {
                             if (context.canPop()) {
                               context.pop();
@@ -194,10 +207,11 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                           ),
                         ),
                       ),
+                      const SimulatedTag(label: 'SIMULATED MAP'),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Search TextField
                   Container(
                     decoration: BoxDecoration(
@@ -210,10 +224,16 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: 'Search counter desks...',
-                        prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: AppColors.textSecondary,
+                        ),
                         suffixIcon: _searchQuery.isNotEmpty
                             ? IconButton(
-                                icon: const Icon(Icons.clear, color: AppColors.textSecondary),
+                                icon: const Icon(
+                                  Icons.clear,
+                                  color: AppColors.textSecondary,
+                                ),
                                 onPressed: () {
                                   setState(() {
                                     _searchController.clear();
@@ -223,7 +243,9 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                               )
                             : null,
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 14,
+                        ),
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -257,8 +279,13 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CircleAvatar(
-                              backgroundColor: AppColors.primary.withValues(alpha: 0.15),
-                              child: const Icon(Icons.store, color: AppColors.primary),
+                              backgroundColor: AppColors.primary.withValues(
+                                alpha: 0.15,
+                              ),
+                              child: const Icon(
+                                Icons.store,
+                                color: AppColors.primary,
+                              ),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -276,7 +303,10 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                                   const SizedBox(height: 2),
                                   Text(
                                     '${_selectedCentre!['distance']} • ${_selectedCentre!['address']}',
-                                    style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                                    style: const TextStyle(
+                                      color: AppColors.textSecondary,
+                                      fontSize: 12,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -284,32 +314,55 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                           ],
                         ),
                         const Divider(height: 24, color: AppColors.border),
-                        
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Hours', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+                                const Text(
+                                  'Hours',
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 11,
+                                  ),
+                                ),
                                 const SizedBox(height: 2),
                                 Text(
                                   _selectedCentre!['hours'],
-                                  style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
-                                color: (_selectedCentre!['isAuthorized'] ? AppColors.success : AppColors.warning).withValues(alpha: 0.15),
+                                color:
+                                    (_selectedCentre!['isAuthorized']
+                                            ? AppColors.success
+                                            : AppColors.warning)
+                                        .withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: _selectedCentre!['isAuthorized'] ? AppColors.success : AppColors.warning),
+                                border: Border.all(
+                                  color: _selectedCentre!['isAuthorized']
+                                      ? AppColors.success
+                                      : AppColors.warning,
+                                ),
                               ),
                               child: Text(
                                 _selectedCentre!['status'].toUpperCase(),
                                 style: TextStyle(
-                                  color: _selectedCentre!['isAuthorized'] ? AppColors.success : AppColors.warning,
+                                  color: _selectedCentre!['isAuthorized']
+                                      ? AppColors.success
+                                      : AppColors.warning,
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -318,21 +371,28 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                           ],
                         ),
                         const SizedBox(height: 12),
-                        
+
                         Row(
                           children: [
-                            const Icon(Icons.info_outline, color: AppColors.textSecondary, size: 14),
+                            const Icon(
+                              Icons.info_outline,
+                              color: AppColors.textSecondary,
+                              size: 14,
+                            ),
                             const SizedBox(width: 6),
                             Expanded(
                               child: Text(
                                 _selectedCentre!['instructions'],
-                                style: const TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                                style: const TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 11,
+                                ),
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 16),
-                        
+
                         ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
@@ -343,7 +403,9 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Simulation: Navigating to ${_selectedCentre!['name']}...'),
+                                content: Text(
+                                  'Simulation: Navigating to ${_selectedCentre!['name']}...',
+                                ),
                                 backgroundColor: AppColors.primary,
                               ),
                             );
@@ -392,19 +454,29 @@ class _OwnerMapScreenState extends State<OwnerMapScreen> with SingleTickerProvid
                                   centre['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   centre['address'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                                  style: const TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 12,
+                                  ),
                                 ),
                                 const SizedBox(height: 6),
                                 Text(
                                   'Distance: ${centre['distance']}',
-                                  style: const TextStyle(color: AppColors.success, fontSize: 11, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                    color: AppColors.success,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),
@@ -448,7 +520,7 @@ class MapCustomPainter extends CustomPainter {
     final gridPaint = Paint()
       ..color = Colors.white.withValues(alpha: 0.015)
       ..strokeWidth = 1.0;
-    
+
     const double gridSize = 40.0;
     for (double x = 0; x < size.width; x += gridSize) {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), gridPaint);
@@ -519,11 +591,11 @@ class MapCustomPainter extends CustomPainter {
       // Draw standard L-shape walking routing on street grid
       final Path routePath = Path();
       routePath.moveTo(userScreenX, userScreenY);
-      
+
       // Navigate to horizontal intersection first
       final cornerX = targetScreenX;
       final cornerY = userScreenY;
-      
+
       routePath.lineTo(cornerX, cornerY);
       routePath.lineTo(targetScreenX, targetScreenY);
 
@@ -537,7 +609,8 @@ class MapCustomPainter extends CustomPainter {
       final x = (pos.dx / 1000.0) * size.width;
       final y = (pos.dy / 1000.0) * size.height;
 
-      final isSelected = selectedCentre != null && selectedCentre!['id'] == centre['id'];
+      final isSelected =
+          selectedCentre != null && selectedCentre!['id'] == centre['id'];
       final isAuth = centre['isAuthorized'] as bool;
 
       // Pin Color
@@ -557,7 +630,7 @@ class MapCustomPainter extends CustomPainter {
       final pinPaint = Paint()
         ..color = pinColor
         ..style = PaintingStyle.fill;
-      
+
       final borderPaint = Paint()
         ..color = Colors.white
         ..strokeWidth = 2.0
@@ -567,7 +640,10 @@ class MapCustomPainter extends CustomPainter {
       final path = Path();
       path.moveTo(x, y);
       path.quadraticBezierTo(x - 12, y - 20, x - 12, y - 30);
-      path.arcToPoint(Offset(x + 12, y - 30), radius: const Radius.circular(12));
+      path.arcToPoint(
+        Offset(x + 12, y - 30),
+        radius: const Radius.circular(12),
+      );
       path.quadraticBezierTo(x + 12, y - 20, x, y);
       path.close();
 
@@ -607,7 +683,7 @@ class MapCustomPainter extends CustomPainter {
   void _drawDashedPath(Canvas canvas, Path path, Paint paint) {
     const double dashWidth = 8.0;
     const double gapWidth = 6.0;
-    
+
     final metrics = path.computeMetrics();
     for (final metric in metrics) {
       double distance = dashOffsetPhase * (dashWidth + gapWidth);

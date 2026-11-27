@@ -83,17 +83,22 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
   @override
   Widget build(BuildContext context) {
     final itemsService = Provider.of<ItemsService>(context);
-    
+
     // Look up the item (could be lost report or found report)
     final lostItem = itemsService.getItemById(widget.itemId);
     final foundItem = itemsService.getFoundItemById(widget.itemId);
 
     final bool isLostItem = lostItem != null;
-    final String title = isLostItem ? lostItem.title : (foundItem?.title ?? 'Item Support');
-    final List<ChatMessage> messages = isLostItem ? lostItem.messages : (foundItem?.messages ?? []);
-    final String clientLabel = isLostItem ? 'Owner Chat Room' : 'Finder Chat Room';
+    final String title = isLostItem
+        ? lostItem.title
+        : (foundItem?.title ?? 'Item Support');
+    final List<ChatMessage> messages = isLostItem
+        ? lostItem.messages
+        : (foundItem?.messages ?? []);
+    final String clientLabel = isLostItem
+        ? 'Owner Chat Room'
+        : 'Finder Chat Room';
     final isPaused = itemsService.isChatPaused(widget.itemId);
-
 
     // Scroll to bottom when build completes
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
@@ -106,7 +111,10 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
             Text('Support Log: $title'),
             Text(
               clientLabel,
-              style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.textSecondary,
+              ),
             ),
           ],
         ),
@@ -143,12 +151,20 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
                 color: AppColors.surface,
                 child: const Row(
                   children: [
-                    Icon(Icons.gavel_rounded, color: AppColors.primary, size: 20),
+                    Icon(
+                      Icons.gavel_rounded,
+                      color: AppColors.primary,
+                      size: 20,
+                    ),
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Intermediary Logs: Staff communication is recorded. Direct finder-owner communication bridging is strictly prohibited (Rule 10). PII scrubbing filters are active.',
-                        style: TextStyle(color: AppColors.textSecondary, fontSize: 11, height: 1.4),
+                        'Intermediary Logs: Staff communication is recorded. Direct finder-owner communication is not allowed. PII scrubbing filters are active.',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 11,
+                          height: 1.4,
+                        ),
                       ),
                     ),
                   ],
@@ -193,11 +209,19 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.pause_circle_filled, color: AppColors.warning, size: 20),
+                      Icon(
+                        Icons.pause_circle_filled,
+                        color: AppColors.warning,
+                        size: 20,
+                      ),
                       SizedBox(width: 8),
                       Text(
                         'This chat has been paused by the Administrator.',
-                        style: TextStyle(color: AppColors.warning, fontWeight: FontWeight.bold, fontSize: 13),
+                        style: TextStyle(
+                          color: AppColors.warning,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
                       ),
                     ],
                   ),
@@ -217,7 +241,10 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
                           style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
                             hintText: 'Type your message...',
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
                           ),
                           onSubmitted: (_) => _sendMessage(isLostItem),
                         ),
@@ -228,7 +255,10 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primary,
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Icon(Icons.send, color: AppColors.primary),
                         onPressed: () => _sendMessage(isLostItem),
@@ -244,7 +274,8 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
   }
 
   Widget _buildSystemMessage(ChatMessage msg) {
-    final isScrubNotice = msg.text.contains('Warning') || msg.text.contains('redacted');
+    final isScrubNotice =
+        msg.text.contains('Warning') || msg.text.contains('redacted');
     final color = isScrubNotice ? AppColors.warning : AppColors.primary;
     final icon = isScrubNotice ? Icons.shield_outlined : Icons.info_outline;
 
@@ -265,7 +296,11 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
             Expanded(
               child: Text(
                 msg.text,
-                style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: color,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
@@ -296,8 +331,13 @@ class _IntermediaryChatScreenState extends State<IntermediaryChatScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
           child: Text(
-            isMe ? 'You' : '${msg.senderName} (${msg.senderRole.toUpperCase()})',
-            style: const TextStyle(color: AppColors.textSecondary, fontSize: 11),
+            isMe
+                ? 'You'
+                : '${msg.senderName} (${msg.senderRole.toUpperCase()})',
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 11,
+            ),
           ),
         ),
         Container(

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -31,9 +32,9 @@ import 'features/admin/claims_review_screen.dart';
 import 'features/admin/disputes_panel_screen.dart';
 import 'features/admin/chat_monitor_screen.dart';
 import 'features/admin/centre_manager_screen.dart';
+import 'features/common/about_screen.dart';
 import 'features/common/notifications_screen.dart';
 import 'features/common/profile_screen.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -64,9 +65,10 @@ class _MyAppState extends State<MyApp> {
 
         final isLoggingIn = state.matchedLocation == '/';
         final isRegistering = state.matchedLocation == '/register';
+        final isAbout = state.matchedLocation == '/about';
 
         if (!isAuthenticated && !isSuspended) {
-          if (isLoggingIn || isRegistering) return null;
+          if (isLoggingIn || isRegistering || isAbout) return null;
           return '/';
         }
 
@@ -76,22 +78,30 @@ class _MyAppState extends State<MyApp> {
         }
 
         if (isAuthenticated) {
-          if (isLoggingIn || isRegistering || state.matchedLocation == '/suspended') {
+          if (isLoggingIn ||
+              isRegistering ||
+              state.matchedLocation == '/suspended') {
             return _rolePath(user?.role);
           }
           final path = state.matchedLocation;
-          if (path.startsWith('/owner') && user?.role != 'owner') return _rolePath(user?.role);
-          if (path.startsWith('/finder') && user?.role != 'finder') return _rolePath(user?.role);
-          if (path.startsWith('/intermediary') && user?.role != 'intermediary') return _rolePath(user?.role);
-          if (path.startsWith('/admin') && user?.role != 'admin') return _rolePath(user?.role);
+          if (path.startsWith('/owner') && user?.role != 'owner') {
+            return _rolePath(user?.role);
+          }
+          if (path.startsWith('/finder') && user?.role != 'finder') {
+            return _rolePath(user?.role);
+          }
+          if (path.startsWith('/intermediary') &&
+              user?.role != 'intermediary') {
+            return _rolePath(user?.role);
+          }
+          if (path.startsWith('/admin') && user?.role != 'admin') {
+            return _rolePath(user?.role);
+          }
         }
         return null;
       },
       routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => const LoginScreen(),
-        ),
+        GoRoute(path: '/', builder: (context, state) => const LoginScreen()),
         GoRoute(
           path: '/register',
           builder: (context, state) => const RegisterScreen(),
@@ -99,6 +109,10 @@ class _MyAppState extends State<MyApp> {
         GoRoute(
           path: '/suspended',
           builder: (context, state) => const SuspendedScreen(),
+        ),
+        GoRoute(
+          path: '/about',
+          builder: (context, state) => const AboutScreen(),
         ),
         GoRoute(
           path: '/notifications',
@@ -269,7 +283,95 @@ class _MyAppState extends State<MyApp> {
         theme: AppTheme.darkTheme,
         routerConfig: _router,
         debugShowCheckedModeBanner: false,
+        builder: (context, child) =>
+            _PhoneFrame(child: child ?? const SizedBox.shrink()),
       ),
+    );
+  }
+}
+
+/// Fits the app to the window and adds the app-wide PROTOTYPE ribbon.
+///
+/// - Wider than a phone (the web demo on a desktop): the app sits in a
+///   phone-width column in the middle of the window, and the ribbon goes in
+///   the window's corner, clear of the app.
+/// - Phone width: the ribbon sits in the app's top corner. Phones show it over
+///   the status bar; phone browsers have none, so a status-bar-height gap is
+///   left above the app bar to keep the ribbon off its buttons.
+class _PhoneFrame extends StatelessWidget {
+  const _PhoneFrame({required this.child});
+
+  static const double phoneWidth = 430;
+  static const double webTopInset = 32;
+
+  final Widget child;
+
+  // IgnorePointer lets every tap reach the app below the ribbon.
+  static const Widget _ribbon = Positioned.fill(
+    child: IgnorePointer(
+      child: Banner(
+        message: 'PROTOTYPE',
+        location: BannerLocation.topEnd,
+        color: AppColors.warning,
+        textStyle: TextStyle(
+          color: Color(0xFF1A1A1A),
+          fontSize: 8.5,
+          fontWeight: FontWeight.w900,
+          height: 1.0,
+        ),
+        child: SizedBox.expand(),
+      ),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth <= phoneWidth) {
+          final needsInset = kIsWeb && media.padding.top < webTopInset;
+          return Stack(
+            children: [
+              needsInset
+                  ? MediaQuery(
+                      data: media.copyWith(
+                        padding: media.padding.copyWith(top: webTopInset),
+                      ),
+                      child: child,
+                    )
+                  : child,
+              _ribbon,
+            ],
+          );
+        }
+        return Stack(
+          children: [
+            ColoredBox(
+              color: const Color(0xFF05070D),
+              child: Center(
+                child: Container(
+                  width: phoneWidth,
+                  decoration: const BoxDecoration(
+                    border: Border.symmetric(
+                      vertical: BorderSide(color: AppColors.border),
+                    ),
+                  ),
+                  child: ClipRect(
+                    child: MediaQuery(
+                      data: media.copyWith(
+                        size: Size(phoneWidth, media.size.height),
+                      ),
+                      child: child,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            _ribbon,
+          ],
+        );
+      },
     );
   }
 }

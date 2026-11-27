@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/theme.dart';
 
-
 class AdminCentreManagerScreen extends StatefulWidget {
   const AdminCentreManagerScreen({super.key});
 
   @override
-  State<AdminCentreManagerScreen> createState() => _AdminCentreManagerScreenState();
+  State<AdminCentreManagerScreen> createState() =>
+      _AdminCentreManagerScreenState();
 }
 
 class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
@@ -17,14 +17,14 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
       'lockers': 10,
       'occupied': 2,
       'isAuthorized': true,
-      'status': 'Verified Partner',
+      'status': 'Demo Partner',
     },
     {
       'name': 'Euston Support Desk',
       'lockers': 6,
       'occupied': 0,
       'isAuthorized': true,
-      'status': 'Verified Partner',
+      'status': 'Demo Partner',
     },
     {
       'name': 'St Pancras Reception',
@@ -40,18 +40,22 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
   void _toggleAuthorization(int index) async {
     setState(() => _isProcessing = true);
     await Future.delayed(const Duration(milliseconds: 400));
-    
+
     setState(() {
       final isAuth = _mockCentres[index]['isAuthorized'] as bool;
       _mockCentres[index]['isAuthorized'] = !isAuth;
-      _mockCentres[index]['status'] = !isAuth ? 'Verified Partner' : 'Suspended Partner';
+      _mockCentres[index]['status'] = !isAuth
+          ? 'Demo Partner'
+          : 'Suspended Partner';
       _isProcessing = false;
     });
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${_mockCentres[index]['name']} authorization status updated!'),
+          content: Text(
+            '${_mockCentres[index]['name']} authorisation status updated.',
+          ),
           backgroundColor: AppColors.success,
         ),
       );
@@ -61,9 +65,7 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Drop-off Centre Management'),
-      ),
+      appBar: AppBar(title: const Text('Drop-off Centre Management')),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -80,7 +82,7 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
                 itemBuilder: (context, index) {
                   final centre = _mockCentres[index];
                   final isAuth = centre['isAuthorized'] as bool;
-                  
+
                   return Card(
                     margin: const EdgeInsets.only(bottom: 16.0),
                     child: Padding(
@@ -91,10 +93,14 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
                           Row(
                             children: [
                               CircleAvatar(
-                                backgroundColor: isAuth ? AppColors.success.withValues(alpha: 0.1) : AppColors.warning.withValues(alpha: 0.1),
+                                backgroundColor: isAuth
+                                    ? AppColors.success.withValues(alpha: 0.1)
+                                    : AppColors.warning.withValues(alpha: 0.1),
                                 child: Icon(
                                   Icons.store,
-                                  color: isAuth ? AppColors.success : AppColors.warning,
+                                  color: isAuth
+                                      ? AppColors.success
+                                      : AppColors.warning,
                                 ),
                               ),
                               const SizedBox(width: 16),
@@ -104,13 +110,19 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
                                   children: [
                                     Text(
                                       centre['name'],
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       centre['status'],
                                       style: TextStyle(
-                                        color: isAuth ? AppColors.success : AppColors.warning,
+                                        color: isAuth
+                                            ? AppColors.success
+                                            : AppColors.warning,
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -127,22 +139,42 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Locker Capacity', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+                                  const Text(
+                                    'Locker Capacity',
+                                    style: TextStyle(
+                                      color: AppColors.textSecondary,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                                   const SizedBox(height: 4),
                                   Text(
                                     '${centre['lockers']} total lockers',
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ],
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Occupancy Volume', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+                                  const Text(
+                                    'Occupancy Volume',
+                                    style: TextStyle(
+                                      color: AppColors.textSecondary,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                                   const SizedBox(height: 4),
                                   Text(
                                     '${centre['occupied']} items in custody',
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -153,13 +185,17 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               TextButton.icon(
-                                style: TextButton.styleFrom(foregroundColor: AppColors.textSecondary),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: AppColors.textSecondary,
+                                ),
                                 icon: const Icon(Icons.inventory, size: 18),
                                 label: const Text('VIEW INVENTORY'),
                                 onPressed: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('Inventory ledger for ${centre['name']} loaded.'),
+                                      content: Text(
+                                        'Inventory ledger for ${centre['name']} loaded.',
+                                      ),
                                     ),
                                   );
                                 },
@@ -167,11 +203,18 @@ class _AdminCentreManagerScreenState extends State<AdminCentreManagerScreen> {
                               const SizedBox(width: 12),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: isAuth ? AppColors.danger : AppColors.success,
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  backgroundColor: isAuth
+                                      ? AppColors.danger
+                                      : AppColors.success,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 10,
+                                  ),
                                 ),
                                 onPressed: () => _toggleAuthorization(index),
-                                child: Text(isAuth ? 'REVOKE AUTH' : 'AUTHORIZE'),
+                                child: Text(
+                                  isAuth ? 'REVOKE AUTH' : 'AUTHORIZE',
+                                ),
                               ),
                             ],
                           ),

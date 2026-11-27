@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _submit() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    
+
     if (_nameController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _passwordController.text.isEmpty) {
@@ -46,9 +46,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (success && mounted) {
       context.go(_selectedRole == 'owner' ? '/owner' : '/finder');
     } else if (mounted && authProvider.errorMessage != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(authProvider.errorMessage!)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(authProvider.errorMessage!)));
     }
   }
 

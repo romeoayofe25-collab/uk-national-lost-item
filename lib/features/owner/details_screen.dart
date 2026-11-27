@@ -19,9 +19,7 @@ class LostItemDetailsScreen extends StatelessWidget {
     if (item == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Item Details')),
-        body: const Center(
-          child: Text('Item not found in registry.'),
-        ),
+        body: const Center(child: Text('Item not found in registry.')),
       );
     }
 
@@ -63,10 +61,10 @@ class LostItemDetailsScreen extends StatelessWidget {
                     Text(
                       'STATUS TIMELINE',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textSecondary,
-                            letterSpacing: 1.2,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textSecondary,
+                        letterSpacing: 1.2,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     _buildTimeline(context, item.status),
@@ -90,19 +88,28 @@ class LostItemDetailsScreen extends StatelessWidget {
                     Text(
                       'REPORT SPECIFICATIONS',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textSecondary,
-                            letterSpacing: 1.2,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textSecondary,
+                        letterSpacing: 1.2,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     _buildSpecRow('Category', item.category),
                     _buildSpecRow('Brand / Model', item.brand ?? 'N/A'),
                     _buildSpecRow('Colour', item.colour ?? 'N/A'),
-                    _buildSpecRow('Unique Marks', item.uniqueMarks ?? 'None specified'),
+                    _buildSpecRow(
+                      'Unique Marks',
+                      item.uniqueMarks ?? 'None specified',
+                    ),
                     _buildSpecRow('Location Lost', item.lastKnownLocation),
-                    _buildSpecRow('Date Lost', '${item.dateLost.day}/${item.dateLost.month}/${item.dateLost.year}'),
-                    _buildSpecRow('Estimated Value', '£ ${item.estimatedValue.toStringAsFixed(2)}'),
+                    _buildSpecRow(
+                      'Date Lost',
+                      '${item.dateLost.day}/${item.dateLost.month}/${item.dateLost.year}',
+                    ),
+                    _buildSpecRow(
+                      'Estimated Value',
+                      '£ ${item.estimatedValue.toStringAsFixed(2)}',
+                    ),
                   ],
                 ),
               ),
@@ -125,11 +132,17 @@ class LostItemDetailsScreen extends StatelessWidget {
 
             // Report Fraud / Suspicious Activity Button
             OutlinedButton.icon(
-              icon: const Icon(Icons.shield_outlined, color: AppColors.danger, size: 18),
+              icon: const Icon(
+                Icons.shield_outlined,
+                color: AppColors.danger,
+                size: 18,
+              ),
               label: const Text('Report Suspicious Activity / Fraud Alert'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.danger,
-                side: BorderSide(color: AppColors.danger.withValues(alpha: 0.5)),
+                side: BorderSide(
+                  color: AppColors.danger.withValues(alpha: 0.5),
+                ),
                 padding: const EdgeInsets.symmetric(vertical: 12),
               ),
               onPressed: () {
@@ -165,7 +178,8 @@ class LostItemDetailsScreen extends StatelessWidget {
     } else if (currentStatus == 'matchFound') {
       currentIndex = 2;
     } else if (currentStatus == 'underReview') {
-      currentIndex = 2; // Under review maps to same timeline stage as Match Found
+      currentIndex =
+          2; // Under review maps to same timeline stage as Match Found
     } else if (currentStatus == 'readyForCollection') {
       currentIndex = 3;
     } else if (currentStatus == 'returned') {
@@ -183,7 +197,8 @@ class LostItemDetailsScreen extends StatelessWidget {
         if (isCompleted) {
           dotColor = AppColors.success;
         } else if (isActive) {
-          dotColor = (currentStatus == 'matchFound' || currentStatus == 'underReview')
+          dotColor =
+              (currentStatus == 'matchFound' || currentStatus == 'underReview')
               ? AppColors.warning
               : AppColors.success;
         }
@@ -205,7 +220,13 @@ class LostItemDetailsScreen extends StatelessWidget {
                     ),
                   ),
                   child: isCompleted
-                      ? const Center(child: Icon(Icons.check, size: 10, color: AppColors.success))
+                      ? const Center(
+                          child: Icon(
+                            Icons.check,
+                            size: 10,
+                            color: AppColors.success,
+                          ),
+                        )
                       : null,
                 ),
                 if (idx < steps.length - 1)
@@ -224,8 +245,12 @@ class LostItemDetailsScreen extends StatelessWidget {
                   Text(
                     step['label'],
                     style: TextStyle(
-                      fontWeight: (isActive || isCompleted) ? FontWeight.bold : FontWeight.normal,
-                      color: isUpcoming ? AppColors.textSecondary : Colors.white,
+                      fontWeight: (isActive || isCompleted)
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                      color: isUpcoming
+                          ? AppColors.textSecondary
+                          : Colors.white,
                       fontSize: 14,
                     ),
                   ),
@@ -251,7 +276,7 @@ class LostItemDetailsScreen extends StatelessWidget {
   String _getTimelineSubtext(String status) {
     switch (status) {
       case 'searching':
-        return 'We are running search matches against reported found items.';
+        return 'Waiting for a matching found item. In this prototype, matches come from the demo data.';
       case 'matchFound':
         return 'A potential match has been flagged by Admin. Action Required.';
       case 'underReview':
@@ -284,14 +309,21 @@ class LostItemDetailsScreen extends StatelessWidget {
                 SizedBox(width: 10),
                 Text(
                   'ACTION REQUIRED',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.warning),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.warning,
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 10),
             const Text(
               'Admin requires proof of ownership to verify and approve item collection.',
-              style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 13,
+                height: 1.4,
+              ),
             ),
             const SizedBox(height: 14),
             ElevatedButton(
@@ -302,7 +334,7 @@ class LostItemDetailsScreen extends StatelessWidget {
               onPressed: () {
                 context.go('/owner/verify/${item.id}');
               },
-              child: const Text('Open Verification Center'),
+              child: const Text('Open Verification Centre'),
             ),
           ],
         ),
@@ -327,14 +359,21 @@ class LostItemDetailsScreen extends StatelessWidget {
                 SizedBox(width: 10),
                 Text(
                   'PROOF SUBMITTED',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.warning),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.warning,
+                  ),
                 ),
               ],
             ),
             SizedBox(height: 10),
             Text(
               'Your details are being validated against the found report serial/visual attributes. This usually takes less than 2 hours. You will receive a notification once approved.',
-              style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 13,
+                height: 1.4,
+              ),
             ),
           ],
         ),
@@ -359,14 +398,21 @@ class LostItemDetailsScreen extends StatelessWidget {
                 SizedBox(width: 10),
                 Text(
                   'CLAIM VERIFIED & APPROVED',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.success),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.success,
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 10),
             const Text(
               'Ownership confirmed! A secure PIN and Drop-off location coordinates have been generated. Present the barcode at the desk.',
-              style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 13,
+                height: 1.4,
+              ),
             ),
             const SizedBox(height: 14),
             ElevatedButton(
@@ -400,7 +446,11 @@ class LostItemDetailsScreen extends StatelessWidget {
             Expanded(
               child: Text(
                 'This item was returned. The secure collection PIN was verified at Euston Rd support desk.',
-                style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.3),
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 13,
+                  height: 1.3,
+                ),
               ),
             ),
           ],
@@ -419,10 +469,20 @@ class LostItemDetailsScreen extends StatelessWidget {
         children: [
           SizedBox(
             width: 120,
-            child: Text(label, style: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.bold, fontSize: 13)),
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+            ),
           ),
           Expanded(
-            child: Text(value, style: const TextStyle(color: Colors.white, fontSize: 13)),
+            child: Text(
+              value,
+              style: const TextStyle(color: Colors.white, fontSize: 13),
+            ),
           ),
         ],
       ),

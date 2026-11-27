@@ -77,7 +77,6 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
     final isClosed = item.status == 'returned';
     final isPaused = itemsService.isChatPaused(widget.itemId);
 
-
     // Trigger scroll to bottom on load
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
 
@@ -86,8 +85,17 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Admin Support: Case #${item.id.hashCode.toString().substring(0, 4)}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-            Text('Regarding: ${item.title}', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+            Text(
+              'Admin Support: Case #${item.id.hashCode.toString().substring(0, 4)}',
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Regarding: ${item.title}',
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.textSecondary,
+              ),
+            ),
           ],
         ),
         leading: IconButton(
@@ -104,7 +112,8 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
                 itemId: item.id,
                 itemTitle: item.title,
                 reporterRole: 'owner',
-                reporterId: authProvider.currentUser?.uid ?? 'sarah_jenkins_uid',
+                reporterId:
+                    authProvider.currentUser?.uid ?? 'sarah_jenkins_uid',
               );
             },
           ),
@@ -118,7 +127,9 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.03),
-                border: const Border(bottom: BorderSide(color: AppColors.border, width: 1)),
+                border: const Border(
+                  bottom: BorderSide(color: AppColors.border, width: 1),
+                ),
               ),
               child: const Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +139,11 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
                   Expanded(
                     child: Text(
                       'Monitored Support Channel: Sharing telephone numbers, email addresses, or payment card details is restricted to protect your safety and privacy.',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 11, height: 1.3),
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                        height: 1.3,
+                      ),
                     ),
                   ),
                 ],
@@ -143,7 +158,11 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
                 itemCount: item.messages.length,
                 itemBuilder: (context, index) {
                   final msg = item.messages[index];
-                  return _buildMessageBubble(context, msg, authProvider.currentUser?.uid);
+                  return _buildMessageBubble(
+                    context,
+                    msg,
+                    authProvider.currentUser?.uid,
+                  );
                 },
               ),
             ),
@@ -159,11 +178,19 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.archive, color: AppColors.textSecondary, size: 20),
+                    Icon(
+                      Icons.archive,
+                      color: AppColors.textSecondary,
+                      size: 20,
+                    ),
                     SizedBox(width: 8),
                     Text(
                       'This support channel has been closed & archived.',
-                      style: TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.bold, fontSize: 13),
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
                     ),
                   ],
                 ),
@@ -178,18 +205,29 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.pause_circle_filled, color: AppColors.warning, size: 20),
+                    Icon(
+                      Icons.pause_circle_filled,
+                      color: AppColors.warning,
+                      size: 20,
+                    ),
                     SizedBox(width: 8),
                     Text(
                       'This chat has been paused by the Administrator.',
-                      style: TextStyle(color: AppColors.warning, fontWeight: FontWeight.bold, fontSize: 13),
+                      style: TextStyle(
+                        color: AppColors.warning,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
                     ),
                   ],
                 ),
               )
             else
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 decoration: const BoxDecoration(
                   color: AppColors.surface,
                   border: Border(top: BorderSide(color: AppColors.border)),
@@ -222,13 +260,20 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
     );
   }
 
-  Widget _buildMessageBubble(BuildContext context, ChatMessage msg, String? currentUserId) {
+  Widget _buildMessageBubble(
+    BuildContext context,
+    ChatMessage msg,
+    String? currentUserId,
+  ) {
     final isMe = msg.senderRole == 'owner';
     final isSystem = msg.senderRole == 'system';
 
     if (isSystem) {
-      final isWarning = msg.text.contains('Warning') || msg.text.contains('redacted');
-      final accentColor = isWarning ? AppColors.warning : AppColors.textSecondary;
+      final isWarning =
+          msg.text.contains('Warning') || msg.text.contains('redacted');
+      final accentColor = isWarning
+          ? AppColors.warning
+          : AppColors.textSecondary;
       return Center(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 8),
@@ -236,7 +281,10 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
           decoration: BoxDecoration(
             color: accentColor.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: accentColor.withValues(alpha: 0.2), width: 1),
+            border: Border.all(
+              color: accentColor.withValues(alpha: 0.2),
+              width: 1,
+            ),
           ),
           child: Text(
             msg.text,
@@ -262,12 +310,19 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
             children: [
               Text(
                 isMe ? 'You' : msg.senderName,
-                style: const TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(width: 6),
               Text(
                 '${msg.timestamp.hour.toString().padLeft(2, '0')}:${msg.timestamp.minute.toString().padLeft(2, '0')}',
-                style: const TextStyle(color: AppColors.textSecondary, fontSize: 10),
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 10,
+                ),
               ),
             ],
           ),
@@ -275,7 +330,9 @@ class _OwnerAdminChatScreenState extends State<OwnerAdminChatScreen> {
           // Bubble text container
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.75,
+            ),
             decoration: BoxDecoration(
               color: bubbleColor,
               borderRadius: BorderRadius.only(

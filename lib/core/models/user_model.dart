@@ -5,7 +5,8 @@ class AppUser {
   final String role; // 'owner', 'finder', 'intermediary', 'admin'
   final int trustScore;
   final String status; // 'active', 'suspended'
-  final String verificationTier; // 'tier1_basic', 'tier2_contact', 'tier3_biometric'
+  final String
+  verificationTier; // 'tier1_basic', 'tier2_contact', 'tier3_biometric'
   final String? phoneNumberMasked;
   final bool biometricConsentGiven;
   final String? biometricHash;
@@ -32,7 +33,8 @@ class AppUser {
   });
 
   bool get isSuspended => status == 'suspended';
-  bool get isBiometricVerified => verificationTier == 'tier3_biometric' && biometricHash != null;
+  bool get isBiometricVerified =>
+      verificationTier == 'tier3_biometric' && biometricHash != null;
 
   String get tierLabel {
     switch (verificationTier) {
@@ -113,12 +115,23 @@ class AppUser {
       status: status ?? this.status,
       verificationTier: verificationTier ?? this.verificationTier,
       phoneNumberMasked: phoneNumberMasked ?? this.phoneNumberMasked,
-      biometricConsentGiven: clearBiometrics ? false : (biometricConsentGiven ?? this.biometricConsentGiven),
-      biometricHash: clearBiometrics ? null : (biometricHash ?? this.biometricHash),
-      idDocumentType: clearBiometrics ? null : (idDocumentType ?? this.idDocumentType),
-      idDocumentMasked: clearBiometrics ? null : (idDocumentMasked ?? this.idDocumentMasked),
-      biometricRegisteredAt: clearBiometrics ? null : (biometricRegisteredAt ?? this.biometricRegisteredAt),
-      dataRetentionConsentDate: dataRetentionConsentDate ?? this.dataRetentionConsentDate,
+      biometricConsentGiven: clearBiometrics
+          ? false
+          : (biometricConsentGiven ?? this.biometricConsentGiven),
+      biometricHash: clearBiometrics
+          ? null
+          : (biometricHash ?? this.biometricHash),
+      idDocumentType: clearBiometrics
+          ? null
+          : (idDocumentType ?? this.idDocumentType),
+      idDocumentMasked: clearBiometrics
+          ? null
+          : (idDocumentMasked ?? this.idDocumentMasked),
+      biometricRegisteredAt: clearBiometrics
+          ? null
+          : (biometricRegisteredAt ?? this.biometricRegisteredAt),
+      dataRetentionConsentDate:
+          dataRetentionConsentDate ?? this.dataRetentionConsentDate,
     );
   }
 }

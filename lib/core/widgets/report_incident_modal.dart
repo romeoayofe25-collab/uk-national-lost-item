@@ -67,37 +67,37 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
     {
       'id': 'extortionBidding',
       'label': 'Reward Extortion / Demanding Payment',
-      'rule': 'Rule 9 & 14: Prohibition of private rewards & negotiation',
+      'rule': 'Private rewards and negotiation are not allowed',
       'icon': 'attach_money',
     },
     {
       'id': 'stolenGoods',
       'label': 'Suspected Stolen Property',
-      'rule': 'Rule 11: National Crime Prevention & Police Registry',
+      'rule': 'Possible stolen goods are reviewed by the Admin Board',
       'icon': 'warning',
     },
     {
       'id': 'fakeProof',
       'label': 'Fake Serial Number / Tampered Proof',
-      'rule': 'Rule 18: Verification integrity & anti-counterfeit checks',
+      'rule': 'Proof of ownership must be genuine',
       'icon': 'qr_code_scanner',
     },
     {
       'id': 'falseClaim',
       'label': 'Fraudulent Claim / Impersonating Owner',
-      'rule': 'Rule 11: Prevention of unauthorized item claims',
+      'rule': 'Only the real owner may claim an item',
       'icon': 'person_off',
     },
     {
       'id': 'unsafeMeeting',
       'label': 'Attempted Direct / Unsafe Meeting',
-      'rule': 'Rule 10 & 16: Return only via authorized drop-off desks',
+      'rule': 'Items are returned only through partner drop-off desks',
       'icon': 'location_off',
     },
     {
       'id': 'harassment',
       'label': 'Abusive or Coercive Language',
-      'rule': 'Rule 4: Monitored chat standards & user safety',
+      'rule': 'Chats are monitored to keep users safe',
       'icon': 'shield',
     },
   ];
@@ -125,7 +125,9 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
       reporterRole: widget.reporterRole,
       category: _selectedCategory,
       description: _descriptionController.text.trim(),
-      evidenceNotes: _evidenceController.text.trim().isEmpty ? null : _evidenceController.text.trim(),
+      evidenceNotes: _evidenceController.text.trim().isEmpty
+          ? null
+          : _evidenceController.text.trim(),
       severity: _selectedSeverity,
     );
 
@@ -192,7 +194,11 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                     color: AppColors.danger.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.shield_outlined, color: AppColors.danger, size: 24),
+                  child: const Icon(
+                    Icons.shield_outlined,
+                    color: AppColors.danger,
+                    size: 24,
+                  ),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -201,11 +207,18 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                     children: [
                       const Text(
                         'Report Suspicious Activity',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
                         'Case: ${widget.itemTitle}',
-                        style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -230,23 +243,33 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Confidentiality Reassurance (Rule 2 & 13)
+                    // Confidentiality reassurance
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.primary.withValues(alpha: 0.25)),
+                        border: Border.all(
+                          color: AppColors.primary.withValues(alpha: 0.25),
+                        ),
                       ),
                       child: const Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.lock_outline, color: AppColors.secondary, size: 18),
+                          Icon(
+                            Icons.lock_outline,
+                            color: AppColors.secondary,
+                            size: 18,
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              'Strictly Confidential (Rules 2 & 13): Your identity is protected. The reported party will never see this report or your contact details.',
-                              style: TextStyle(color: Colors.white70, fontSize: 11.5, height: 1.35),
+                              'Confidential: your identity is protected. The reported party will never see this report or your contact details.',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 11.5,
+                                height: 1.35,
+                              ),
                             ),
                           ),
                         ],
@@ -257,30 +280,47 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                     // Category Selection
                     const Text(
                       'INCIDENT CATEGORY',
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textSecondary, letterSpacing: 1.0),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textSecondary,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                     const SizedBox(height: 10),
                     ..._categories.map((cat) {
                       final isSelected = _selectedCategory == cat['id'];
                       return InkWell(
-                        onTap: () => setState(() => _selectedCategory = cat['id']!),
+                        onTap: () =>
+                            setState(() => _selectedCategory = cat['id']!),
                         borderRadius: BorderRadius.circular(12),
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 10,
+                          ),
                           decoration: BoxDecoration(
-                            color: isSelected ? AppColors.danger.withValues(alpha: 0.12) : AppColors.surface,
+                            color: isSelected
+                                ? AppColors.danger.withValues(alpha: 0.12)
+                                : AppColors.surface,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: isSelected ? AppColors.danger : AppColors.border,
+                              color: isSelected
+                                  ? AppColors.danger
+                                  : AppColors.border,
                               width: isSelected ? 1.5 : 1,
                             ),
                           ),
                           child: Row(
                             children: [
                               Icon(
-                                isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-                                color: isSelected ? AppColors.danger : Colors.white38,
+                                isSelected
+                                    ? Icons.radio_button_checked
+                                    : Icons.radio_button_off,
+                                color: isSelected
+                                    ? AppColors.danger
+                                    : Colors.white38,
                                 size: 18,
                               ),
                               const SizedBox(width: 12),
@@ -293,7 +333,9 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                                       style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
-                                        color: isSelected ? Colors.white : Colors.white70,
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.white70,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
@@ -301,7 +343,11 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                                       cat['rule']!,
                                       style: TextStyle(
                                         fontSize: 10.5,
-                                        color: isSelected ? AppColors.danger.withValues(alpha: 0.9) : AppColors.textSecondary,
+                                        color: isSelected
+                                            ? AppColors.danger.withValues(
+                                                alpha: 0.9,
+                                              )
+                                            : AppColors.textSecondary,
                                       ),
                                     ),
                                   ],
@@ -317,16 +363,33 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                     // Severity Selector
                     const Text(
                       'PRIORITY LEVEL',
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textSecondary, letterSpacing: 1.0),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textSecondary,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        _buildSeverityChip('high', 'High (Immediate Risk)', AppColors.danger),
+                        _buildSeverityChip(
+                          'high',
+                          'High (Immediate Risk)',
+                          AppColors.danger,
+                        ),
                         const SizedBox(width: 8),
-                        _buildSeverityChip('medium', 'Medium (Investigation)', AppColors.warning),
+                        _buildSeverityChip(
+                          'medium',
+                          'Medium (Investigation)',
+                          AppColors.warning,
+                        ),
                         const SizedBox(width: 8),
-                        _buildSeverityChip('low', 'Low', AppColors.textSecondary),
+                        _buildSeverityChip(
+                          'low',
+                          'Low',
+                          AppColors.textSecondary,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 18),
@@ -334,7 +397,12 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                     // Narrative Statement
                     const Text(
                       'INCIDENT DESCRIPTION *',
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textSecondary, letterSpacing: 1.0),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textSecondary,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     TextFormField(
@@ -342,13 +410,26 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                       maxLines: 3,
                       style: const TextStyle(fontSize: 13, color: Colors.white),
                       decoration: InputDecoration(
-                        hintText: 'Describe what happened (e.g. unsolicited payment demand, refusal of intermediary return, suspicious IMEI)...',
-                        hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.35), fontSize: 12),
+                        hintText:
+                            'Describe what happened (e.g. unsolicited payment demand, refusal of intermediary return, suspicious IMEI)...',
+                        hintStyle: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.35),
+                          fontSize: 12,
+                        ),
                         filled: true,
                         fillColor: AppColors.surface,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
-                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.danger)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: AppColors.border),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: AppColors.border),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: AppColors.danger),
+                        ),
                       ),
                       validator: (val) {
                         if (val == null || val.trim().length < 10) {
@@ -362,20 +443,40 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                     // Evidence / Identifier Notes
                     const Text(
                       'SUPPORTING EVIDENCE OR OFF-PLATFORM HANDLES (OPTIONAL)',
-                      style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, color: AppColors.textSecondary, letterSpacing: 0.8),
+                      style: TextStyle(
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textSecondary,
+                        letterSpacing: 0.8,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     TextFormField(
                       controller: _evidenceController,
                       style: const TextStyle(fontSize: 13, color: Colors.white),
                       decoration: InputDecoration(
-                        hintText: 'e.g. Off-platform phone number, account handle, or crime ref number',
-                        hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.35), fontSize: 12),
+                        hintText:
+                            'e.g. Off-platform phone number, account handle, or crime ref number',
+                        hintStyle: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.35),
+                          fontSize: 12,
+                        ),
                         filled: true,
                         fillColor: AppColors.surface,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
-                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.secondary)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: AppColors.border),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: AppColors.border),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: AppColors.secondary,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -389,17 +490,28 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
                               )
                             : const Icon(Icons.send, color: Colors.white),
                         label: Text(
-                          _isSubmitting ? 'TRANSMITTING REPORT...' : 'SUBMIT REPORT TO ADMIN BOARD',
-                          style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.8, fontSize: 13),
+                          _isSubmitting
+                              ? 'TRANSMITTING REPORT...'
+                              : 'SUBMIT REPORT TO ADMIN BOARD',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.8,
+                            fontSize: 13,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.danger,
                           foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           elevation: 3,
                         ),
                         onPressed: _isSubmitting ? null : _submitReport,
@@ -425,9 +537,14 @@ class _ReportIncidentModalState extends State<ReportIncidentModal> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? color.withValues(alpha: 0.2) : AppColors.surface,
+            color: isSelected
+                ? color.withValues(alpha: 0.2)
+                : AppColors.surface,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: isSelected ? color : AppColors.border, width: isSelected ? 1.5 : 1),
+            border: Border.all(
+              color: isSelected ? color : AppColors.border,
+              width: isSelected ? 1.5 : 1,
+            ),
           ),
           child: Center(
             child: Text(

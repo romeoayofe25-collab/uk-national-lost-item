@@ -2,16 +2,10 @@ class VerificationQuestion {
   final String id;
   final String questionText;
 
-  VerificationQuestion({
-    required this.id,
-    required this.questionText,
-  });
+  VerificationQuestion({required this.id, required this.questionText});
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'questionText': questionText,
-    };
+    return {'id': id, 'questionText': questionText};
   }
 
   factory VerificationQuestion.fromMap(Map<String, dynamic> map) {
@@ -26,7 +20,8 @@ class ChatMessage {
   final String id;
   final String senderId;
   final String senderName;
-  final String senderRole; // 'owner', 'finder', 'admin', 'intermediary', 'system'
+  final String
+  senderRole; // 'owner', 'finder', 'admin', 'intermediary', 'system'
   final String text;
   final DateTime timestamp;
 
@@ -57,7 +52,9 @@ class ChatMessage {
       senderName: map['senderName'] ?? '',
       senderRole: map['senderRole'] ?? '',
       text: map['text'] ?? '',
-      timestamp: DateTime.parse(map['timestamp'] ?? DateTime.now().toIso8601String()),
+      timestamp: DateTime.parse(
+        map['timestamp'] ?? DateTime.now().toIso8601String(),
+      ),
     );
   }
 }
@@ -78,7 +75,8 @@ class LostItem {
   final List<String> photos;
   final List<String> proofDocuments;
   final String? serialNumber;
-  final String status; // 'searching', 'matchFound', 'underReview', 'readyForCollection', 'returned'
+  final String
+  status; // 'searching', 'matchFound', 'underReview', 'readyForCollection', 'returned'
   final String? secureCollectionPin;
   final List<VerificationQuestion> verificationQuestions;
   final Map<String, String> verificationAnswers;
@@ -139,7 +137,9 @@ class LostItem {
       'serialNumber': serialNumber,
       'status': status,
       'secureCollectionPin': secureCollectionPin,
-      'verificationQuestions': verificationQuestions.map((q) => q.toMap()).toList(),
+      'verificationQuestions': verificationQuestions
+          .map((q) => q.toMap())
+          .toList(),
       'verificationAnswers': verificationAnswers,
       'verificationSerialNumber': verificationSerialNumber,
       'messages': messages.map((m) => m.toMap()).toList(),
@@ -161,7 +161,9 @@ class LostItem {
       colour: map['colour'],
       uniqueMarks: map['uniqueMarks'],
       estimatedValue: (map['estimatedValue'] ?? 0.0).toDouble(),
-      dateLost: DateTime.parse(map['dateLost'] ?? DateTime.now().toIso8601String()),
+      dateLost: DateTime.parse(
+        map['dateLost'] ?? DateTime.now().toIso8601String(),
+      ),
       timeLost: map['timeLost'] ?? '',
       lastKnownLocation: map['lastKnownLocation'] ?? '',
       latitude: (map['latitude'] as num?)?.toDouble(),
@@ -171,13 +173,17 @@ class LostItem {
       serialNumber: map['serialNumber'],
       status: map['status'] ?? 'searching',
       secureCollectionPin: map['secureCollectionPin'],
-      verificationQuestions: (map['verificationQuestions'] as List?)
+      verificationQuestions:
+          (map['verificationQuestions'] as List?)
               ?.map((q) => VerificationQuestion.fromMap(q))
               .toList() ??
           [],
-      verificationAnswers: Map<String, String>.from(map['verificationAnswers'] ?? {}),
+      verificationAnswers: Map<String, String>.from(
+        map['verificationAnswers'] ?? {},
+      ),
       verificationSerialNumber: map['verificationSerialNumber'],
-      messages: (map['messages'] as List?)
+      messages:
+          (map['messages'] as List?)
               ?.map((m) => ChatMessage.fromMap(m))
               .toList() ??
           [],
@@ -236,9 +242,11 @@ class LostItem {
       serialNumber: serialNumber ?? this.serialNumber,
       status: status ?? this.status,
       secureCollectionPin: secureCollectionPin ?? this.secureCollectionPin,
-      verificationQuestions: verificationQuestions ?? this.verificationQuestions,
+      verificationQuestions:
+          verificationQuestions ?? this.verificationQuestions,
       verificationAnswers: verificationAnswers ?? this.verificationAnswers,
-      verificationSerialNumber: verificationSerialNumber ?? this.verificationSerialNumber,
+      verificationSerialNumber:
+          verificationSerialNumber ?? this.verificationSerialNumber,
       messages: messages ?? this.messages,
       storageLocation: storageLocation ?? this.storageLocation,
       biometricVerified: biometricVerified ?? this.biometricVerified,

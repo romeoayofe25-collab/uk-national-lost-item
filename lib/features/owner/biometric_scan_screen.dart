@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../core/theme/theme.dart';
+import '../../core/widgets/simulated_tag.dart';
 
 class BiometricScanResult {
   final bool isVerified;
@@ -28,15 +29,10 @@ class BiometricScanScreen extends StatefulWidget {
   State<BiometricScanScreen> createState() => _BiometricScanScreenState();
 }
 
-enum ScanStage {
-  ready,
-  aligning,
-  livenessPrompt,
-  extracting,
-  verified,
-}
+enum ScanStage { ready, aligning, livenessPrompt, extracting, verified }
 
-class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTickerProviderStateMixin {
+class _BiometricScanScreenState extends State<BiometricScanScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   ScanStage _stage = ScanStage.ready;
   String _selectedDocType = 'UK Passport';
@@ -52,7 +48,8 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
   @override
   void initState() {
     super.initState();
-    if (widget.preselectedDocType != null && _docTypes.contains(widget.preselectedDocType)) {
+    if (widget.preselectedDocType != null &&
+        _docTypes.contains(widget.preselectedDocType)) {
       _selectedDocType = widget.preselectedDocType!;
     }
     _animationController = AnimationController(
@@ -102,7 +99,9 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
   String _getMaskedDocNumber() {
     final raw = _docNumberController.text.trim();
     if (raw.length <= 4) return 'GBR-***-001';
-    final prefix = _selectedDocType.startsWith('UK P') ? 'GBR-PAS' : (_selectedDocType.startsWith('UK D') ? 'GBR-DRV' : 'GBR-ID');
+    final prefix = _selectedDocType.startsWith('UK P')
+        ? 'GBR-PAS'
+        : (_selectedDocType.startsWith('UK D') ? 'GBR-DRV' : 'GBR-ID');
     return '$prefix-***-${raw.substring(raw.length - 4)}';
   }
 
@@ -110,7 +109,8 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
     final result = BiometricScanResult(
       isVerified: true,
       confidence: 0.984,
-      biometricHash: 'BIO-SHA256-${DateTime.now().millisecondsSinceEpoch.toRadixString(16).toUpperCase()}-VERIFIED',
+      biometricHash:
+          'BIO-SHA256-${DateTime.now().millisecondsSinceEpoch.toRadixString(16).toUpperCase()}-VERIFIED',
       documentType: _selectedDocType,
       documentMasked: _getMaskedDocNumber(),
     );
@@ -124,26 +124,10 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
       appBar: AppBar(
         backgroundColor: Colors.black.withValues(alpha: 0.8),
         title: const Text('Biometric Identity Check'),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.lock, color: AppColors.primary, size: 14),
-                SizedBox(width: 4),
-                Text(
-                  '256-Bit Encrypted',
-                  style: TextStyle(color: AppColors.primary, fontSize: 11, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 16),
+            child: Center(child: SimulatedTag()),
           ),
         ],
       ),
@@ -165,20 +149,34 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
                   children: [
                     const Text(
                       'MATCHING GOVERNMENT ID',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.0),
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
                       initialValue: _selectedDocType,
                       decoration: const InputDecoration(
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
                       ),
                       dropdownColor: AppColors.surface,
                       items: _docTypes.map((type) {
                         return DropdownMenuItem(
                           value: type,
-                          child: Text(type, style: const TextStyle(color: Colors.white, fontSize: 14)),
+                          child: Text(
+                            type,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
                         );
                       }).toList(),
                       onChanged: (val) {
@@ -224,7 +222,11 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppColors.surface,
-                border: Border(top: BorderSide(color: AppColors.border.withValues(alpha: 0.5))),
+                border: Border(
+                  top: BorderSide(
+                    color: AppColors.border.withValues(alpha: 0.5),
+                  ),
+                ),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -237,7 +239,13 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       icon: const Icon(Icons.face_retouching_natural),
-                      label: const Text('Start Biometric Face Scan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      label: const Text(
+                        'Start Biometric Face Scan',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
                       onPressed: _startScanProcess,
                     )
                   else if (_stage == ScanStage.verified)
@@ -248,7 +256,13 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       icon: const Icon(Icons.check_circle),
-                      label: const Text('Confirm & Attach Biometric Token', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      label: const Text(
+                        'Confirm & Attach Biometric Token',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
                       onPressed: _confirmAndReturn,
                     )
                   else
@@ -257,8 +271,14 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         side: const BorderSide(color: AppColors.border),
                       ),
-                      icon: const Icon(Icons.cancel, color: AppColors.textSecondary),
-                      label: const Text('Cancel Scan', style: TextStyle(color: AppColors.textSecondary)),
+                      icon: const Icon(
+                        Icons.cancel,
+                        color: AppColors.textSecondary,
+                      ),
+                      label: const Text(
+                        'Cancel Scan',
+                        style: TextStyle(color: AppColors.textSecondary),
+                      ),
                       onPressed: () {
                         _stageTimer?.cancel();
                         setState(() => _stage = ScanStage.ready);
@@ -284,7 +304,8 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
         icon = Icons.camera_front;
         color = AppColors.primary;
         title = 'Position Face Inside Oval';
-        subtitle = 'Ensure your face is clearly lit without sunglasses or masks.';
+        subtitle =
+            'Ensure your face is clearly lit without sunglasses or masks.';
         break;
       case ScanStage.aligning:
         icon = Icons.center_focus_strong;
@@ -344,12 +365,29 @@ class _BiometricScanScreenState extends State<BiometricScanScreen> with SingleTi
               children: [
                 Text(
                   title,
-                  style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 14),
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
                 ),
                 const SizedBox(height: 3),
                 Text(
                   subtitle,
-                  style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.3),
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Simulated scan. The camera is not used.',
+                  style: TextStyle(
+                    color: AppColors.warning,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -369,7 +407,11 @@ class BiometricReticlePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final ovalRect = Rect.fromCenter(center: center, width: size.width * 0.78, height: size.height * 0.82);
+    final ovalRect = Rect.fromCenter(
+      center: center,
+      width: size.width * 0.78,
+      height: size.height * 0.82,
+    );
 
     Color themeColor;
     switch (stage) {
@@ -418,34 +460,78 @@ class BiometricReticlePainter extends CustomPainter {
     final r = ovalRect;
 
     // Top-left bracket
-    canvas.drawLine(Offset(r.left, r.top + cornerLength), Offset(r.left, r.top), bracketPaint);
-    canvas.drawLine(Offset(r.left, r.top), Offset(r.left + cornerLength, r.top), bracketPaint);
+    canvas.drawLine(
+      Offset(r.left, r.top + cornerLength),
+      Offset(r.left, r.top),
+      bracketPaint,
+    );
+    canvas.drawLine(
+      Offset(r.left, r.top),
+      Offset(r.left + cornerLength, r.top),
+      bracketPaint,
+    );
 
     // Top-right bracket
-    canvas.drawLine(Offset(r.right - cornerLength, r.top), Offset(r.right, r.top), bracketPaint);
-    canvas.drawLine(Offset(r.right, r.top), Offset(r.right, r.top + cornerLength), bracketPaint);
+    canvas.drawLine(
+      Offset(r.right - cornerLength, r.top),
+      Offset(r.right, r.top),
+      bracketPaint,
+    );
+    canvas.drawLine(
+      Offset(r.right, r.top),
+      Offset(r.right, r.top + cornerLength),
+      bracketPaint,
+    );
 
     // Bottom-left bracket
-    canvas.drawLine(Offset(r.left, r.bottom - cornerLength), Offset(r.left, r.bottom), bracketPaint);
-    canvas.drawLine(Offset(r.left, r.bottom), Offset(r.left + cornerLength, r.bottom), bracketPaint);
+    canvas.drawLine(
+      Offset(r.left, r.bottom - cornerLength),
+      Offset(r.left, r.bottom),
+      bracketPaint,
+    );
+    canvas.drawLine(
+      Offset(r.left, r.bottom),
+      Offset(r.left + cornerLength, r.bottom),
+      bracketPaint,
+    );
 
     // Bottom-right bracket
-    canvas.drawLine(Offset(r.right - cornerLength, r.bottom), Offset(r.right, r.bottom), bracketPaint);
-    canvas.drawLine(Offset(r.right, r.bottom), Offset(r.right, r.bottom - cornerLength), bracketPaint);
+    canvas.drawLine(
+      Offset(r.right - cornerLength, r.bottom),
+      Offset(r.right, r.bottom),
+      bracketPaint,
+    );
+    canvas.drawLine(
+      Offset(r.right, r.bottom),
+      Offset(r.right, r.bottom - cornerLength),
+      bracketPaint,
+    );
 
     // Animated vertical laser scan line when actively scanning
-    if (stage == ScanStage.aligning || stage == ScanStage.livenessPrompt || stage == ScanStage.extracting) {
+    if (stage == ScanStage.aligning ||
+        stage == ScanStage.livenessPrompt ||
+        stage == ScanStage.extracting) {
       final laserY = r.top + (r.height * progress);
-      final halfWidth = (r.width / 2) * math.sqrt(1 - math.pow((laserY - center.dy) / (r.height / 2), 2).clamp(0.0, 1.0));
+      final halfWidth =
+          (r.width / 2) *
+          math.sqrt(
+            1 -
+                math
+                    .pow((laserY - center.dy) / (r.height / 2), 2)
+                    .clamp(0.0, 1.0),
+          );
 
       final laserPaint = Paint()
-        ..shader = LinearGradient(
-          colors: [
-            themeColor.withValues(alpha: 0.0),
-            themeColor.withValues(alpha: 0.9),
-            themeColor.withValues(alpha: 0.0),
-          ],
-        ).createShader(Rect.fromLTWH(center.dx - halfWidth, laserY, halfWidth * 2, 3))
+        ..shader =
+            LinearGradient(
+              colors: [
+                themeColor.withValues(alpha: 0.0),
+                themeColor.withValues(alpha: 0.9),
+                themeColor.withValues(alpha: 0.0),
+              ],
+            ).createShader(
+              Rect.fromLTWH(center.dx - halfWidth, laserY, halfWidth * 2, 3),
+            )
         ..strokeWidth = 2.5;
 
       canvas.drawLine(
@@ -462,10 +548,10 @@ class BiometricReticlePainter extends CustomPainter {
       final dots = [
         Offset(center.dx - 35, center.dy - 30), // left eye
         Offset(center.dx + 35, center.dy - 30), // right eye
-        Offset(center.dx, center.dy),          // nose bridge
+        Offset(center.dx, center.dy), // nose bridge
         Offset(center.dx - 20, center.dy + 35), // left mouth
         Offset(center.dx + 20, center.dy + 35), // right mouth
-        Offset(center.dx, center.dy + 70),     // chin
+        Offset(center.dx, center.dy + 70), // chin
         Offset(center.dx - 60, center.dy + 10), // left cheek
         Offset(center.dx + 60, center.dy + 10), // right cheek
       ];

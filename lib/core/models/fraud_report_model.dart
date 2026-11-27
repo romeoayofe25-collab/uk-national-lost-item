@@ -6,10 +6,12 @@ class FraudReport {
   final String? reportedUserName;
   final String reporterId;
   final String reporterRole; // 'owner', 'finder', 'intermediary'
-  final String category; // 'stolenGoods', 'extortionBidding', 'fakeProof', 'falseClaim', 'unsafeMeeting', 'harassment'
+  final String
+  category; // 'stolenGoods', 'extortionBidding', 'fakeProof', 'falseClaim', 'unsafeMeeting', 'harassment'
   final String description;
   final String? evidenceNotes;
-  final String status; // 'pendingReview', 'investigating', 'frozen', 'resolved', 'dismissed'
+  final String
+  status; // 'pendingReview', 'investigating', 'frozen', 'resolved', 'dismissed'
   final String? actionTaken;
   final String severity; // 'high', 'medium', 'low'
   final DateTime timestamp;
@@ -42,7 +44,7 @@ class FraudReport {
       case 'falseClaim':
         return 'Fraudulent Claim / Impersonating Owner';
       case 'unsafeMeeting':
-        return 'Attempted Direct Meetup / Rule 10 Violation';
+        return 'Attempted Direct Meetup';
       case 'harassment':
         return 'Abuse or Threatening Conduct';
       default:
@@ -84,7 +86,9 @@ class FraudReport {
       status: map['status'] ?? 'pendingReview',
       actionTaken: map['actionTaken'],
       severity: map['severity'] ?? 'medium',
-      timestamp: DateTime.parse(map['timestamp'] ?? DateTime.now().toIso8601String()),
+      timestamp: DateTime.parse(
+        map['timestamp'] ?? DateTime.now().toIso8601String(),
+      ),
     );
   }
 

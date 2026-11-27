@@ -10,7 +10,8 @@ class IntermediaryDepositScreen extends StatefulWidget {
   const IntermediaryDepositScreen({super.key, required this.foundItemId});
 
   @override
-  State<IntermediaryDepositScreen> createState() => _IntermediaryDepositScreenState();
+  State<IntermediaryDepositScreen> createState() =>
+      _IntermediaryDepositScreenState();
 }
 
 class _IntermediaryDepositScreenState extends State<IntermediaryDepositScreen> {
@@ -61,14 +62,14 @@ class _IntermediaryDepositScreenState extends State<IntermediaryDepositScreen> {
     if (item == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Item Check-In')),
-        body: const Center(child: Text('Item not found', style: TextStyle(color: Colors.white))),
+        body: const Center(
+          child: Text('Item not found', style: TextStyle(color: Colors.white)),
+        ),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Deposit Confirmation'),
-      ),
+      appBar: AppBar(title: const Text('Deposit Confirmation')),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -90,7 +91,9 @@ class _IntermediaryDepositScreenState extends State<IntermediaryDepositScreen> {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: AppColors.primary.withValues(alpha: 0.1),
-                      border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                      border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.3),
+                      ),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: const Row(
@@ -103,12 +106,19 @@ class _IntermediaryDepositScreenState extends State<IntermediaryDepositScreen> {
                             children: [
                               Text(
                                 'Verification Required',
-                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
                               ),
                               SizedBox(height: 4),
                               Text(
                                 'Ensure physical details match the reported items below before allocation.',
-                                style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 12,
+                                ),
                               ),
                             ],
                           ),
@@ -131,7 +141,12 @@ class _IntermediaryDepositScreenState extends State<IntermediaryDepositScreen> {
                       children: [
                         const Text(
                           'INCOMING ITEM DETAILS',
-                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textSecondary, letterSpacing: 0.5),
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textSecondary,
+                            letterSpacing: 0.5,
+                          ),
                         ),
                         const SizedBox(height: 12),
                         _detailRow('Item Title', item.title),
@@ -139,7 +154,10 @@ class _IntermediaryDepositScreenState extends State<IntermediaryDepositScreen> {
                         _detailRow('Brand', item.brand ?? 'Not reported'),
                         _detailRow('Colour', item.colour ?? 'Not reported'),
                         _detailRow('Public Desc', item.publicDescription),
-                        _detailRow('Receipt PIN', item.secureDepositPin ?? 'None'),
+                        _detailRow(
+                          'Receipt PIN',
+                          item.secureDepositPin ?? 'None',
+                        ),
                       ],
                     ),
                   ),
@@ -148,7 +166,12 @@ class _IntermediaryDepositScreenState extends State<IntermediaryDepositScreen> {
                   // Storage Allocation Fields
                   const Text(
                     'PHYSICAL STORAGE ALLOCATION',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textSecondary, letterSpacing: 1.0),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textSecondary,
+                      letterSpacing: 1.0,
+                    ),
                   ),
                   const SizedBox(height: 12),
 
@@ -177,7 +200,13 @@ class _IntermediaryDepositScreenState extends State<IntermediaryDepositScreen> {
                     onPressed: _submitting ? null : _confirmCheckIn,
                     child: _submitting
                         ? const CircularProgressIndicator(color: Colors.black)
-                        : const Text('Confirm Physical Check-In', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                        : const Text(
+                            'Confirm Physical Check-In',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
                   ),
                 ],
               ),
@@ -198,7 +227,11 @@ class _IntermediaryDepositScreenState extends State<IntermediaryDepositScreen> {
             width: 100,
             child: Text(
               '$label:',
-              style: const TextStyle(color: AppColors.textSecondary, fontSize: 13, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Expanded(
