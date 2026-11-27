@@ -7,7 +7,6 @@ A prototype of a safer lost-property recovery service.
 ## See it
 
 - **Web demo:** [romeoayofe25-collab.github.io/uk-national-lost-item](https://romeoayofe25-collab.github.io/uk-national-lost-item/) (runs in the browser; reload to reset the demo data)
-- **Two-minute video:** _[PLACEHOLDER: video link]_
 - **Run it yourself:** see [Run it](#run-it).
 
 <table>
@@ -174,18 +173,15 @@ Nothing is signed for release. The Android release build uses the debug key, iOS
 
 ## Decisions and lessons
 
-> **[PLACEHOLDER: Martin to rewrite this section in his own words.]** Draft points:
->
-> - Built the front end first, on in-memory data, to test whether a four-role flow holds together before paying for a backend.
-> - Chose hand-over at a desk instead of a meeting. Safer for both sides, but the service then depends on partner desks it does not control.
-> - Took reward-setting away from the owner to stop haggling and ransom-style demands. The cost is admin work on every claim.
-> - Wired in Firebase early but never switched it on, then removed it so the code shows what the app really does.
-> - Learned to label simulations plainly: a convincing mock-up of an identity scan or a payment can mislead.
-> - (Optional) Why the project stops at a prototype.
+- **Front end first.** I built the whole flow on demo data to see whether four roles fit together before spending anything on a backend.
+- **A desk instead of a meeting.** Handing items over at a partner desk is safer for both people, but the service then depends on desks it doesn't run.
+- **The owner doesn't set the reward.** That stops haggling and ransom-style demands; the price is admin work on every claim.
+- **Honest code.** I wired in Firebase early and never switched it on. Taking it out made the code show what the app really does.
+- **Label what's simulated.** A convincing mock-up of an identity scan or a payment can mislead, so every simulation in the app says so.
 
 ## Author
 
-Martin Adegbola Traore. _[PLACEHOLDER: contact link]_
+Martin Adegbola Traore · [martintraore.com](https://martintraore.com/) · [LinkedIn](https://www.linkedin.com/in/martin-traore/)
 
 ## Notice
 
