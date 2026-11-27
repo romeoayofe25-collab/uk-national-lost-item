@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _submit() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    
+
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter email and password.')),
@@ -40,9 +40,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (success && mounted) {
       _routeUser(authProvider);
     } else if (mounted && authProvider.errorMessage != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(authProvider.errorMessage!)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(authProvider.errorMessage!)));
     }
   }
 
@@ -143,15 +143,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     side: const BorderSide(color: AppColors.danger),
                   ),
                   onPressed: () => _devLogin('suspended@test.com'),
-                  child: const Text('Suspended account', style: TextStyle(fontSize: 12)),
+                  child: const Text(
+                    'Suspended account',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
                 const SizedBox(height: 8.0),
                 TextButton.icon(
                   onPressed: () => context.push('/about'),
-                  icon: const Icon(Icons.info_outline, size: 18, color: AppColors.warning),
+                  icon: const Icon(
+                    Icons.info_outline,
+                    size: 18,
+                    color: AppColors.warning,
+                  ),
                   label: const Text(
                     'About this prototype',
-                    style: TextStyle(color: AppColors.warning, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: AppColors.warning,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24.0),
@@ -197,7 +207,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 8.0),
                         const Text(
                           'Demo accounts accept any password. New accounts last until the app restarts.',
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 12, height: 1.4),
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                            height: 1.4,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ],

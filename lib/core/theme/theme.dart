@@ -10,7 +10,7 @@ class AppColors {
   static const Color success = Color(0xFF30D158);
   static const Color warning = Color(0xFFFF9F0A);
   static const Color danger = Color(0xFFFF453A);
-  
+
   static const Color textPrimary = Color(0xFFFFFFFF);
   static const Color textSecondary = Color(0xFF8E8E93);
 }

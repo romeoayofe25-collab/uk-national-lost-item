@@ -17,7 +17,7 @@ import 'auth_service.dart';
 class ItemsService extends ChangeNotifier {
   // In-memory mock lost items database
   final List<LostItem> _mockItems = [];
-  
+
   // In-memory mock found items database
   final List<FoundItem> _mockFoundItems = [];
 
@@ -41,8 +41,10 @@ class ItemsService extends ChangeNotifier {
   List<FoundItem> get foundItems => List.unmodifiable(_mockFoundItems);
   List<ClaimTransaction> get claims => List.unmodifiable(_mockClaims);
   List<FraudReport> get fraudReports => List.unmodifiable(_mockFraudReports);
-  List<AppNotification> get notifications => List.unmodifiable(_mockNotifications);
-  int get unreadNotificationsCount => _mockNotifications.where((n) => !n.isRead).length;
+  List<AppNotification> get notifications =>
+      List.unmodifiable(_mockNotifications);
+  int get unreadNotificationsCount =>
+      _mockNotifications.where((n) => !n.isRead).length;
 
   // Seed the initial mock items for local prototyping
   void _seedMockItems() {
@@ -63,8 +65,14 @@ class ItemsService extends ChangeNotifier {
         proofDocuments: [],
         serialNumber: '357283109482716',
         verificationQuestions: [
-          VerificationQuestion(id: 'q1', questionText: 'Describe the Lock Screen Wallpaper'),
-          VerificationQuestion(id: 'q2', questionText: 'Describe any Unique External Marks or Accessories'),
+          VerificationQuestion(
+            id: 'q1',
+            questionText: 'Describe the Lock Screen Wallpaper',
+          ),
+          VerificationQuestion(
+            id: 'q2',
+            questionText: 'Describe any Unique External Marks or Accessories',
+          ),
         ],
         messages: [
           ChatMessage(
@@ -80,16 +88,22 @@ class ItemsService extends ChangeNotifier {
             senderId: 'system',
             senderName: 'System Alert',
             senderRole: 'system',
-            text: 'Potential Match Found by partner Intermediary Centre at Kings Cross Station.',
-            timestamp: DateTime.now().subtract(const Duration(hours: 1, minutes: 45)),
+            text:
+                'Potential Match Found by partner Intermediary Centre at Kings Cross Station.',
+            timestamp: DateTime.now().subtract(
+              const Duration(hours: 1, minutes: 45),
+            ),
           ),
           ChatMessage(
             id: 'msg_admin_1',
             senderId: 'admin_uid',
             senderName: 'James (Admin)',
             senderRole: 'admin',
-            text: 'Hi Sarah, a matching device has been handed in at the Euston Road desk. Please submit ownership verification.',
-            timestamp: DateTime.now().subtract(const Duration(hours: 1, minutes: 30)),
+            text:
+                'Hi Sarah, a matching device has been handed in at the Euston Road desk. Please submit ownership verification.',
+            timestamp: DateTime.now().subtract(
+              const Duration(hours: 1, minutes: 30),
+            ),
           ),
         ],
       ),
@@ -130,14 +144,18 @@ class ItemsService extends ChangeNotifier {
         category: 'Electronics',
         brand: 'Apple',
         colour: 'Graphite',
-        publicDescription: 'Found graphite iPhone 13 Pro with blue cover at Kings Cross.',
-        privateDetails: 'Locked with a photo wallpaper of a golden retriever puppy.',
+        publicDescription:
+            'Found graphite iPhone 13 Pro with blue cover at Kings Cross.',
+        privateDetails:
+            'Locked with a photo wallpaper of a golden retriever puppy.',
         dateFound: DateTime.now().subtract(const Duration(days: 1)),
         timeFound: '14:40',
         locationFound: 'Kings Cross Station, London',
         status: 'deposited',
         dropOffCentreName: 'Kings Cross Intermediary Centre',
-        dropOffTimestamp: DateTime.now().subtract(const Duration(days: 1, hours: 2)),
+        dropOffTimestamp: DateTime.now().subtract(
+          const Duration(days: 1, hours: 2),
+        ),
         rewardAmount: 20.0,
         messages: [
           ChatMessage(
@@ -146,7 +164,9 @@ class ItemsService extends ChangeNotifier {
             senderName: 'System Alert',
             senderRole: 'system',
             text: 'Found item reported successfully.',
-            timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 3)),
+            timestamp: DateTime.now().subtract(
+              const Duration(days: 1, hours: 3),
+            ),
           ),
           ChatMessage(
             id: 'f_msg_sys_2',
@@ -154,7 +174,9 @@ class ItemsService extends ChangeNotifier {
             senderName: 'System Alert',
             senderRole: 'system',
             text: 'Voucher generated and item deposited at partner centre.',
-            timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 2)),
+            timestamp: DateTime.now().subtract(
+              const Duration(days: 1, hours: 2),
+            ),
           ),
         ],
       ),
@@ -176,7 +198,8 @@ class ItemsService extends ChangeNotifier {
             senderId: 'system',
             senderName: 'System Alert',
             senderRole: 'system',
-            text: 'Found item reported. Please select a drop-off centre to proceed.',
+            text:
+                'Found item reported. Please select a drop-off centre to proceed.',
             timestamp: DateTime.now().subtract(const Duration(hours: 3)),
           ),
         ],
@@ -265,7 +288,8 @@ class ItemsService extends ChangeNotifier {
           senderId: 'system',
           senderName: 'System Alert',
           senderRole: 'system',
-          text: 'Lost item report submitted successfully. Search is in progress.',
+          text:
+              'Lost item report submitted successfully. Search is in progress.',
           timestamp: DateTime.now(),
         ),
       ],
@@ -314,7 +338,8 @@ class ItemsService extends ChangeNotifier {
           senderId: 'system',
           senderName: 'System Alert',
           senderRole: 'system',
-          text: 'Found item report submitted successfully. Please proceed to drop off the item.',
+          text:
+              'Found item report submitted successfully. Please proceed to drop off the item.',
           timestamp: DateTime.now(),
         ),
       ],
@@ -334,7 +359,7 @@ class ItemsService extends ChangeNotifier {
 
     await Future.delayed(const Duration(milliseconds: 500));
     final current = _mockFoundItems[idx];
-    
+
     // Update item state to awaitingDeposit
     final updated = current.copyWith(
       status: 'awaitingDeposit',
@@ -348,13 +373,14 @@ class ItemsService extends ChangeNotifier {
           senderId: 'system',
           senderName: 'System Alert',
           senderRole: 'system',
-          text: 'Drop-off selection confirmed: $centreName. Secure deposit voucher generated.',
+          text:
+              'Drop-off selection confirmed: $centreName. Secure deposit voucher generated.',
           timestamp: DateTime.now(),
         ),
       ],
     );
     _mockFoundItems[idx] = updated;
-    
+
     notifyListeners();
     return true;
   }
@@ -369,15 +395,17 @@ class ItemsService extends ChangeNotifier {
     if (availableAmount <= 0.0) return false;
 
     // Add a cashOut transaction that nullifies available amounts
-    _mockClaims.add(ClaimTransaction(
-      id: 'tx_out_${DateTime.now().millisecondsSinceEpoch}',
-      title: 'Withdrawal (simulated)',
-      amount: availableAmount,
-      type: 'cashOut',
-      status: 'completed',
-      timestamp: DateTime.now(),
-      itemId: 'withdrawal',
-    ));
+    _mockClaims.add(
+      ClaimTransaction(
+        id: 'tx_out_${DateTime.now().millisecondsSinceEpoch}',
+        title: 'Withdrawal (simulated)',
+        amount: availableAmount,
+        type: 'cashOut',
+        status: 'completed',
+        timestamp: DateTime.now(),
+        itemId: 'withdrawal',
+      ),
+    );
 
     // Convert older available transactions to completed
     for (int i = 0; i < _mockClaims.length; i++) {
@@ -415,7 +443,7 @@ class ItemsService extends ChangeNotifier {
 
     await Future.delayed(const Duration(milliseconds: 600));
     final current = _mockItems[idx];
-    
+
     final verificationMessages = <ChatMessage>[
       ...current.messages,
       ChatMessage(
@@ -423,7 +451,8 @@ class ItemsService extends ChangeNotifier {
         senderId: 'system',
         senderName: 'System Alert',
         senderRole: 'system',
-        text: 'Ownership verification proof submitted. Under Administration Board review.',
+        text:
+            'Ownership verification proof submitted. Under Administration Board review.',
         timestamp: DateTime.now(),
       ),
     ];
@@ -435,7 +464,8 @@ class ItemsService extends ChangeNotifier {
           senderId: 'system',
           senderName: 'Security Protocol',
           senderRole: 'system',
-          text: 'Biometric Identity Liveness Verified (${idDocumentType ?? 'Government ID'}: ${idDocumentMasked ?? 'CONFIDENTIAL'}, ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% confidence score). Cryptographic hash registered.',
+          text:
+              'Biometric Identity Liveness Verified (${idDocumentType ?? 'Government ID'}: ${idDocumentMasked ?? 'CONFIDENTIAL'}, ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% confidence score). Cryptographic hash registered.',
           timestamp: DateTime.now(),
         ),
       );
@@ -458,8 +488,10 @@ class ItemsService extends ChangeNotifier {
 
     if (biometricVerified) {
       addNotification(
-        title: 'Simulated Identity Check Passed (${idDocumentType ?? 'Government ID'})',
-        message: 'Demo result: ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% match. No camera or real ID check was used.',
+        title:
+            'Simulated Identity Check Passed (${idDocumentType ?? 'Government ID'})',
+        message:
+            'Demo result: ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% match. No camera or real ID check was used.',
         type: 'biometricVerified',
         category: 'claims',
         relatedItemId: itemId,
@@ -470,7 +502,7 @@ class ItemsService extends ChangeNotifier {
     }
 
     notifyListeners();
-    
+
     return true;
   }
 
@@ -495,7 +527,9 @@ class ItemsService extends ChangeNotifier {
     );
 
     // Release the reward escrow for the finder!
-    final fIdx = _mockFoundItems.indexWhere((item) => item.title == current.title && item.status == 'matched');
+    final fIdx = _mockFoundItems.indexWhere(
+      (item) => item.title == current.title && item.status == 'matched',
+    );
     if (fIdx != -1) {
       final fCurrent = _mockFoundItems[fIdx];
       _mockFoundItems[fIdx] = fCurrent.copyWith(
@@ -507,15 +541,17 @@ class ItemsService extends ChangeNotifier {
             senderId: 'system',
             senderName: 'System Alert',
             senderRole: 'system',
-            text: 'Item returned to owner. Reward released to your available balance!',
+            text:
+                'Item returned to owner. Reward released to your available balance!',
             timestamp: DateTime.now(),
-          )
-        ]
+          ),
+        ],
       );
 
       // Find the pending transaction and release it
       for (int i = 0; i < _mockClaims.length; i++) {
-        if (_mockClaims[i].itemId == fCurrent.id && _mockClaims[i].status == 'pending') {
+        if (_mockClaims[i].itemId == fCurrent.id &&
+            _mockClaims[i].status == 'pending') {
           _mockClaims[i] = ClaimTransaction(
             id: _mockClaims[i].id,
             title: 'Reward Released: ${fCurrent.title}',
@@ -550,25 +586,30 @@ class ItemsService extends ChangeNotifier {
     final current = _mockItems[idx];
     final List<ChatMessage> newMessages = List.from(current.messages);
 
-    newMessages.add(ChatMessage(
-      id: 'msg_${DateTime.now().millisecondsSinceEpoch}',
-      senderId: senderId,
-      senderName: senderName,
-      senderRole: senderRole,
-      text: scrubbed,
-      timestamp: DateTime.now(),
-    ));
+    newMessages.add(
+      ChatMessage(
+        id: 'msg_${DateTime.now().millisecondsSinceEpoch}',
+        senderId: senderId,
+        senderName: senderName,
+        senderRole: senderRole,
+        text: scrubbed,
+        timestamp: DateTime.now(),
+      ),
+    );
 
     // If PII detected, insert a system warning immediately
     if (isPIIDetected) {
-      newMessages.add(ChatMessage(
-        id: 'msg_sys_scrub_${DateTime.now().millisecondsSinceEpoch}',
-        senderId: 'system',
-        senderName: 'System Protection',
-        senderRole: 'system',
-        text: 'Warning: Contact numbers, email addresses, or payment card details are redacted to protect user safety and privacy.',
-        timestamp: DateTime.now().add(const Duration(milliseconds: 100)),
-      ));
+      newMessages.add(
+        ChatMessage(
+          id: 'msg_sys_scrub_${DateTime.now().millisecondsSinceEpoch}',
+          senderId: 'system',
+          senderName: 'System Protection',
+          senderRole: 'system',
+          text:
+              'Warning: Contact numbers, email addresses, or payment card details are redacted to protect user safety and privacy.',
+          timestamp: DateTime.now().add(const Duration(milliseconds: 100)),
+        ),
+      );
     }
 
     _mockItems[idx] = current.copyWith(messages: newMessages);
@@ -594,24 +635,29 @@ class ItemsService extends ChangeNotifier {
     final current = _mockFoundItems[idx];
     final List<ChatMessage> newMessages = List.from(current.messages);
 
-    newMessages.add(ChatMessage(
-      id: 'f_msg_${DateTime.now().millisecondsSinceEpoch}',
-      senderId: senderId,
-      senderName: senderName,
-      senderRole: senderRole,
-      text: scrubbed,
-      timestamp: DateTime.now(),
-    ));
+    newMessages.add(
+      ChatMessage(
+        id: 'f_msg_${DateTime.now().millisecondsSinceEpoch}',
+        senderId: senderId,
+        senderName: senderName,
+        senderRole: senderRole,
+        text: scrubbed,
+        timestamp: DateTime.now(),
+      ),
+    );
 
     if (isPIIDetected) {
-      newMessages.add(ChatMessage(
-        id: 'f_msg_sys_scrub_${DateTime.now().millisecondsSinceEpoch}',
-        senderId: 'system',
-        senderName: 'System Protection',
-        senderRole: 'system',
-        text: 'Warning: Contact numbers, email addresses, or payment card details are redacted to protect user safety and privacy.',
-        timestamp: DateTime.now().add(const Duration(milliseconds: 100)),
-      ));
+      newMessages.add(
+        ChatMessage(
+          id: 'f_msg_sys_scrub_${DateTime.now().millisecondsSinceEpoch}',
+          senderId: 'system',
+          senderName: 'System Protection',
+          senderRole: 'system',
+          text:
+              'Warning: Contact numbers, email addresses, or payment card details are redacted to protect user safety and privacy.',
+          timestamp: DateTime.now().add(const Duration(milliseconds: 100)),
+        ),
+      );
     }
 
     _mockFoundItems[idx] = current.copyWith(messages: newMessages);
@@ -632,9 +678,7 @@ class ItemsService extends ChangeNotifier {
       r'(\+44\s?7\d{3}|\b07\d{3})\s?\d{3}\s?\d{3}\b|\b(?:\d{3,4}[\s.-]?){2,3}\d{4}\b',
     );
     // Payment Card details (standard 12-19 digit pans)
-    final cardRegex = RegExp(
-      r'\b(?:\d[ -]*?){13,19}\b',
-    );
+    final cardRegex = RegExp(r'\b(?:\d[ -]*?){13,19}\b');
 
     output = output.replaceAll(emailRegex, '[REDACTED EMAIL]');
     output = output.replaceAll(phoneRegex, '[REDACTED PHONE]');
@@ -686,19 +730,22 @@ class ItemsService extends ChangeNotifier {
     );
 
     // Add a simulated pending escrow transaction to the ledger now that physical deposit is verified
-    _mockClaims.add(ClaimTransaction(
-      id: 'tx_mock_${DateTime.now().millisecondsSinceEpoch}',
-      title: 'Pending Match: ${current.title}',
-      amount: current.rewardAmount,
-      type: 'escrowCredit',
-      status: 'pending',
-      timestamp: DateTime.now(),
-      itemId: current.id,
-    ));
+    _mockClaims.add(
+      ClaimTransaction(
+        id: 'tx_mock_${DateTime.now().millisecondsSinceEpoch}',
+        title: 'Pending Match: ${current.title}',
+        amount: current.rewardAmount,
+        type: 'escrowCredit',
+        status: 'pending',
+        timestamp: DateTime.now(),
+        itemId: current.id,
+      ),
+    );
 
     addNotification(
       title: 'Partner Desk Deposit Confirmed',
-      message: '${current.title} was physically inspected and securely stored in $storageLocation.',
+      message:
+          '${current.title} was physically inspected and securely stored in $storageLocation.',
       type: 'custodyDeposited',
       category: 'custody',
       relatedItemId: foundItemId,
@@ -732,14 +779,19 @@ class ItemsService extends ChangeNotifier {
           senderId: 'system',
           senderName: 'System Alert',
           senderRole: 'system',
-          text: 'Physical handover verification complete. Item released to owner.',
+          text:
+              'Physical handover verification complete. Item released to owner.',
           timestamp: DateTime.now(),
         ),
       ],
     );
 
     // Release reward to finder
-    final fIdx = _mockFoundItems.indexWhere((item) => item.title == current.title && (item.status == 'matched' || item.status == 'deposited'));
+    final fIdx = _mockFoundItems.indexWhere(
+      (item) =>
+          item.title == current.title &&
+          (item.status == 'matched' || item.status == 'deposited'),
+    );
     if (fIdx != -1) {
       final fCurrent = _mockFoundItems[fIdx];
       _mockFoundItems[fIdx] = fCurrent.copyWith(
@@ -751,15 +803,17 @@ class ItemsService extends ChangeNotifier {
             senderId: 'system',
             senderName: 'System Alert',
             senderRole: 'system',
-            text: 'Item returned to owner. Reward released to available balance!',
+            text:
+                'Item returned to owner. Reward released to available balance!',
             timestamp: DateTime.now(),
-          )
-        ]
+          ),
+        ],
       );
 
       // Update transaction status
       for (int i = 0; i < _mockClaims.length; i++) {
-        if (_mockClaims[i].itemId == fCurrent.id && _mockClaims[i].status == 'pending') {
+        if (_mockClaims[i].itemId == fCurrent.id &&
+            _mockClaims[i].status == 'pending') {
           _mockClaims[i] = ClaimTransaction(
             id: _mockClaims[i].id,
             title: 'Reward Released: ${fCurrent.title}',
@@ -775,7 +829,8 @@ class ItemsService extends ChangeNotifier {
 
     addNotification(
       title: 'Handover Complete - Reward Released!',
-      message: 'Owner physically collected ${current.title}. Reward released to your available balance.',
+      message:
+          'Owner physically collected ${current.title}. Reward released to your available balance.',
       type: 'escrowReleased',
       category: 'rewards',
       relatedItemId: lostItemId,
@@ -789,13 +844,16 @@ class ItemsService extends ChangeNotifier {
   }
 
   // --- ADMIN CONTROL CENTRE METHODS ---
-  
+
   final Set<String> _pausedChats = {};
   Set<String> get pausedChats => _pausedChats;
 
   bool isChatPaused(String itemId) => _pausedChats.contains(itemId);
 
-  Future<bool> adminToggleChatStatus({required String itemId, required bool isPaused}) async {
+  Future<bool> adminToggleChatStatus({
+    required String itemId,
+    required bool isPaused,
+  }) async {
     await Future.delayed(const Duration(milliseconds: 200));
     if (isPaused) {
       _pausedChats.add(itemId);
@@ -806,13 +864,16 @@ class ItemsService extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> adminApproveClaim({required String lostItemId, required double rewardAmount}) async {
+  Future<bool> adminApproveClaim({
+    required String lostItemId,
+    required double rewardAmount,
+  }) async {
     final idx = _mockItems.indexWhere((item) => item.id == lostItemId);
     if (idx == -1) return false;
-    
+
     await Future.delayed(const Duration(milliseconds: 500));
     final current = _mockItems[idx];
-    
+
     // 1. Update lost item status to readyForCollection
     _mockItems[idx] = current.copyWith(
       status: 'readyForCollection',
@@ -824,7 +885,8 @@ class ItemsService extends ChangeNotifier {
           senderId: 'system',
           senderName: 'System Alert',
           senderRole: 'system',
-          text: 'Ownership verified! Secure collection voucher generated. Please collect your item from Kings Cross customer support desk.',
+          text:
+              'Ownership verified! Secure collection voucher generated. Please collect your item from Kings Cross customer support desk.',
           timestamp: DateTime.now(),
         ),
         ChatMessage(
@@ -832,14 +894,21 @@ class ItemsService extends ChangeNotifier {
           senderId: 'admin_uid',
           senderName: 'James (Admin)',
           senderRole: 'admin',
-          text: 'Hello Sarah, your claim has been approved. The item is securely stored in Lockbox #4. Present the QR code on your screen to retrieve it.',
+          text:
+              'Hello Sarah, your claim has been approved. The item is securely stored in Lockbox #4. Present the QR code on your screen to retrieve it.',
           timestamp: DateTime.now(),
         ),
       ],
     );
 
     // 2. Update corresponding found item to matched state, setting the reward amount
-    final fIdx = _mockFoundItems.indexWhere((item) => item.title == current.title && (item.status == 'deposited' || item.status == 'matchFound' || item.status == 'heldByFinder'));
+    final fIdx = _mockFoundItems.indexWhere(
+      (item) =>
+          item.title == current.title &&
+          (item.status == 'deposited' ||
+              item.status == 'matchFound' ||
+              item.status == 'heldByFinder'),
+    );
     if (fIdx != -1) {
       final fCurrent = _mockFoundItems[fIdx];
       _mockFoundItems[fIdx] = fCurrent.copyWith(
@@ -852,14 +921,17 @@ class ItemsService extends ChangeNotifier {
             senderId: 'system',
             senderName: 'System Alert',
             senderRole: 'system',
-            text: 'Item matched with owner claim! Reward of £${rewardAmount.toStringAsFixed(2)} is held in escrow pending collection.',
+            text:
+                'Item matched with owner claim! Reward of £${rewardAmount.toStringAsFixed(2)} is held in escrow pending collection.',
             timestamp: DateTime.now(),
-          )
-        ]
+          ),
+        ],
       );
 
       // 3. Update the matching claim transaction amount and status
-      final tIdx = _mockClaims.indexWhere((tx) => tx.itemId == fCurrent.id || tx.title.contains(current.title));
+      final tIdx = _mockClaims.indexWhere(
+        (tx) => tx.itemId == fCurrent.id || tx.title.contains(current.title),
+      );
       if (tIdx != -1) {
         _mockClaims[tIdx] = ClaimTransaction(
           id: _mockClaims[tIdx].id,
@@ -871,21 +943,25 @@ class ItemsService extends ChangeNotifier {
           itemId: fCurrent.id,
         );
       } else {
-        _mockClaims.add(ClaimTransaction(
-          id: 'tx_${DateTime.now().millisecondsSinceEpoch}',
-          title: 'Reward Escrow: ${current.title}',
-          amount: rewardAmount,
-          type: 'escrowCredit',
-          status: 'pending',
-          timestamp: DateTime.now(),
-          itemId: fCurrent.id,
-        ));
+        _mockClaims.add(
+          ClaimTransaction(
+            id: 'tx_${DateTime.now().millisecondsSinceEpoch}',
+            title: 'Reward Escrow: ${current.title}',
+            amount: rewardAmount,
+            type: 'escrowCredit',
+            status: 'pending',
+            timestamp: DateTime.now(),
+            itemId: fCurrent.id,
+          ),
+        );
       }
     }
 
     addNotification(
-      title: 'Reward Officially Determined: £${rewardAmount.toStringAsFixed(2)}',
-      message: 'Admin Board has reviewed verification and locked £${rewardAmount.toStringAsFixed(2)} in escrow pending collection.',
+      title:
+          'Reward Officially Determined: £${rewardAmount.toStringAsFixed(2)}',
+      message:
+          'Admin Board has reviewed verification and locked £${rewardAmount.toStringAsFixed(2)} in escrow pending collection.',
       type: 'rewardAssessed',
       category: 'rewards',
       relatedItemId: lostItemId,
@@ -895,7 +971,8 @@ class ItemsService extends ChangeNotifier {
     );
     addNotification(
       title: 'Collection Voucher Ready',
-      message: 'Secure collection voucher & QR PIN code issued for ${current.title}. Please collect from customer support desk.',
+      message:
+          'Secure collection voucher & QR PIN code issued for ${current.title}. Please collect from customer support desk.',
       type: 'voucherReady',
       category: 'custody',
       relatedItemId: lostItemId,
@@ -911,10 +988,10 @@ class ItemsService extends ChangeNotifier {
   Future<bool> adminRejectClaim({required String lostItemId}) async {
     final idx = _mockItems.indexWhere((item) => item.id == lostItemId);
     if (idx == -1) return false;
-    
+
     await Future.delayed(const Duration(milliseconds: 500));
     final current = _mockItems[idx];
-    
+
     // Reset status to searching, add rejection message
     _mockItems[idx] = current.copyWith(
       status: 'searching',
@@ -925,12 +1002,13 @@ class ItemsService extends ChangeNotifier {
           senderId: 'system',
           senderName: 'System Alert',
           senderRole: 'system',
-          text: 'Ownership claim rejected by Admin. Please review your submitted answers/documents or contact support.',
+          text:
+              'Ownership claim rejected by Admin. Please review your submitted answers/documents or contact support.',
           timestamp: DateTime.now(),
         ),
       ],
     );
-    
+
     notifyListeners();
     return true;
   }
@@ -962,8 +1040,10 @@ class ItemsService extends ChangeNotifier {
         reporterId: 'sarah_jenkins_uid',
         reporterRole: 'owner',
         category: 'extortionBidding',
-        description: 'Received unsolicited message requesting £150 private bank transfer outside the app before allowing intermediary drop-off.',
-        evidenceNotes: 'Sort code 04-00-04, Account 82910394 offered in external note.',
+        description:
+            'Received unsolicited message requesting £150 private bank transfer outside the app before allowing intermediary drop-off.',
+        evidenceNotes:
+            'Sort code 04-00-04, Account 82910394 offered in external note.',
         status: 'pendingReview',
         severity: 'high',
         timestamp: DateTime.now().subtract(const Duration(hours: 3)),
@@ -977,7 +1057,8 @@ class ItemsService extends ChangeNotifier {
         reporterId: 'desk_agent_euston',
         reporterRole: 'intermediary',
         category: 'stolenGoods',
-        description: 'Custody check-in discrepancy: Wallet matches police report of pickpocket incident in Euston Station yesterday. Contents partially removed.',
+        description:
+            'Custody check-in discrepancy: Wallet matches police report of pickpocket incident in Euston Station yesterday. Contents partially removed.',
         evidenceNotes: 'PNC Crime Ref: CAD-4829-0826.',
         status: 'investigating',
         severity: 'high',
@@ -992,7 +1073,8 @@ class ItemsService extends ChangeNotifier {
         reporterId: 'desk_agent_kings_cross',
         reporterRole: 'intermediary',
         category: 'fakeProof',
-        description: 'Claimant submitted photo receipt with visibly edited serial number font and mismatched purchase timestamp.',
+        description:
+            'Claimant submitted photo receipt with visibly edited serial number font and mismatched purchase timestamp.',
         evidenceNotes: 'Receipt shows 2024 font artifact over 2026 header.',
         status: 'pendingReview',
         severity: 'medium',
@@ -1044,7 +1126,8 @@ class ItemsService extends ChangeNotifier {
             senderId: 'system',
             senderName: 'Security Protocol',
             senderRole: 'system',
-            text: 'Security Alert: Incident report #${newReport.id} (${newReport.categoryLabel}) submitted to the Admin Board. Claim is under priority review.',
+            text:
+                'Security Alert: Incident report #${newReport.id} (${newReport.categoryLabel}) submitted to the Admin Board. Claim is under priority review.',
             timestamp: DateTime.now(),
           ),
         ],
@@ -1053,7 +1136,8 @@ class ItemsService extends ChangeNotifier {
 
     addNotification(
       title: 'Security Alert: ${newReport.categoryLabel}',
-      message: 'Incident #${newReport.id} logged for ${newReport.reportedItemTitle}. Under priority review.',
+      message:
+          'Incident #${newReport.id} logged for ${newReport.reportedItemTitle}. Under priority review.',
       type: 'securityAlert',
       category: 'security',
       relatedItemId: reportedItemId,
@@ -1091,7 +1175,8 @@ class ItemsService extends ChangeNotifier {
               senderId: 'system',
               senderName: 'Security Protocol',
               senderRole: 'system',
-              text: 'Admin Notice: Case and escrow locked pending fraud investigation (${report.categoryLabel}). Physical collection voucher held.',
+              text:
+                  'Admin Notice: Case and escrow locked pending fraud investigation (${report.categoryLabel}). Physical collection voucher held.',
               timestamp: DateTime.now(),
             ),
           ],
@@ -1099,7 +1184,11 @@ class ItemsService extends ChangeNotifier {
       }
 
       // 2. Put corresponding found item escrow into held status
-      final fIdx = _mockFoundItems.indexWhere((i) => i.id == report.reportedItemId || i.title == report.reportedItemTitle);
+      final fIdx = _mockFoundItems.indexWhere(
+        (i) =>
+            i.id == report.reportedItemId ||
+            i.title == report.reportedItemTitle,
+      );
       if (fIdx != -1) {
         for (int i = 0; i < _mockClaims.length; i++) {
           if (_mockClaims[i].itemId == _mockFoundItems[fIdx].id) {
@@ -1118,7 +1207,8 @@ class ItemsService extends ChangeNotifier {
 
       _mockFraudReports[rIdx] = report.copyWith(
         status: 'frozen',
-        actionTaken: adminNotes ?? 'Case frozen & reward escrow locked by Admin Board',
+        actionTaken:
+            adminNotes ?? 'Case frozen & reward escrow locked by Admin Board',
       );
     } else if (action == 'suspendUser') {
       if (report.reportedUserId != null) {
@@ -1126,12 +1216,15 @@ class ItemsService extends ChangeNotifier {
       }
       _mockFraudReports[rIdx] = report.copyWith(
         status: 'resolved',
-        actionTaken: adminNotes ?? 'Reported user suspended and credentials revoked.',
+        actionTaken:
+            adminNotes ?? 'Reported user suspended and credentials revoked.',
       );
     } else if (action == 'dismiss') {
       _mockFraudReports[rIdx] = report.copyWith(
         status: 'dismissed',
-        actionTaken: adminNotes ?? 'Dismissed after administrative verification. False alarm.',
+        actionTaken:
+            adminNotes ??
+            'Dismissed after administrative verification. False alarm.',
       );
     } else {
       _mockFraudReports[rIdx] = report.copyWith(
@@ -1151,7 +1244,8 @@ class ItemsService extends ChangeNotifier {
       AppNotification(
         id: 'notif_1',
         title: 'Official Reward Determined: £20.00',
-        message: 'The Admin Board assessed and locked an official £20.00 escrow reward for the recovery of iPhone 13 Pro.',
+        message:
+            'The Admin Board assessed and locked an official £20.00 escrow reward for the recovery of iPhone 13 Pro.',
         type: 'rewardAssessed',
         category: 'rewards',
         relatedItemId: 'iphone_13_pro',
@@ -1164,7 +1258,8 @@ class ItemsService extends ChangeNotifier {
       AppNotification(
         id: 'notif_2',
         title: 'Secure Collection Voucher Issued',
-        message: 'Your ownership verification was verified. Collection PIN and QR voucher generated for Kings Cross customer desk.',
+        message:
+            'Your ownership verification was verified. Collection PIN and QR voucher generated for Kings Cross customer desk.',
         type: 'voucherReady',
         category: 'custody',
         relatedItemId: 'iphone_13_pro',
@@ -1177,7 +1272,8 @@ class ItemsService extends ChangeNotifier {
       AppNotification(
         id: 'notif_3',
         title: 'Custody Check-in Verified',
-        message: 'Blue Canvas Backpack was inspected and safely deposited into King\'s Cross Partner Locker #42.',
+        message:
+            'Blue Canvas Backpack was inspected and safely deposited into King\'s Cross Partner Locker #42.',
         type: 'custodyDeposited',
         category: 'custody',
         relatedItemId: 'blue_backpack',
@@ -1190,7 +1286,8 @@ class ItemsService extends ChangeNotifier {
       AppNotification(
         id: 'notif_4',
         title: 'Biometric Liveness Confirmed (98.4%)',
-        message: 'Facial contour alignment and liveness blink check passed. Cryptographic identity token generated for your claim.',
+        message:
+            'Facial contour alignment and liveness blink check passed. Cryptographic identity token generated for your claim.',
         type: 'biometricVerified',
         category: 'claims',
         relatedItemId: 'iphone_13_pro',
@@ -1203,7 +1300,8 @@ class ItemsService extends ChangeNotifier {
       AppNotification(
         id: 'notif_5',
         title: 'Reward Payout Released: £45.00',
-        message: 'Owner completed collection of Black Leather Wallet. Escrow reward transferred to your available balance.',
+        message:
+            'Owner completed collection of Black Leather Wallet. Escrow reward transferred to your available balance.',
         type: 'escrowReleased',
         category: 'rewards',
         relatedItemId: 'mock_wallet_returned',
@@ -1216,7 +1314,8 @@ class ItemsService extends ChangeNotifier {
       AppNotification(
         id: 'notif_6',
         title: 'Priority Security Alert Logged',
-        message: 'Admin Board initiated investigation on Case #1042 following an off-platform payment report.',
+        message:
+            'Admin Board initiated investigation on Case #1042 following an off-platform payment report.',
         type: 'securityAlert',
         category: 'security',
         relatedItemId: 'iphone_13_pro',
@@ -1300,7 +1399,8 @@ class ItemsService extends ChangeNotifier {
               senderId: 'system',
               senderName: 'Privacy Protocol',
               senderRole: 'system',
-              text: 'Demo: the user asked for their identity scan data to be erased. Demo tokens removed.',
+              text:
+                  'Demo: the user asked for their identity scan data to be erased. Demo tokens removed.',
               timestamp: DateTime.now(),
             ),
           ],
@@ -1311,7 +1411,8 @@ class ItemsService extends ChangeNotifier {
 
     addNotification(
       title: 'Demo erasure completed',
-      message: 'Demo identity tokens were removed from this account. No real data was held.',
+      message:
+          'Demo identity tokens were removed from this account. No real data was held.',
       type: 'securityAlert',
       category: 'security',
       actionRoute: '/profile',

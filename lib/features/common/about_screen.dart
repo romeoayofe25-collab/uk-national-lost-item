@@ -36,9 +36,9 @@ class AboutScreen extends StatelessWidget {
               for (final text in paragraphs) ...[
                 Text(
                   text,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textPrimary,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(color: AppColors.textPrimary),
                 ),
                 const SizedBox(height: 16),
               ],

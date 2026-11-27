@@ -35,7 +35,6 @@ import 'features/common/about_screen.dart';
 import 'features/common/notifications_screen.dart';
 import 'features/common/profile_screen.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -78,7 +77,9 @@ class _MyAppState extends State<MyApp> {
         }
 
         if (isAuthenticated) {
-          if (isLoggingIn || isRegistering || state.matchedLocation == '/suspended') {
+          if (isLoggingIn ||
+              isRegistering ||
+              state.matchedLocation == '/suspended') {
             return _rolePath(user?.role);
           }
           final path = state.matchedLocation;
@@ -88,7 +89,8 @@ class _MyAppState extends State<MyApp> {
           if (path.startsWith('/finder') && user?.role != 'finder') {
             return _rolePath(user?.role);
           }
-          if (path.startsWith('/intermediary') && user?.role != 'intermediary') {
+          if (path.startsWith('/intermediary') &&
+              user?.role != 'intermediary') {
             return _rolePath(user?.role);
           }
           if (path.startsWith('/admin') && user?.role != 'admin') {
@@ -98,10 +100,7 @@ class _MyAppState extends State<MyApp> {
         return null;
       },
       routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => const LoginScreen(),
-        ),
+        GoRoute(path: '/', builder: (context, state) => const LoginScreen()),
         GoRoute(
           path: '/register',
           builder: (context, state) => const RegisterScreen(),

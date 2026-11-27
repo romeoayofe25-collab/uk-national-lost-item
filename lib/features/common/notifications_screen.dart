@@ -12,7 +12,8 @@ class NotificationsScreen extends StatefulWidget {
   State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
 
-class _NotificationsScreenState extends State<NotificationsScreen> with SingleTickerProviderStateMixin {
+class _NotificationsScreenState extends State<NotificationsScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -57,7 +58,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
                 ),
                 child: Text(
                   '$unreadCount',
-                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
@@ -66,10 +71,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
         actions: [
           if (unreadCount > 0)
             TextButton.icon(
-              icon: const Icon(Icons.done_all, size: 16, color: AppColors.secondary),
+              icon: const Icon(
+                Icons.done_all,
+                size: 16,
+                color: AppColors.secondary,
+              ),
               label: const Text(
                 'Mark All Read',
-                style: TextStyle(color: AppColors.secondary, fontSize: 12, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  color: AppColors.secondary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               onPressed: () => itemsService.markAllNotificationsAsRead(),
             ),
@@ -80,7 +93,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
           indicatorWeight: 3,
           labelColor: Colors.white,
           unselectedLabelColor: AppColors.textSecondary,
-          labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          labelStyle: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
           tabs: const [
             Tab(text: 'All'),
             Tab(text: 'Claims & Custody'),
@@ -103,7 +119,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
             _buildNotificationList(itemsService, allNotifs),
             _buildNotificationList(
               itemsService,
-              allNotifs.where((n) => n.category == 'claims' || n.category == 'custody').toList(),
+              allNotifs
+                  .where(
+                    (n) => n.category == 'claims' || n.category == 'custody',
+                  )
+                  .toList(),
             ),
             _buildNotificationList(
               itemsService,
@@ -119,7 +139,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
     );
   }
 
-  Widget _buildNotificationList(ItemsService service, List<AppNotification> list) {
+  Widget _buildNotificationList(
+    ItemsService service,
+    List<AppNotification> list,
+  ) {
     if (list.isEmpty) {
       return Center(
         child: Column(
@@ -131,12 +154,20 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
                 color: Colors.white.withValues(alpha: 0.05),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.notifications_off_outlined, color: AppColors.textSecondary, size: 44),
+              child: const Icon(
+                Icons.notifications_off_outlined,
+                color: AppColors.textSecondary,
+                size: 44,
+              ),
             ),
             const SizedBox(height: 16),
             const Text(
               'No Notifications',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 6),
             const Text(
@@ -220,7 +251,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
-            color: notif.isRead ? AppColors.border : AppColors.primary.withValues(alpha: 0.4),
+            color: notif.isRead
+                ? AppColors.border
+                : AppColors.primary.withValues(alpha: 0.4),
             width: notif.isRead ? 1 : 1.5,
           ),
         ),
@@ -261,7 +294,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
                               notif.title,
                               style: TextStyle(
                                 fontSize: 14,
-                                fontWeight: notif.isRead ? FontWeight.w600 : FontWeight.bold,
+                                fontWeight: notif.isRead
+                                    ? FontWeight.w600
+                                    : FontWeight.bold,
                                 color: Colors.white,
                               ),
                             ),
@@ -284,7 +319,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
                         notif.message,
                         style: TextStyle(
                           fontSize: 12.5,
-                          color: Colors.white.withValues(alpha: notif.isRead ? 0.65 : 0.85),
+                          color: Colors.white.withValues(
+                            alpha: notif.isRead ? 0.65 : 0.85,
+                          ),
                           height: 1.35,
                         ),
                       ),
@@ -295,21 +332,31 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
                         children: [
                           if (notif.relatedItemTitle != null) ...[
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 7,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.white.withValues(alpha: 0.06),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
                                 '#${notif.relatedItemTitle}',
-                                style: const TextStyle(fontSize: 10.5, color: AppColors.secondary, fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                  fontSize: 10.5,
+                                  color: AppColors.secondary,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 8),
                           ],
                           Text(
                             _formatTimestamp(notif.timestamp),
-                            style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: AppColors.textSecondary,
+                            ),
                           ),
                           const Spacer(),
                           if (notif.actionRoute != null)
@@ -325,7 +372,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
                                   ),
                                 ),
                                 const SizedBox(width: 2),
-                                const Icon(Icons.chevron_right, size: 14, color: AppColors.secondary),
+                                const Icon(
+                                  Icons.chevron_right,
+                                  size: 14,
+                                  color: AppColors.secondary,
+                                ),
                               ],
                             ),
                         ],

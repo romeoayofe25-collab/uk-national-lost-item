@@ -22,7 +22,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
   final _brandController = TextEditingController();
   final _colourController = TextEditingController();
   final _publicDescriptionController = TextEditingController();
-  
+
   DateTime _dateFound = DateTime.now();
   String _timeFound = '12:00';
   String _locationFound = '';
@@ -31,7 +31,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
 
   final _privateDetailsController = TextEditingController();
   final List<String> _photos = [];
-  
+
   bool _acceptedTerms = false;
   bool _submitting = false;
 
@@ -40,7 +40,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
     'Bags',
     'Personal Accessories',
     'Keys',
-    'Other'
+    'Other',
   ];
 
   @override
@@ -72,7 +72,9 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
   Future<void> _submitReport() async {
     if (!_acceptedTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please accept the legal compliance declaration')),
+        const SnackBar(
+          content: Text('Please accept the legal compliance declaration'),
+        ),
       );
       return;
     }
@@ -83,13 +85,21 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
     final success = await itemsService.reportFoundItem(
       title: _titleController.text.trim(),
       category: _category,
-      brand: _brandController.text.trim().isEmpty ? null : _brandController.text.trim(),
-      colour: _colourController.text.trim().isEmpty ? null : _colourController.text.trim(),
+      brand: _brandController.text.trim().isEmpty
+          ? null
+          : _brandController.text.trim(),
+      colour: _colourController.text.trim().isEmpty
+          ? null
+          : _colourController.text.trim(),
       publicDescription: _publicDescriptionController.text.trim(),
-      privateDetails: _privateDetailsController.text.trim().isEmpty ? null : _privateDetailsController.text.trim(),
+      privateDetails: _privateDetailsController.text.trim().isEmpty
+          ? null
+          : _privateDetailsController.text.trim(),
       dateFound: _dateFound,
       timeFound: _timeFound,
-      locationFound: _locationFound.isEmpty ? 'Kings Cross Station' : _locationFound,
+      locationFound: _locationFound.isEmpty
+          ? 'Kings Cross Station'
+          : _locationFound,
       latitude: _latitude,
       longitude: _longitude,
       photos: _photos,
@@ -100,7 +110,9 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Found item reported successfully! Please proceed to drop off.'),
+          content: Text(
+            'Found item reported successfully! Please proceed to drop off.',
+          ),
           backgroundColor: AppColors.success,
         ),
       );
@@ -139,7 +151,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
               // Step Indicators
               _buildStepIndicator(),
               const SizedBox(height: 16),
-              
+
               // Wizard Body
               Expanded(
                 child: SingleChildScrollView(
@@ -186,7 +198,9 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: isActive || isCompleted ? Colors.white : AppColors.textSecondary,
+                          color: isActive || isCompleted
+                              ? Colors.white
+                              : AppColors.textSecondary,
                         ),
                       ),
               ),
@@ -198,7 +212,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                   color: isCompleted ? AppColors.success : AppColors.border,
                 ),
                 const SizedBox(width: 8),
-              ]
+              ],
             ],
           );
         }),
@@ -229,7 +243,11 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
         children: [
           const Text(
             'Step 1: Public Item Details',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(height: 8),
           const Text(
@@ -237,7 +255,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
             style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 20),
-          
+
           TextFormField(
             controller: _titleController,
             decoration: const InputDecoration(
@@ -295,7 +313,8 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
             maxLines: 3,
             decoration: const InputDecoration(
               labelText: 'Public General Description *',
-              hintText: 'e.g. Found on the lobby chairs, looks like it has a blue case.',
+              hintText:
+                  'e.g. Found on the lobby chairs, looks like it has a blue case.',
             ),
             style: const TextStyle(color: Colors.white),
             validator: (value) {
@@ -316,7 +335,11 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
       children: [
         const Text(
           'Step 2: Date & Location Found',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 8),
         const Text(
@@ -363,7 +386,8 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
             );
             if (tod != null) {
               setState(() {
-                _timeFound = '${tod.hour.toString().padLeft(2, '0')}:${tod.minute.toString().padLeft(2, '0')}';
+                _timeFound =
+                    '${tod.hour.toString().padLeft(2, '0')}:${tod.minute.toString().padLeft(2, '0')}';
               });
             }
           },
@@ -397,7 +421,11 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
             Expanded(
               child: Text(
                 'Map location',
-                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             SimulatedTag(),
@@ -432,11 +460,18 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                     SizedBox(height: 8),
                     Text(
                       'Kings Cross Station area selected',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
                     ),
                     Text(
                       'Example pin. Your device location is not used.',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                      ),
                     ),
                   ],
                 ),
@@ -445,14 +480,21 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                 bottom: 8,
                 right: 8,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.6),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Text(
                     'EXAMPLE PIN',
-                    style: TextStyle(color: AppColors.success, fontSize: 10, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: AppColors.success,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -469,10 +511,14 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
       children: [
         const Text(
           'Step 3: Private Characteristic Verification',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 8),
-        
+
         // Personal details warning
         Container(
           padding: const EdgeInsets.all(12),
@@ -492,12 +538,20 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                   children: [
                     Text(
                       'Data protection warning',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
                     ),
                     SizedBox(height: 4),
                     Text(
                       'To prevent fraudulent claims, do NOT include highly specific details (such as stickers, passcode patterns, serial numbers, or wallpaper images) in the public description fields.',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 12, height: 1.4),
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                        height: 1.4,
+                      ),
                     ),
                   ],
                 ),
@@ -512,7 +566,8 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
           maxLines: 4,
           decoration: const InputDecoration(
             labelText: 'Private Unique Details (Admin Only) *',
-            hintText: 'e.g. lock screen wallpaper photo, unique sticker on back, serial numbers, passcode info.',
+            hintText:
+                'e.g. lock screen wallpaper photo, unique sticker on back, serial numbers, passcode info.',
           ),
           style: const TextStyle(color: Colors.white),
         ),
@@ -523,7 +578,11 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
             Expanded(
               child: Text(
                 'Photo Upload (Optional)',
-                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             SimulatedTag(),
@@ -540,7 +599,9 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                   _photos.add('mock_photo_url_${_photos.length + 1}.jpg');
                 });
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Simulated photo added successfully')),
+                  const SnackBar(
+                    content: Text('Simulated photo added successfully'),
+                  ),
                 );
               },
             ),
@@ -563,7 +624,11 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
       children: [
         const Text(
           'Step 4: Review & Legal Submission',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 8),
         const Text(
@@ -584,13 +649,32 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
             children: [
               _summaryRow('Title', _titleController.text),
               _summaryRow('Category', _category),
-              _summaryRow('Brand', _brandController.text.isEmpty ? 'N/A' : _brandController.text),
-              _summaryRow('Colour', _colourController.text.isEmpty ? 'N/A' : _colourController.text),
+              _summaryRow(
+                'Brand',
+                _brandController.text.isEmpty ? 'N/A' : _brandController.text,
+              ),
+              _summaryRow(
+                'Colour',
+                _colourController.text.isEmpty ? 'N/A' : _colourController.text,
+              ),
               _summaryRow('Public Desc', _publicDescriptionController.text),
-              _summaryRow('Date Found', '${_dateFound.day}/${_dateFound.month}/${_dateFound.year}'),
+              _summaryRow(
+                'Date Found',
+                '${_dateFound.day}/${_dateFound.month}/${_dateFound.year}',
+              ),
               _summaryRow('Time Found', _timeFound),
-              _summaryRow('Location', _locationFound.isEmpty ? 'Kings Cross Station (example)' : _locationFound),
-              _summaryRow('Private Details', _privateDetailsController.text.isEmpty ? 'None provided' : _privateDetailsController.text),
+              _summaryRow(
+                'Location',
+                _locationFound.isEmpty
+                    ? 'Kings Cross Station (example)'
+                    : _locationFound,
+              ),
+              _summaryRow(
+                'Private Details',
+                _privateDetailsController.text.isEmpty
+                    ? 'None provided'
+                    : _privateDetailsController.text,
+              ),
               _summaryRow('Photos count', '${_photos.length}'),
             ],
           ),
@@ -614,14 +698,22 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                   SizedBox(width: 8),
                   Text(
                     'LEGAL DECLARATION & WARNING',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
               Text(
                 'By submitting this found report, you confirm that you are in lawful possession of the item and will deposit it at a verified Drop-off Centre. Dishonest claim submissions or withholding found properties can constitute theft under the UK Theft Act 1968 or fraud under the Fraud Act 2006.',
-                style: TextStyle(color: AppColors.textSecondary.withValues(alpha: 0.8), fontSize: 11, height: 1.4),
+                style: TextStyle(
+                  color: AppColors.textSecondary.withValues(alpha: 0.8),
+                  fontSize: 11,
+                  height: 1.4,
+                ),
               ),
             ],
           ),
@@ -656,7 +748,11 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
             width: 100,
             child: Text(
               '$label:',
-              style: const TextStyle(color: AppColors.textSecondary, fontSize: 13, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Expanded(
@@ -681,10 +777,7 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if (_currentStep > 0)
-            OutlinedButton(
-              onPressed: _prevStep,
-              child: const Text('Back'),
-            )
+            OutlinedButton(onPressed: _prevStep, child: const Text('Back'))
           else
             const SizedBox(),
           ElevatedButton(
@@ -692,7 +785,9 @@ class _ReportFoundItemScreenState extends State<ReportFoundItemScreen> {
                 ? (_submitting ? null : _submitReport)
                 : _nextStep,
             child: _currentStep == 3
-                ? (_submitting ? const CircularProgressIndicator(color: Colors.white) : const Text('Submit Found Report'))
+                ? (_submitting
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text('Submit Found Report'))
                 : const Text('Continue'),
           ),
         ],

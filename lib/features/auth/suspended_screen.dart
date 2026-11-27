@@ -25,9 +25,9 @@ class SuspendedScreen extends StatelessWidget {
               const SizedBox(height: 24.0),
               Text(
                 'ACCOUNT SUSPENDED',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.danger,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: AppColors.danger),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16.0),
@@ -57,7 +57,10 @@ class SuspendedScreen extends StatelessWidget {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () async {
-                  final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                  final authProvider = Provider.of<AuthProvider>(
+                    context,
+                    listen: false,
+                  );
                   await authProvider.signOut();
                   if (context.mounted) {
                     context.go('/');

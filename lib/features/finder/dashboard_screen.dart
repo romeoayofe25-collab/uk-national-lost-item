@@ -26,7 +26,10 @@ class FinderDashboardScreen extends StatelessWidget {
 
     // Check if there is any found item held by the finder requiring drop-off action
     final pendingDropOffs = itemsService.foundItems
-        .where((item) => item.status == 'heldByFinder' || item.status == 'awaitingDeposit')
+        .where(
+          (item) =>
+              item.status == 'heldByFinder' || item.status == 'awaitingDeposit',
+        )
         .toList();
 
     return Scaffold(
@@ -44,7 +47,10 @@ class FinderDashboardScreen extends StatelessWidget {
               // Header App Bar
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -61,20 +67,32 @@ class FinderDashboardScreen extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: Badge(
-                              isLabelVisible: itemsService.unreadNotificationsCount > 0,
-                              label: Text('${itemsService.unreadNotificationsCount}'),
-                              child: const Icon(Icons.notifications_outlined, color: AppColors.textPrimary),
+                              isLabelVisible:
+                                  itemsService.unreadNotificationsCount > 0,
+                              label: Text(
+                                '${itemsService.unreadNotificationsCount}',
+                              ),
+                              child: const Icon(
+                                Icons.notifications_outlined,
+                                color: AppColors.textPrimary,
+                              ),
                             ),
                             tooltip: 'Notifications',
                             onPressed: () => context.push('/notifications'),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.account_circle_outlined, color: AppColors.textPrimary),
+                            icon: const Icon(
+                              Icons.account_circle_outlined,
+                              color: AppColors.textPrimary,
+                            ),
                             tooltip: 'Profile & Privacy',
                             onPressed: () => context.push('/profile'),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.logout, color: AppColors.textSecondary),
+                            icon: const Icon(
+                              Icons.logout,
+                              color: AppColors.textSecondary,
+                            ),
                             onPressed: () {
                               authProvider.signOut();
                               context.go('/');
@@ -106,7 +124,11 @@ class FinderDashboardScreen extends StatelessWidget {
                           const CircleAvatar(
                             radius: 26,
                             backgroundColor: AppColors.primary,
-                            child: Icon(Icons.person_pin, color: Colors.white, size: 28),
+                            child: Icon(
+                              Icons.person_pin,
+                              color: Colors.white,
+                              size: 28,
+                            ),
                           ),
                           const SizedBox(width: 16.0),
                           Expanded(
@@ -126,12 +148,20 @@ class FinderDashboardScreen extends StatelessWidget {
                                   children: [
                                     const Text(
                                       'Trust Score: ',
-                                      style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                                      style: TextStyle(
+                                        color: AppColors.textSecondary,
+                                        fontSize: 13,
+                                      ),
                                     ),
                                     Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 2,
+                                      ),
                                       decoration: BoxDecoration(
-                                        color: AppColors.success.withValues(alpha: 0.15),
+                                        color: AppColors.success.withValues(
+                                          alpha: 0.15,
+                                        ),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: const Text(
@@ -148,7 +178,11 @@ class FinderDashboardScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const Icon(Icons.arrow_forward_ios, size: 14, color: AppColors.textSecondary),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 14,
+                            color: AppColors.textSecondary,
+                          ),
                         ],
                       ),
                     ),
@@ -166,7 +200,10 @@ class FinderDashboardScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.surface,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1.5),
+                      border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.4),
+                        width: 1.5,
+                      ),
                     ),
                     child: Column(
                       children: [
@@ -188,11 +225,18 @@ class FinderDashboardScreen extends StatelessWidget {
                                 const SizedBox(height: 4),
                                 const Text(
                                   'Available Balance',
-                                  style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ],
                             ),
-                            Container(width: 1, height: 45, color: AppColors.border),
+                            Container(
+                              width: 1,
+                              height: 45,
+                              color: AppColors.border,
+                            ),
                             Column(
                               children: [
                                 Text(
@@ -206,7 +250,10 @@ class FinderDashboardScreen extends StatelessWidget {
                                 const SizedBox(height: 4),
                                 const Text(
                                   'Pending Escrow',
-                                  style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ],
                             ),
@@ -217,10 +264,16 @@ class FinderDashboardScreen extends StatelessWidget {
                         const SizedBox(height: 8.0),
                         TextButton.icon(
                           onPressed: () => context.push('/finder/claims'),
-                          icon: const Icon(Icons.wallet, color: AppColors.primary),
+                          icon: const Icon(
+                            Icons.wallet,
+                            color: AppColors.primary,
+                          ),
                           label: const Text(
                             'View Wallet & Claims History',
-                            style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],
@@ -234,12 +287,18 @@ class FinderDashboardScreen extends StatelessWidget {
               if (pendingDropOffs.isNotEmpty)
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    padding: const EdgeInsets.only(
+                      left: 16.0,
+                      right: 16.0,
+                      bottom: 16.0,
+                    ),
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: AppColors.warning.withValues(alpha: 0.1),
-                        border: Border.all(color: AppColors.warning.withValues(alpha: 0.4)),
+                        border: Border.all(
+                          color: AppColors.warning.withValues(alpha: 0.4),
+                        ),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
@@ -247,7 +306,11 @@ class FinderDashboardScreen extends StatelessWidget {
                         children: [
                           const Row(
                             children: [
-                              Icon(Icons.warning_amber_rounded, color: AppColors.warning, size: 22),
+                              Icon(
+                                Icons.warning_amber_rounded,
+                                color: AppColors.warning,
+                                size: 22,
+                              ),
                               SizedBox(width: 8),
                               Text(
                                 'Action Required',
@@ -264,21 +327,39 @@ class FinderDashboardScreen extends StatelessWidget {
                             pendingDropOffs.first.status == 'awaitingDeposit'
                                 ? 'Please complete the physical handover of "${pendingDropOffs.first.title}" at ${pendingDropOffs.first.dropOffCentreName ?? 'the Intermediary Centre'} and present your secure deposit PIN.'
                                 : 'Please drop off the "${pendingDropOffs.first.title}" at a verified Intermediary Centre to generate your receipt voucher and activate the claim.',
-                            style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.4),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              height: 1.4,
+                            ),
                           ),
                           const SizedBox(height: 12),
                           ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.warning,
                               foregroundColor: Colors.black,
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 10,
+                              ),
                             ),
-                            icon: Icon(pendingDropOffs.first.status == 'awaitingDeposit' ? Icons.qr_code : Icons.location_on, size: 18),
+                            icon: Icon(
+                              pendingDropOffs.first.status == 'awaitingDeposit'
+                                  ? Icons.qr_code
+                                  : Icons.location_on,
+                              size: 18,
+                            ),
                             label: Text(
-                              pendingDropOffs.first.status == 'awaitingDeposit' ? 'View Deposit Voucher' : 'Select Drop-off Centre',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              pendingDropOffs.first.status == 'awaitingDeposit'
+                                  ? 'View Deposit Voucher'
+                                  : 'Select Drop-off Centre',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            onPressed: () => context.push('/finder/dropoff/${pendingDropOffs.first.id}'),
+                            onPressed: () => context.push(
+                              '/finder/dropoff/${pendingDropOffs.first.id}',
+                            ),
                           ),
                         ],
                       ),
@@ -289,7 +370,10 @@ class FinderDashboardScreen extends StatelessWidget {
               // Title Section
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
                   child: Text(
                     'YOUR FOUND ITEM REPORTS',
                     style: TextStyle(
@@ -306,7 +390,10 @@ class FinderDashboardScreen extends StatelessWidget {
               if (itemsService.foundItems.isEmpty)
                 const SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 32.0,
+                    ),
                     child: Center(
                       child: Text(
                         'You have not reported any found items yet.',
@@ -318,138 +405,216 @@ class FinderDashboardScreen extends StatelessWidget {
               else
                 // Found Items Cards List
                 SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, idx) {
-                      final item = itemsService.foundItems[idx];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
-                        child: Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: AppColors.border),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: _statusColor(item.status).withValues(alpha: 0.15),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Icon(
-                                      _categoryIcon(item.category),
+                  delegate: SliverChildBuilderDelegate((context, idx) {
+                    final item = itemsService.foundItems[idx];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 6.0,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: _statusColor(
+                                      item.status,
+                                    ).withValues(alpha: 0.15),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Icon(
+                                    _categoryIcon(item.category),
+                                    color: _statusColor(item.status),
+                                    size: 26,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.title,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Found at: ${item.locationFound}',
+                                        style: const TextStyle(
+                                          color: AppColors.textSecondary,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'Date: ${item.dateFound.day}/${item.dateFound.month}/${item.dateFound.year}',
+                                        style: const TextStyle(
+                                          color: AppColors.textSecondary,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _statusColor(
+                                      item.status,
+                                    ).withValues(alpha: 0.15),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    _statusText(item.status),
+                                    style: TextStyle(
                                       color: _statusColor(item.status),
-                                      size: 26,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item.title,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          'Found at: ${item.locationFound}',
-                                          style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Text(
-                                          'Date: ${item.dateFound.day}/${item.dateFound.month}/${item.dateFound.year}',
-                                          style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
-                                        ),
-                                      ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            const Divider(color: AppColors.border, height: 1),
+                            const SizedBox(height: 6),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.monetization_on,
+                                      color: AppColors.success,
+                                      size: 16,
                                     ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: _statusColor(item.status).withValues(alpha: 0.15),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      _statusText(item.status),
-                                      style: TextStyle(
-                                        color: _statusColor(item.status),
-                                        fontSize: 11,
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      'Reward: £${item.rewardAmount.toStringAsFixed(2)}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              const Divider(color: AppColors.border, height: 1),
-                              const SizedBox(height: 6),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.monetization_on, color: AppColors.success, size: 16),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Reward: £${item.rewardAmount.toStringAsFixed(2)}',
-                                        style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      if (item.status == 'heldByFinder')
-                                        TextButton.icon(
-                                          style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-                                          icon: const Icon(Icons.location_on, size: 16, color: AppColors.warning),
-                                          label: const Text('Drop Off', style: TextStyle(color: AppColors.warning, fontSize: 13)),
-                                          onPressed: () => context.push('/finder/dropoff/${item.id}'),
-                                        )
-                                      else if (item.status == 'awaitingDeposit')
-                                        TextButton.icon(
-                                          style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-                                          icon: const Icon(Icons.qr_code, size: 16, color: AppColors.warning),
-                                          label: const Text('Voucher', style: TextStyle(color: AppColors.warning, fontSize: 13)),
-                                          onPressed: () => context.push('/finder/dropoff/${item.id}'),
-                                        )
-                                      else if (item.status == 'deposited')
-                                        TextButton.icon(
-                                          style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-                                          icon: const Icon(Icons.qr_code, size: 16, color: AppColors.success),
-                                          label: const Text('Voucher', style: TextStyle(color: AppColors.success, fontSize: 13)),
-                                          onPressed: () => context.push('/finder/dropoff/${item.id}'),
-                                        ),
-                                      const SizedBox(width: 8),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    if (item.status == 'heldByFinder')
                                       TextButton.icon(
-                                        style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-                                        icon: const Icon(Icons.chat_bubble_outline, size: 16, color: AppColors.primary),
-                                        label: const Text('Support', style: TextStyle(color: AppColors.primary, fontSize: 13)),
-                                        onPressed: () => context.push('/finder/chat/${item.id}'),
+                                        style: TextButton.styleFrom(
+                                          visualDensity: VisualDensity.compact,
+                                        ),
+                                        icon: const Icon(
+                                          Icons.location_on,
+                                          size: 16,
+                                          color: AppColors.warning,
+                                        ),
+                                        label: const Text(
+                                          'Drop Off',
+                                          style: TextStyle(
+                                            color: AppColors.warning,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        onPressed: () => context.push(
+                                          '/finder/dropoff/${item.id}',
+                                        ),
+                                      )
+                                    else if (item.status == 'awaitingDeposit')
+                                      TextButton.icon(
+                                        style: TextButton.styleFrom(
+                                          visualDensity: VisualDensity.compact,
+                                        ),
+                                        icon: const Icon(
+                                          Icons.qr_code,
+                                          size: 16,
+                                          color: AppColors.warning,
+                                        ),
+                                        label: const Text(
+                                          'Voucher',
+                                          style: TextStyle(
+                                            color: AppColors.warning,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        onPressed: () => context.push(
+                                          '/finder/dropoff/${item.id}',
+                                        ),
+                                      )
+                                    else if (item.status == 'deposited')
+                                      TextButton.icon(
+                                        style: TextButton.styleFrom(
+                                          visualDensity: VisualDensity.compact,
+                                        ),
+                                        icon: const Icon(
+                                          Icons.qr_code,
+                                          size: 16,
+                                          color: AppColors.success,
+                                        ),
+                                        label: const Text(
+                                          'Voucher',
+                                          style: TextStyle(
+                                            color: AppColors.success,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        onPressed: () => context.push(
+                                          '/finder/dropoff/${item.id}',
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                    const SizedBox(width: 8),
+                                    TextButton.icon(
+                                      style: TextButton.styleFrom(
+                                        visualDensity: VisualDensity.compact,
+                                      ),
+                                      icon: const Icon(
+                                        Icons.chat_bubble_outline,
+                                        size: 16,
+                                        color: AppColors.primary,
+                                      ),
+                                      label: const Text(
+                                        'Support',
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      onPressed: () => context.push(
+                                        '/finder/chat/${item.id}',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    childCount: itemsService.foundItems.length,
-                  ),
+                      ),
+                    );
+                  }, childCount: itemsService.foundItems.length),
                 ),
-              
+
               // Spacing at the bottom of list
               const SliverToBoxAdapter(child: SizedBox(height: 80.0)),
             ],
@@ -460,7 +625,10 @@ class FinderDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
-        label: const Text('Report a Found Item', style: TextStyle(fontWeight: FontWeight.bold)),
+        label: const Text(
+          'Report a Found Item',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         onPressed: () => context.push('/finder/report'),
       ),
     );

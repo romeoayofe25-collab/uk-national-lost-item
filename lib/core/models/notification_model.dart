@@ -2,11 +2,13 @@ class AppNotification {
   final String id;
   final String title;
   final String message;
-  final String type; // 'rewardAssessed', 'matchFound', 'biometricVerified', 'custodyDeposited', 'voucherReady', 'escrowReleased', 'securityAlert', 'adminMessage'
+  final String
+  type; // 'rewardAssessed', 'matchFound', 'biometricVerified', 'custodyDeposited', 'voucherReady', 'escrowReleased', 'securityAlert', 'adminMessage'
   final String category; // 'claims', 'custody', 'rewards', 'security'
   final String? relatedItemId;
   final String? relatedItemTitle;
-  final String recipientRole; // 'all', 'owner', 'finder', 'intermediary', 'admin'
+  final String
+  recipientRole; // 'all', 'owner', 'finder', 'intermediary', 'admin'
   final DateTime timestamp;
   final bool isRead;
   final String? actionRoute;
@@ -51,7 +53,9 @@ class AppNotification {
       relatedItemId: map['relatedItemId'],
       relatedItemTitle: map['relatedItemTitle'],
       recipientRole: map['recipientRole'] ?? 'all',
-      timestamp: DateTime.parse(map['timestamp'] ?? DateTime.now().toIso8601String()),
+      timestamp: DateTime.parse(
+        map['timestamp'] ?? DateTime.now().toIso8601String(),
+      ),
       isRead: map['isRead'] ?? false,
       actionRoute: map['actionRoute'],
     );

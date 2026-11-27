@@ -23,7 +23,9 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Demo: withdrawal simulated. No real money moves in this prototype.'),
+          content: Text(
+            'Demo: withdrawal simulated. No real money moves in this prototype.',
+          ),
           backgroundColor: AppColors.success,
         ),
       );
@@ -52,9 +54,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
         .fold(0.0, (sum, tx) => sum + tx.amount);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wallet & Rewards'),
-      ),
+      appBar: AppBar(title: const Text('Wallet & Rewards')),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -97,11 +97,18 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                               const SizedBox(height: 4),
                               const Text(
                                 'Available Balance',
-                                style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 13,
+                                ),
                               ),
                             ],
                           ),
-                          Container(width: 1, height: 50, color: AppColors.border),
+                          Container(
+                            width: 1,
+                            height: 50,
+                            color: AppColors.border,
+                          ),
                           Column(
                             children: [
                               Text(
@@ -115,7 +122,10 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                               const SizedBox(height: 4),
                               const Text(
                                 'Pending Escrow',
-                                style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 13,
+                                ),
                               ),
                             ],
                           ),
@@ -132,14 +142,22 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Icon(Icons.account_balance_wallet),
                         label: const Text(
                           'Withdraw Available Funds',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
-                        onPressed: availableBalance <= 0 || _withdrawing ? null : _handleWithdraw,
+                        onPressed: availableBalance <= 0 || _withdrawing
+                            ? null
+                            : _handleWithdraw,
                       ),
                     ],
                   ),
@@ -152,16 +170,26 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+                    border: Border.all(
+                      color: AppColors.primary.withValues(alpha: 0.2),
+                    ),
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.gavel_rounded, color: AppColors.primary, size: 20),
+                      Icon(
+                        Icons.gavel_rounded,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
                       SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           'Note: rewards are set only by the Admin Board. Finders cannot ask for a specific amount or bargain privately. Balances are released only after the owner collects the item.',
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 11, height: 1.4),
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 11,
+                            height: 1.4,
+                          ),
                         ),
                       ),
                     ],
@@ -185,7 +213,10 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 32.0),
                     child: Center(
-                      child: Text('No transaction history available.', style: TextStyle(color: AppColors.textSecondary)),
+                      child: Text(
+                        'No transaction history available.',
+                        style: TextStyle(color: AppColors.textSecondary),
+                      ),
                     ),
                   )
                 else
@@ -243,12 +274,19 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                 children: [
                   Text(
                     tx.title,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '${tx.timestamp.day}/${tx.timestamp.month}/${tx.timestamp.year} • ${tx.status.toUpperCase()}',
-                    style: const TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 11,
+                    ),
                   ),
                 ],
               ),

@@ -12,8 +12,15 @@ class AdminChatMonitorScreen extends StatefulWidget {
 }
 
 class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
-  void _togglePause(ItemsService itemsService, String itemId, bool currentlyPaused) async {
-    final success = await itemsService.adminToggleChatStatus(itemId: itemId, isPaused: !currentlyPaused);
+  void _togglePause(
+    ItemsService itemsService,
+    String itemId,
+    bool currentlyPaused,
+  ) async {
+    final success = await itemsService.adminToggleChatStatus(
+      itemId: itemId,
+      isPaused: !currentlyPaused,
+    );
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -72,7 +79,9 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: const BoxDecoration(
-                        border: Border(bottom: BorderSide(color: AppColors.border)),
+                        border: Border(
+                          bottom: BorderSide(color: AppColors.border),
+                        ),
                       ),
                       child: Column(
                         children: [
@@ -80,19 +89,29 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
                             width: 40,
                             height: 4,
                             decoration: BoxDecoration(
-                              color: AppColors.textSecondary.withValues(alpha: 0.3),
+                              color: AppColors.textSecondary.withValues(
+                                alpha: 0.3,
+                              ),
                               borderRadius: BorderRadius.circular(2),
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             'SUPERVISING: Case #${liveItem.id.hashCode.toString().substring(0, 4)}',
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.warning),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              color: AppColors.warning,
+                            ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             liveItem.title,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -106,12 +125,22 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
                           Expanded(
                             child: ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: isPaused ? AppColors.success : AppColors.warning,
-                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                backgroundColor: isPaused
+                                    ? AppColors.success
+                                    : AppColors.warning,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
                               ),
-                              icon: Icon(isPaused ? Icons.play_arrow : Icons.pause),
+                              icon: Icon(
+                                isPaused ? Icons.play_arrow : Icons.pause,
+                              ),
                               label: Text(isPaused ? 'RESUME' : 'PAUSE'),
-                              onPressed: () => _togglePause(itemsService, liveItem.id, isPaused),
+                              onPressed: () => _togglePause(
+                                itemsService,
+                                liveItem.id,
+                                isPaused,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -119,7 +148,9 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
                             child: ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.danger,
-                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
                               ),
                               icon: const Icon(Icons.stop),
                               label: const Text('TERMINATE'),
@@ -147,15 +178,27 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
                             return Center(
                               child: Container(
                                 margin: const EdgeInsets.symmetric(vertical: 8),
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: AppColors.warning.withValues(alpha: 0.1),
+                                  color: AppColors.warning.withValues(
+                                    alpha: 0.1,
+                                  ),
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: AppColors.warning.withValues(alpha: 0.2)),
+                                  border: Border.all(
+                                    color: AppColors.warning.withValues(
+                                      alpha: 0.2,
+                                    ),
+                                  ),
                                 ),
                                 child: Text(
                                   msg.text,
-                                  style: const TextStyle(color: AppColors.warning, fontSize: 11),
+                                  style: const TextStyle(
+                                    color: AppColors.warning,
+                                    fontSize: 11,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -169,7 +212,11 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
                               children: [
                                 Text(
                                   '${msg.senderName} (${msg.senderRole.toUpperCase()})',
-                                  style: const TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 const SizedBox(height: 4),
                                 Container(
@@ -181,7 +228,11 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
                                   ),
                                   child: Text(
                                     msg.text,
-                                    style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.4),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                      height: 1.4,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -203,12 +254,12 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
   @override
   Widget build(BuildContext context) {
     final itemsService = Provider.of<ItemsService>(context);
-    final activeCases = itemsService.items.where((item) => item.messages.isNotEmpty).toList();
+    final activeCases = itemsService.items
+        .where((item) => item.messages.isNotEmpty)
+        .toList();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Supervised Chat Monitor'),
-      ),
+      appBar: AppBar(title: const Text('Supervised Chat Monitor')),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -228,18 +279,27 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
               margin: const EdgeInsets.only(bottom: 12),
               child: ListTile(
                 leading: Icon(
-                  isPaused ? Icons.pause_circle_filled : Icons.chat_bubble_outline,
+                  isPaused
+                      ? Icons.pause_circle_filled
+                      : Icons.chat_bubble_outline,
                   color: isPaused ? AppColors.warning : AppColors.primary,
                 ),
                 title: Text(
                   item.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
                 subtitle: Text(
                   'Case ID: #${item.id.hashCode.toString().substring(0, 4)} • Messages: ${item.messages.length}',
                   style: const TextStyle(color: AppColors.textSecondary),
                 ),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.textSecondary),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: AppColors.textSecondary,
+                ),
                 onTap: () => _showMonitorSheet(context, item),
               ),
             );

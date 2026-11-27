@@ -36,7 +36,9 @@ class ClaimTransaction {
       amount: (map['amount'] ?? 0.0).toDouble(),
       type: map['type'] ?? 'escrowCredit',
       status: map['status'] ?? 'pending',
-      timestamp: DateTime.parse(map['timestamp'] ?? DateTime.now().toIso8601String()),
+      timestamp: DateTime.parse(
+        map['timestamp'] ?? DateTime.now().toIso8601String(),
+      ),
       itemId: map['itemId'] ?? '',
     );
   }

@@ -46,17 +46,25 @@ class CollectionDetailsScreen extends StatelessWidget {
                   children: [
                     const Text(
                       'ITEM READY FOR COLLECTION',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.success, fontSize: 13),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.success,
+                        fontSize: 13,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       item.title,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
                     const Text(
                       'Location: Kings Cross Station - Customer Support Desk',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 13,
+                      ),
                     ),
                   ],
                 ),
@@ -72,12 +80,18 @@ class CollectionDetailsScreen extends StatelessWidget {
                   children: [
                     const Text(
                       'YOUR SECURE COLLECTION CODE',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     const Text(
                       'Present this single-use code to the intermediary representative.',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
@@ -136,7 +150,11 @@ class CollectionDetailsScreen extends StatelessWidget {
                   children: [
                     const Text(
                       'CENTRE DETAILS',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textSecondary),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     // Mock location map preview
@@ -159,16 +177,30 @@ class CollectionDetailsScreen extends StatelessWidget {
                               ),
                             ),
                             const Center(
-                              child: Icon(Icons.map, color: AppColors.primary, size: 36),
+                              child: Icon(
+                                Icons.map,
+                                color: AppColors.primary,
+                                size: 36,
+                              ),
                             ),
                             const Positioned(
                               bottom: 8,
                               right: 8,
                               child: Row(
                                 children: [
-                                  Icon(Icons.zoom_out_map, size: 12, color: AppColors.textSecondary),
+                                  Icon(
+                                    Icons.zoom_out_map,
+                                    size: 12,
+                                    color: AppColors.textSecondary,
+                                  ),
                                   SizedBox(width: 4),
-                                  Text('Tap to open the map', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+                                  Text(
+                                    'Tap to open the map',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -177,9 +209,21 @@ class CollectionDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildCentreRow(Icons.location_on, 'Location', 'Euston Rd, London N1 9AL'),
-                    _buildCentreRow(Icons.access_time, 'Hours', 'Mon-Sun | 08:00 - 22:00'),
-                    _buildCentreRow(Icons.directions, 'Directions', 'Located next to ticket gates, Platform 9.'),
+                    _buildCentreRow(
+                      Icons.location_on,
+                      'Location',
+                      'Euston Rd, London N1 9AL',
+                    ),
+                    _buildCentreRow(
+                      Icons.access_time,
+                      'Hours',
+                      'Mon-Sun | 08:00 - 22:00',
+                    ),
+                    _buildCentreRow(
+                      Icons.directions,
+                      'Directions',
+                      'Located next to ticket gates, Platform 9.',
+                    ),
                   ],
                 ),
               ),
@@ -214,7 +258,9 @@ class CollectionDetailsScreen extends StatelessWidget {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Simulation: Desk scanned PIN. Handover successful.'),
+                      content: Text(
+                        'Simulation: Desk scanned PIN. Handover successful.',
+                      ),
                       backgroundColor: AppColors.success,
                     ),
                   );
@@ -240,9 +286,19 @@ class CollectionDetailsScreen extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 text: '$label: ',
-                style: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.bold, fontSize: 13),
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
                 children: [
-                  TextSpan(text: value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.normal)),
+                  TextSpan(
+                    text: value,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
                 ],
               ),
             ),

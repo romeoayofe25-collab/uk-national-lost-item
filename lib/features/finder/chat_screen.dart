@@ -75,11 +75,12 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
     final item = itemsService.getFoundItemById(widget.foundItemId);
     final isPaused = itemsService.isChatPaused(widget.foundItemId);
 
-
     if (item == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Support Chat')),
-        body: const Center(child: Text('Item not found', style: TextStyle(color: Colors.white))),
+        body: const Center(
+          child: Text('Item not found', style: TextStyle(color: Colors.white)),
+        ),
       );
     }
 
@@ -131,12 +132,20 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
                 color: AppColors.surface,
                 child: const Row(
                   children: [
-                    Icon(Icons.privacy_tip_outlined, color: AppColors.primary, size: 20),
+                    Icon(
+                      Icons.privacy_tip_outlined,
+                      color: AppColors.primary,
+                      size: 20,
+                    ),
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         'PII Shield Active: Direct owner-finder communication is disabled. Messages are filtered for emails, phone numbers, and payment details to protect user privacy.',
-                        style: TextStyle(color: AppColors.textSecondary, fontSize: 11, height: 1.4),
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 11,
+                          height: 1.4,
+                        ),
                       ),
                     ),
                   ],
@@ -174,11 +183,19 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.pause_circle_filled, color: AppColors.warning, size: 20),
+                      Icon(
+                        Icons.pause_circle_filled,
+                        color: AppColors.warning,
+                        size: 20,
+                      ),
                       SizedBox(width: 8),
                       Text(
                         'This chat has been paused by the Administrator.',
-                        style: TextStyle(color: AppColors.warning, fontWeight: FontWeight.bold, fontSize: 13),
+                        style: TextStyle(
+                          color: AppColors.warning,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
                       ),
                     ],
                   ),
@@ -198,7 +215,10 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
                           style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
                             hintText: 'Type your message...',
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
                           ),
                           onSubmitted: (_) => _sendMessage(),
                         ),
@@ -209,7 +229,10 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primary,
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Icon(Icons.send, color: AppColors.primary),
                         onPressed: _sendMessage,
@@ -225,7 +248,8 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
   }
 
   Widget _buildSystemMessage(dynamic msg) {
-    final isScrubNotice = msg.text.contains('Warning') || msg.text.contains('redacted');
+    final isScrubNotice =
+        msg.text.contains('Warning') || msg.text.contains('redacted');
     final color = isScrubNotice ? AppColors.warning : AppColors.primary;
     final icon = isScrubNotice ? Icons.shield_outlined : Icons.info_outline;
 
@@ -246,7 +270,11 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
             Expanded(
               child: Text(
                 msg.text,
-                style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: color,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
@@ -278,11 +306,16 @@ class _FinderChatScreenState extends State<FinderChatScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
           child: Text(
-            isMe ? 'You' : '${msg.senderName} (${msg.senderRole.toUpperCase()})',
-            style: const TextStyle(color: AppColors.textSecondary, fontSize: 11),
+            isMe
+                ? 'You'
+                : '${msg.senderName} (${msg.senderRole.toUpperCase()})',
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 11,
+            ),
           ),
         ),
-        
+
         // Bubble itself
         Container(
           constraints: const BoxConstraints(maxWidth: 260),

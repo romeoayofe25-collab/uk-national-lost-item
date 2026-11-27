@@ -23,7 +23,11 @@ class SimulatedTag extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.science_outlined, size: 12, color: AppColors.warning),
+            const Icon(
+              Icons.science_outlined,
+              size: 12,
+              color: AppColors.warning,
+            ),
             const SizedBox(width: 4),
             Text(
               label,

@@ -12,7 +12,8 @@ class OwnerVerificationScreen extends StatefulWidget {
   const OwnerVerificationScreen({super.key, required this.itemId});
 
   @override
-  State<OwnerVerificationScreen> createState() => _OwnerVerificationScreenState();
+  State<OwnerVerificationScreen> createState() =>
+      _OwnerVerificationScreenState();
 }
 
 class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
@@ -33,9 +34,7 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
 
   Future<void> _openBiometricScanner() async {
     final result = await Navigator.of(context).push<BiometricScanResult>(
-      MaterialPageRoute(
-        builder: (context) => const BiometricScanScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const BiometricScanScreen()),
     );
 
     if (result != null && mounted) {
@@ -44,7 +43,9 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Simulated identity check attached (${result.documentType}).'),
+          content: Text(
+            'Simulated identity check attached (${result.documentType}).',
+          ),
           backgroundColor: AppColors.success,
         ),
       );
@@ -79,7 +80,9 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
     final success = await itemsService.submitVerification(
       itemId: widget.itemId,
       answers: answers,
-      serialNumber: _serialController.text.trim().isEmpty ? null : _serialController.text.trim(),
+      serialNumber: _serialController.text.trim().isEmpty
+          ? null
+          : _serialController.text.trim(),
       proofDocs: _uploadedDocs,
       biometricVerified: _biometricResult?.isVerified ?? false,
       biometricConfidence: _biometricResult?.confidence,
@@ -95,7 +98,9 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Verification submitted to Admin Board successfully.'),
+            content: Text(
+              'Verification submitted to Admin Board successfully.',
+            ),
             backgroundColor: AppColors.success,
           ),
         );
@@ -145,13 +150,17 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
               Text(
                 'VERIFY OWNERSHIP: ${item.title}',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 8),
               const Text(
                 'The Admin Board has flagged a potential matching item in storage. Complete the identity and security queries below to confirm ownership.',
-                style: TextStyle(color: AppColors.textSecondary, fontSize: 13, height: 1.4),
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 13,
+                  height: 1.4,
+                ),
               ),
               const SizedBox(height: 20),
 
@@ -184,7 +193,10 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                             children: [
                               Text(
                                 '* ${q.questionText}',
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
                               ),
                               const SizedBox(height: 8),
                               TextField(
@@ -206,7 +218,10 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                           Expanded(
                             child: Text(
                               'Upload Additional Proof of Purchase (Optional)',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                           SizedBox(width: 8),
@@ -216,7 +231,10 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                       const SizedBox(height: 4),
                       const Text(
                         'Upload store receipt, network carrier contract, or original box barcode photos.',
-                        style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       Row(
@@ -224,7 +242,9 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                _uploadedDocs.add('verification_receipt_${_uploadedDocs.length + 1}.pdf');
+                                _uploadedDocs.add(
+                                  'verification_receipt_${_uploadedDocs.length + 1}.pdf',
+                                );
                               });
                             },
                             child: Container(
@@ -238,9 +258,18 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                               child: const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.upload_file, color: AppColors.textSecondary),
+                                  Icon(
+                                    Icons.upload_file,
+                                    color: AppColors.textSecondary,
+                                  ),
                                   SizedBox(height: 4),
-                                  Text('Upload File', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+                                  Text(
+                                    'Upload File',
+                                    style: TextStyle(
+                                      color: AppColors.textSecondary,
+                                      fontSize: 11,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -252,7 +281,8 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: _uploadedDocs.length,
-                                separatorBuilder: (context, index) => const SizedBox(width: 8),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(width: 8),
                                 itemBuilder: (context, idx) {
                                   return Stack(
                                     children: [
@@ -260,12 +290,24 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                                         width: 80,
                                         height: 80,
                                         decoration: BoxDecoration(
-                                          color: AppColors.primary.withValues(alpha: 0.1),
-                                          borderRadius: BorderRadius.circular(8),
-                                          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                                          color: AppColors.primary.withValues(
+                                            alpha: 0.1,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          border: Border.all(
+                                            color: AppColors.primary.withValues(
+                                              alpha: 0.3,
+                                            ),
+                                          ),
                                         ),
                                         child: const Center(
-                                          child: Icon(Icons.picture_as_pdf, color: AppColors.primary, size: 32),
+                                          child: Icon(
+                                            Icons.picture_as_pdf,
+                                            color: AppColors.primary,
+                                            size: 32,
+                                          ),
                                         ),
                                       ),
                                       Positioned(
@@ -280,7 +322,11 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                                           child: const CircleAvatar(
                                             radius: 10,
                                             backgroundColor: AppColors.danger,
-                                            child: Icon(Icons.close, color: Colors.white, size: 12),
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -297,13 +343,17 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                       // IMEI / Serial Number
                       const Text(
                         '* Confirm Serial Number / IMEI',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       TextField(
                         controller: _serialController,
                         decoration: const InputDecoration(
-                          hintText: 'Enter serial/IMEI (kept secret from public view)',
+                          hintText:
+                              'Enter serial/IMEI (kept secret from public view)',
                         ),
                       ),
                     ],
@@ -318,7 +368,9 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.danger.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: AppColors.danger.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,14 +381,22 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                         SizedBox(width: 8),
                         Text(
                           'LEGAL & ETHICAL RESPONSIBILITY',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.danger, fontSize: 12),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.danger,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
                     SizedBox(height: 8),
                     Text(
                       'Making a false claim can be a criminal offence. In a real service, fraudulent claims would be recorded, the accounts suspended and serious cases passed to the police.',
-                      style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.4),
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                        height: 1.4,
+                      ),
                     ),
                   ],
                 ),
@@ -353,7 +413,10 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       onPressed: () => _submit(item),
-                      child: const Text('Submit Verification Proof', style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Submit Verification Proof',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
             ],
           ),
@@ -369,7 +432,10 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.success.withValues(alpha: 0.5), width: 1.5),
+          border: Border.all(
+            color: AppColors.success.withValues(alpha: 0.5),
+            width: 1.5,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,7 +451,11 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                         color: AppColors.success.withValues(alpha: 0.15),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.verified_user, color: AppColors.success, size: 22),
+                      child: const Icon(
+                        Icons.verified_user,
+                        color: AppColors.success,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     const Column(
@@ -393,12 +463,20 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                       children: [
                         Text(
                           'BIOMETRICS VERIFIED ✓',
-                          style: TextStyle(color: AppColors.success, fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
+                          style: TextStyle(
+                            color: AppColors.success,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            letterSpacing: 0.5,
+                          ),
                         ),
                         SizedBox(height: 2),
                         Text(
                           'Liveness Score: 98.4% Confidence',
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 11,
+                          ),
                         ),
                         SizedBox(height: 6),
                         SimulatedTag(),
@@ -408,7 +486,10 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                 ),
                 TextButton(
                   onPressed: _openBiometricScanner,
-                  child: const Text('Retake', style: TextStyle(color: AppColors.primary, fontSize: 12)),
+                  child: const Text(
+                    'Retake',
+                    style: TextStyle(color: AppColors.primary, fontSize: 12),
+                  ),
                 ),
               ],
             ),
@@ -417,16 +498,28 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
             const SizedBox(height: 12),
             Row(
               children: [
-                const Icon(Icons.badge, color: AppColors.textSecondary, size: 16),
+                const Icon(
+                  Icons.badge,
+                  color: AppColors.textSecondary,
+                  size: 16,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   'ID Linked: ${_biometricResult!.documentType}',
-                  style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const Spacer(),
                 Text(
                   _biometricResult!.documentMasked,
-                  style: const TextStyle(color: AppColors.textSecondary, fontSize: 12, fontFamily: 'monospace'),
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                    fontFamily: 'monospace',
+                  ),
                 ),
               ],
             ),
@@ -440,7 +533,10 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1.5),
+        border: Border.all(
+          color: AppColors.primary.withValues(alpha: 0.4),
+          width: 1.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -453,7 +549,11 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                   color: AppColors.primary.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.face_retouching_natural, color: AppColors.primary, size: 22),
+                child: const Icon(
+                  Icons.face_retouching_natural,
+                  color: AppColors.primary,
+                  size: 22,
+                ),
               ),
               const SizedBox(width: 12),
               const Expanded(
@@ -462,12 +562,20 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
                   children: [
                     Text(
                       'BIOMETRIC IDENTITY CHECK',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                     SizedBox(height: 2),
                     Text(
                       'Required for high-value claims',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                      ),
                     ),
                   ],
                 ),
@@ -487,7 +595,10 @@ class _OwnerVerificationScreenState extends State<OwnerVerificationScreen> {
               backgroundColor: AppColors.primary,
             ),
             icon: const Icon(Icons.camera_front, size: 18),
-            label: const Text('Start Biometric Face Scan', style: TextStyle(fontWeight: FontWeight.bold)),
+            label: const Text(
+              'Start Biometric Face Scan',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             onPressed: _openBiometricScanner,
           ),
         ],

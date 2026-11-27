@@ -24,7 +24,9 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
     final allItems = itemsService.items;
 
     // Filter items with active matches requiring action
-    final matchFoundItems = allItems.where((i) => i.status == 'matchFound').toList();
+    final matchFoundItems = allItems
+        .where((i) => i.status == 'matchFound')
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -34,13 +36,19 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             icon: Badge(
               isLabelVisible: itemsService.unreadNotificationsCount > 0,
               label: Text('${itemsService.unreadNotificationsCount}'),
-              child: const Icon(Icons.notifications_outlined, color: AppColors.textPrimary),
+              child: const Icon(
+                Icons.notifications_outlined,
+                color: AppColors.textPrimary,
+              ),
             ),
             tooltip: 'Notifications',
             onPressed: () => context.push('/notifications'),
           ),
           IconButton(
-            icon: const Icon(Icons.account_circle_outlined, color: AppColors.textPrimary),
+            icon: const Icon(
+              Icons.account_circle_outlined,
+              color: AppColors.textPrimary,
+            ),
             tooltip: 'Profile & Privacy',
             onPressed: () => context.push('/profile'),
           ),
@@ -67,18 +75,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           });
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Home',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Search Public',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.forum),
-            label: 'Messages',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.forum), label: 'Messages'),
         ],
       ),
       floatingActionButton: _currentIndex == 0
@@ -92,7 +94,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
     );
   }
 
-  Widget _buildBody(BuildContext context, dynamic user, List<LostItem> allItems, List<LostItem> matchFoundItems) {
+  Widget _buildBody(
+    BuildContext context,
+    dynamic user,
+    List<LostItem> allItems,
+    List<LostItem> matchFoundItems,
+  ) {
     if (_currentIndex == 1) {
       return _buildSearchTab(context);
     }
@@ -102,7 +109,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
     return _buildHomeTab(context, user, allItems, matchFoundItems);
   }
 
-  Widget _buildHomeTab(BuildContext context, dynamic user, List<LostItem> allItems, List<LostItem> matchFoundItems) {
+  Widget _buildHomeTab(
+    BuildContext context,
+    dynamic user,
+    List<LostItem> allItems,
+    List<LostItem> matchFoundItems,
+  ) {
     final displayName = user?.displayName ?? 'User';
     final trustScore = user?.trustScore ?? 100;
 
@@ -124,7 +136,11 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                       const CircleAvatar(
                         radius: 26,
                         backgroundColor: AppColors.primary,
-                        child: Icon(Icons.person, color: Colors.white, size: 28),
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                       ),
                       const SizedBox(width: 16.0),
                       Expanded(
@@ -133,21 +149,28 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           children: [
                             Text(
                               'Hello, $displayName!',
-                              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 6.0),
                             Row(
                               children: [
                                 const Text(
                                   'Trust Level: ',
-                                  style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 13,
+                                  ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 2,
+                                  ),
                                   decoration: BoxDecoration(
-                                    color: AppColors.success.withValues(alpha: 0.15),
+                                    color: AppColors.success.withValues(
+                                      alpha: 0.15,
+                                    ),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(
@@ -164,7 +187,11 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           ],
                         ),
                       ),
-                      const Icon(Icons.arrow_forward_ios, size: 14, color: AppColors.textSecondary),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                        color: AppColors.textSecondary,
+                      ),
                     ],
                   ),
                 ),
@@ -212,14 +239,20 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.warning,
                         foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                       ),
                       onPressed: () {
                         context.go('/owner/verify/${matchFoundItems.first.id}');
                       },
                       child: const Text(
                         'Provide Proof',
-                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -243,7 +276,11 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           color: AppColors.primary.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.map, color: AppColors.primary, size: 28),
+                        child: const Icon(
+                          Icons.map,
+                          color: AppColors.primary,
+                          size: 28,
+                        ),
                       ),
                       const SizedBox(width: 16.0),
                       const Expanded(
@@ -261,12 +298,19 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                             SizedBox(height: 4.0),
                             Text(
                               'Find the nearest safe drop-off & collection counters.',
-                              style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                              style: TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      const Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.textSecondary),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: AppColors.textSecondary,
+                      ),
                     ],
                   ),
                 ),
@@ -277,10 +321,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             Text(
               'ACTIVE LOST ITEMS',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textSecondary,
-                    letterSpacing: 1.2,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: AppColors.textSecondary,
+                letterSpacing: 1.2,
+              ),
             ),
             const SizedBox(height: 12.0),
 
@@ -290,7 +334,11 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   padding: const EdgeInsets.all(32.0),
                   child: Column(
                     children: [
-                      Icon(Icons.search_off, size: 48, color: AppColors.textSecondary.withValues(alpha: 0.5)),
+                      Icon(
+                        Icons.search_off,
+                        size: 48,
+                        color: AppColors.textSecondary.withValues(alpha: 0.5),
+                      ),
                       const SizedBox(height: 12),
                       const Text(
                         'No lost items reported yet.',
@@ -306,22 +354,31 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: allItems.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 10),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 10),
                 itemBuilder: (context, idx) {
                   final item = allItems[idx];
                   return Card(
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: AppColors.primary.withValues(alpha: 0.15),
+                        backgroundColor: AppColors.primary.withValues(
+                          alpha: 0.15,
+                        ),
                         child: Icon(
                           _getCategoryIcon(item.category),
                           color: AppColors.primary,
                         ),
                       ),
-                      title: Text(item.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      title: Text(
+                        item.title,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       subtitle: Text(
                         'Lost: ${item.lastKnownLocation} • ${item.timeLost}',
-                        style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                        style: const TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 13,
+                        ),
                       ),
                       trailing: _getStatusPill(context, item.status),
                       onTap: () {
@@ -348,10 +405,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             Text(
               'SEARCH FOUND REGISTRY',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textSecondary,
-                    letterSpacing: 1.2,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: AppColors.textSecondary,
+                letterSpacing: 1.2,
+              ),
             ),
             const SizedBox(height: 16.0),
             TextField(
@@ -372,7 +429,9 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.1),
-                border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                border: Border.all(
+                  color: AppColors.primary.withValues(alpha: 0.3),
+                ),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Column(
@@ -380,12 +439,19 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                 children: [
                   Text(
                     'Privacy Protection Notice',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primary),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'To prevent fraudulent claims, exact specifications (serial numbers, key patterns, interior marks) are kept hidden from the public database. Contact info is strictly secured, and all matches must be approved by the Administration Board.',
-                    style: TextStyle(color: AppColors.textSecondary, fontSize: 13, height: 1.4),
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                      height: 1.4,
+                    ),
                   ),
                 ],
               ),
@@ -405,33 +471,47 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           Text(
             'ADMIN SUPPORT CHATS',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textSecondary,
-                  letterSpacing: 1.2,
-                ),
+              fontWeight: FontWeight.bold,
+              color: AppColors.textSecondary,
+              letterSpacing: 1.2,
+            ),
           ),
           const SizedBox(height: 12.0),
           Expanded(
             child: allItems.isEmpty
                 ? const Center(
-                    child: Text('No active support cases.', style: TextStyle(color: AppColors.textSecondary)),
+                    child: Text(
+                      'No active support cases.',
+                      style: TextStyle(color: AppColors.textSecondary),
+                    ),
                   )
                 : ListView.separated(
                     itemCount: allItems.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 10),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 10),
                     itemBuilder: (context, idx) {
                       final item = allItems[idx];
-                      final lastMsg = item.messages.isNotEmpty ? item.messages.last.text : 'No messages yet.';
+                      final lastMsg = item.messages.isNotEmpty
+                          ? item.messages.last.text
+                          : 'No messages yet.';
                       return Card(
                         child: ListTile(
-                          title: Text('Case regarding: ${item.title}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          title: Text(
+                            'Case regarding: ${item.title}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           subtitle: Text(
                             lastMsg,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(color: AppColors.textSecondary),
+                            style: const TextStyle(
+                              color: AppColors.textSecondary,
+                            ),
                           ),
-                          trailing: const Icon(Icons.chevron_right, color: AppColors.textSecondary),
+                          trailing: const Icon(
+                            Icons.chevron_right,
+                            color: AppColors.textSecondary,
+                          ),
                           onTap: () {
                             context.go('/owner/chat/${item.id}');
                           },

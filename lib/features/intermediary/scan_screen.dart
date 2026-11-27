@@ -32,7 +32,10 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
         _pinController.clear();
       } else if (val == 'BACK') {
         if (_pinController.text.isNotEmpty) {
-          _pinController.text = _pinController.text.substring(0, _pinController.text.length - 1);
+          _pinController.text = _pinController.text.substring(
+            0,
+            _pinController.text.length - 1,
+          );
         }
       } else {
         if (_pinController.text.length < 10) {
@@ -59,7 +62,10 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
     setState(() => _processing = false);
 
     if (result == null) {
-      setState(() => _errorMsg = 'PIN not recognised. Check the format (e.g. DEP-XXX or XXX-XXX).');
+      setState(
+        () => _errorMsg =
+            'PIN not recognised. Check the format (e.g. DEP-XXX or XXX-XXX).',
+      );
     } else {
       if (result is FoundItem) {
         if (mounted) {
@@ -76,9 +82,7 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Check-In / Pickup Scanner'),
-      ),
+      appBar: AppBar(title: const Text('Check-In / Pickup Scanner')),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -114,12 +118,15 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
                             width: 180,
                             height: 180,
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.success, width: 3),
+                              border: Border.all(
+                                color: AppColors.success,
+                                width: 3,
+                              ),
                               borderRadius: BorderRadius.circular(16),
                             ),
                           ),
                         ),
-                        
+
                         // Animated Scanning Line simulation
                         Positioned(
                           top: 100,
@@ -136,11 +143,19 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(height: 120),
-                              Icon(Icons.camera_alt, color: AppColors.textSecondary, size: 24),
+                              Icon(
+                                Icons.camera_alt,
+                                color: AppColors.textSecondary,
+                                size: 24,
+                              ),
                               SizedBox(height: 8),
                               Text(
                                 'Align voucher QR code in bracket',
-                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),
@@ -160,10 +175,19 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
                       controller: _pinController,
                       readOnly: true,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 2.0),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2.0,
+                      ),
                       decoration: const InputDecoration(
                         hintText: 'OR ENTER PIN CODE',
-                        hintStyle: TextStyle(fontSize: 16, color: AppColors.textSecondary, letterSpacing: 0),
+                        hintStyle: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.textSecondary,
+                          letterSpacing: 0,
+                        ),
                         contentPadding: EdgeInsets.symmetric(vertical: 12),
                       ),
                     ),
@@ -171,7 +195,11 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
                       const SizedBox(height: 8),
                       Text(
                         _errorMsg,
-                        style: const TextStyle(color: AppColors.danger, fontSize: 12, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          color: AppColors.danger,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -214,12 +242,18 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
               child: TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor: AppColors.background.withValues(alpha: 0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 onPressed: () => _onKeyPress(key),
                 child: Text(
                   key,
-                  style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -239,10 +273,19 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
               child: TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.black.withValues(alpha: 0.4),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 onPressed: () => _onKeyPress('CLEAR'),
-                child: const Text('CLEAR', style: TextStyle(color: AppColors.textSecondary, fontSize: 13, fontWeight: FontWeight.bold)),
+                child: const Text(
+                  'CLEAR',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
@@ -252,10 +295,16 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
               child: TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.black.withValues(alpha: 0.4),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 onPressed: () => _onKeyPress('BACK'),
-                child: const Icon(Icons.backspace, color: AppColors.textSecondary, size: 20),
+                child: const Icon(
+                  Icons.backspace,
+                  color: AppColors.textSecondary,
+                  size: 20,
+                ),
               ),
             ),
           ),
@@ -266,12 +315,24 @@ class _IntermediaryScanScreenState extends State<IntermediaryScanScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.success,
                   foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 onPressed: _processing ? null : _submitPin,
                 child: _processing
-                    ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                    : const Text('ENTER', style: TextStyle(fontWeight: FontWeight.bold)),
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text(
+                        'ENTER',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
               ),
             ),
           ),

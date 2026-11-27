@@ -83,12 +83,16 @@ class AuthService {
 
   // Sign In
   Future<AppUser?> signIn(String email, String password) async {
-    await Future.delayed(const Duration(milliseconds: 800)); // Simulate network latency
+    await Future.delayed(
+      const Duration(milliseconds: 800),
+    ); // Simulate network latency
     final user = _mockUsers[email.trim().toLowerCase()];
     if (user != null) {
       return user;
     }
-    throw Exception('No demo account with that email. Use a role button, or owner@, finder@, intermediary@, admin@ or suspended@test.com.');
+    throw Exception(
+      'No demo account with that email. Use a role button, or owner@, finder@, intermediary@, admin@ or suspended@test.com.',
+    );
   }
 
   // Sign Up
@@ -99,12 +103,14 @@ class AuthService {
     required String role,
   }) async {
     final cleanEmail = email.trim().toLowerCase();
-    
+
     await Future.delayed(const Duration(milliseconds: 800));
     if (_mockUsers.containsKey(cleanEmail)) {
-      throw Exception('An account with that email already exists in this demo.');
+      throw Exception(
+        'An account with that email already exists in this demo.',
+      );
     }
-    
+
     final newUser = AppUser(
       uid: 'mock_uid_${DateTime.now().millisecondsSinceEpoch}',
       email: cleanEmail,
@@ -113,7 +119,7 @@ class AuthService {
       trustScore: 100,
       status: 'active',
     );
-    
+
     _mockUsers[cleanEmail] = newUser;
     return newUser;
   }
@@ -154,9 +160,7 @@ class AuthService {
     final cleanEmail = email.trim().toLowerCase();
     if (_mockUsers.containsKey(cleanEmail)) {
       final u = _mockUsers[cleanEmail]!;
-      _mockUsers[cleanEmail] = u.copyWith(
-        biometricConsentGiven: consent,
-      );
+      _mockUsers[cleanEmail] = u.copyWith(biometricConsentGiven: consent);
     }
   }
 }

@@ -56,7 +56,8 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
         _showError('Item Title is required.');
         return;
       }
-      if (_valueController.text.trim().isEmpty || double.tryParse(_valueController.text.trim()) == null) {
+      if (_valueController.text.trim().isEmpty ||
+          double.tryParse(_valueController.text.trim()) == null) {
         _showError('Please enter a valid estimated value.');
         return;
       }
@@ -98,16 +99,25 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
     final success = await itemsService.reportLostItem(
       title: _titleController.text.trim(),
       category: _category,
-      brand: _brandController.text.trim().isEmpty ? null : _brandController.text.trim(),
-      colour: _colourController.text.trim().isEmpty ? null : _colourController.text.trim(),
-      uniqueMarks: _marksController.text.trim().isEmpty ? null : _marksController.text.trim(),
+      brand: _brandController.text.trim().isEmpty
+          ? null
+          : _brandController.text.trim(),
+      colour: _colourController.text.trim().isEmpty
+          ? null
+          : _colourController.text.trim(),
+      uniqueMarks: _marksController.text.trim().isEmpty
+          ? null
+          : _marksController.text.trim(),
       estimatedValue: double.parse(_valueController.text.trim()),
       dateLost: _dateLost,
-      timeLost: '${_timeLost.hour.toString().padLeft(2, '0')}:${_timeLost.minute.toString().padLeft(2, '0')}',
+      timeLost:
+          '${_timeLost.hour.toString().padLeft(2, '0')}:${_timeLost.minute.toString().padLeft(2, '0')}',
       lastKnownLocation: _locationController.text.trim(),
       photos: _photos,
       proofDocuments: _proofDocuments,
-      serialNumber: _serialController.text.trim().isEmpty ? null : _serialController.text.trim(),
+      serialNumber: _serialController.text.trim().isEmpty
+          ? null
+          : _serialController.text.trim(),
     );
 
     if (mounted) {
@@ -116,7 +126,10 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
       });
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Lost Item successfully reported.'), backgroundColor: AppColors.success),
+          const SnackBar(
+            content: Text('Lost Item successfully reported.'),
+            backgroundColor: AppColors.success,
+          ),
         );
         context.go('/owner');
       } else {
@@ -176,7 +189,10 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                   if (_currentStep > 1)
                     TextButton(
                       onPressed: _prevStep,
-                      child: const Text('Back', style: TextStyle(color: Colors.white70)),
+                      child: const Text(
+                        'Back',
+                        style: TextStyle(color: Colors.white70),
+                      ),
                     )
                   else
                     const SizedBox.shrink(),
@@ -239,7 +255,10 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('What did you lose?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+        const Text(
+          'What did you lose?',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 20),
         TextField(
           controller: _titleController,
@@ -253,9 +272,18 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
           initialValue: _category,
           decoration: const InputDecoration(labelText: 'Category *'),
           items: const [
-            DropdownMenuItem(value: 'Electronics', child: Text('Electronics (Smartphone, Laptop)')),
-            DropdownMenuItem(value: 'Personal Accessories', child: Text('Personal Accessories (Wallet, Bag)')),
-            DropdownMenuItem(value: 'Documents', child: Text('Documents (Passport, Licence)')),
+            DropdownMenuItem(
+              value: 'Electronics',
+              child: Text('Electronics (Smartphone, Laptop)'),
+            ),
+            DropdownMenuItem(
+              value: 'Personal Accessories',
+              child: Text('Personal Accessories (Wallet, Bag)'),
+            ),
+            DropdownMenuItem(
+              value: 'Documents',
+              child: Text('Documents (Passport, Licence)'),
+            ),
             DropdownMenuItem(value: 'Keys', child: Text('Keys')),
             DropdownMenuItem(value: 'Clothing', child: Text('Clothing')),
             DropdownMenuItem(value: 'Other', child: Text('Other')),
@@ -298,7 +326,8 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
           maxLines: 2,
           decoration: const InputDecoration(
             labelText: 'Unique Marks or Engravings (Optional)',
-            hintText: 'e.g. Small scratch on the top-left corner, specific keychains',
+            hintText:
+                'e.g. Small scratch on the top-left corner, specific keychains',
           ),
         ),
         const SizedBox(height: 16),
@@ -321,7 +350,11 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
           ),
           child: const Text(
             'This value is used internally by the Admin Board to assess return safety and standardised reward options. It is not shared with finders or open to negotiation.',
-            style: TextStyle(color: AppColors.textSecondary, fontSize: 12, height: 1.3),
+            style: TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 12,
+              height: 1.3,
+            ),
           ),
         ),
       ],
@@ -333,14 +366,19 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Where and when was it lost?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+        const Text(
+          'Where and when was it lost?',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 20),
         Row(
           children: [
             Expanded(
               child: OutlinedButton.icon(
                 icon: const Icon(Icons.calendar_today, size: 16),
-                label: Text('${_dateLost.day}/${_dateLost.month}/${_dateLost.year}'),
+                label: Text(
+                  '${_dateLost.day}/${_dateLost.month}/${_dateLost.year}',
+                ),
                 onPressed: () async {
                   final picked = await showDatePicker(
                     context: context,
@@ -387,7 +425,16 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
         const SizedBox(height: 20),
         const Row(
           children: [
-            Expanded(child: Text('MAP LOCATION PIN', style: TextStyle(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.bold))),
+            Expanded(
+              child: Text(
+                'MAP LOCATION PIN',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             SimulatedTag(),
           ],
         ),
@@ -404,7 +451,9 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
               // Mock Map lines and graphics
               Positioned.fill(
                 child: CustomPaint(
-                  painter: _MockMapPainter(selectedStation: _selectedStationPin),
+                  painter: _MockMapPainter(
+                    selectedStation: _selectedStationPin,
+                  ),
                 ),
               ),
               // Grid overlay
@@ -437,16 +486,27 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.location_pin, color: AppColors.danger, size: 36),
+                    const Icon(
+                      Icons.location_pin,
+                      color: AppColors.danger,
+                      size: 36,
+                    ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.black87,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         _selectedStationPin,
-                        style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -473,7 +533,9 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primary : Colors.black87,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: isSelected ? AppColors.primary : AppColors.border),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : AppColors.border,
+          ),
         ),
         child: Text(
           label,
@@ -492,16 +554,28 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Provide ownership proof', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+        const Text(
+          'Provide ownership proof',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 6),
         const Text(
           'These details help the Admin Board verify your claim. Uploads and serial numbers are kept completely private and are never exposed to finders or intermediaries.',
-          style: TextStyle(color: AppColors.textSecondary, fontSize: 12, height: 1.4),
+          style: TextStyle(
+            color: AppColors.textSecondary,
+            fontSize: 12,
+            height: 1.4,
+          ),
         ),
         const SizedBox(height: 20),
         const Row(
           children: [
-            Expanded(child: Text('Item Photos (Optional)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            Expanded(
+              child: Text(
+                'Item Photos (Optional)',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ),
             SimulatedTag(),
           ],
         ),
@@ -520,14 +594,23 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.03),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.border, style: BorderStyle.solid),
+                  border: Border.all(
+                    color: AppColors.border,
+                    style: BorderStyle.solid,
+                  ),
                 ),
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.add_a_photo, color: AppColors.textSecondary),
                     SizedBox(height: 4),
-                    Text('Upload', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+                    Text(
+                      'Upload',
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -539,7 +622,8 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: _photos.length,
-                  separatorBuilder: (context, index) => const SizedBox(width: 8),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 8),
                   itemBuilder: (context, idx) {
                     return Stack(
                       children: [
@@ -549,10 +633,16 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                            border: Border.all(
+                              color: AppColors.primary.withValues(alpha: 0.3),
+                            ),
                           ),
                           child: Center(
-                            child: Icon(Icons.image, color: AppColors.primary.withValues(alpha: 0.6), size: 32),
+                            child: Icon(
+                              Icons.image,
+                              color: AppColors.primary.withValues(alpha: 0.6),
+                              size: 32,
+                            ),
                           ),
                         ),
                         Positioned(
@@ -567,7 +657,11 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                             child: const CircleAvatar(
                               radius: 10,
                               backgroundColor: AppColors.danger,
-                              child: Icon(Icons.close, color: Colors.white, size: 12),
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 12,
+                              ),
                             ),
                           ),
                         ),
@@ -582,7 +676,12 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
         const SizedBox(height: 20),
         const Row(
           children: [
-            Expanded(child: Text('Proof of Ownership / Receipt (Optional)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            Expanded(
+              child: Text(
+                'Proof of Ownership / Receipt (Optional)',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ),
             SimulatedTag(),
           ],
         ),
@@ -592,7 +691,9 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  _proofDocuments.add('receipt_${_proofDocuments.length + 1}.pdf');
+                  _proofDocuments.add(
+                    'receipt_${_proofDocuments.length + 1}.pdf',
+                  );
                 });
               },
               child: Container(
@@ -608,7 +709,13 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                   children: [
                     Icon(Icons.note_add, color: AppColors.textSecondary),
                     SizedBox(height: 4),
-                    Text('Upload PDF', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+                    Text(
+                      'Upload PDF',
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -620,7 +727,8 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: _proofDocuments.length,
-                  separatorBuilder: (context, index) => const SizedBox(width: 8),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 8),
                   itemBuilder: (context, idx) {
                     return Stack(
                       children: [
@@ -630,10 +738,16 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                            border: Border.all(
+                              color: AppColors.primary.withValues(alpha: 0.3),
+                            ),
                           ),
                           child: const Center(
-                            child: Icon(Icons.picture_as_pdf, color: AppColors.primary, size: 32),
+                            child: Icon(
+                              Icons.picture_as_pdf,
+                              color: AppColors.primary,
+                              size: 32,
+                            ),
                           ),
                         ),
                         Positioned(
@@ -648,7 +762,11 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
                             child: const CircleAvatar(
                               radius: 10,
                               backgroundColor: AppColors.danger,
-                              child: Icon(Icons.close, color: Colors.white, size: 12),
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 12,
+                              ),
                             ),
                           ),
                         ),
@@ -677,16 +795,33 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Review your report details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+        const Text(
+          'Review your report details',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 20),
         _buildReviewRow('Item Name', _titleController.text),
         _buildReviewRow('Category', _category),
-        _buildReviewRow('Brand/Colour', '${_brandController.text.isEmpty ? 'N/A' : _brandController.text} / ${_colourController.text.isEmpty ? 'N/A' : _colourController.text}'),
-        _buildReviewRow('Unique Marks', _marksController.text.isEmpty ? 'None specified' : _marksController.text),
+        _buildReviewRow(
+          'Brand/Colour',
+          '${_brandController.text.isEmpty ? 'N/A' : _brandController.text} / ${_colourController.text.isEmpty ? 'N/A' : _colourController.text}',
+        ),
+        _buildReviewRow(
+          'Unique Marks',
+          _marksController.text.isEmpty
+              ? 'None specified'
+              : _marksController.text,
+        ),
         _buildReviewRow('Estimated Value', '£ ${_valueController.text}'),
         _buildReviewRow('Last Location', _locationController.text),
-        _buildReviewRow('Lost Date', '${_dateLost.day}/${_dateLost.month}/${_dateLost.year} at ${_timeLost.format(context)}'),
-        _buildReviewRow('Evidence Files', '${_photos.length} Photo(s), ${_proofDocuments.length} Document(s)'),
+        _buildReviewRow(
+          'Lost Date',
+          '${_dateLost.day}/${_dateLost.month}/${_dateLost.year} at ${_timeLost.format(context)}',
+        ),
+        _buildReviewRow(
+          'Evidence Files',
+          '${_photos.length} Photo(s), ${_proofDocuments.length} Document(s)',
+        ),
         const SizedBox(height: 24),
         Container(
           padding: const EdgeInsets.all(12),
@@ -703,7 +838,11 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
               Expanded(
                 child: Text(
                   'Making a false lost-item report can be a criminal offence. In a real service, repeated false listings would lower the trust score and lead to suspension.',
-                  style: TextStyle(color: AppColors.warning, fontSize: 12, height: 1.4),
+                  style: TextStyle(
+                    color: AppColors.warning,
+                    fontSize: 12,
+                    height: 1.4,
+                  ),
                 ),
               ),
             ],
@@ -743,10 +882,20 @@ class _ReportWizardScreenState extends State<ReportWizardScreen> {
         children: [
           SizedBox(
             width: 120,
-            child: Text(label, style: const TextStyle(color: AppColors.textSecondary, fontSize: 13, fontWeight: FontWeight.bold)),
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           Expanded(
-            child: Text(value, style: const TextStyle(color: Colors.white, fontSize: 13)),
+            child: Text(
+              value,
+              style: const TextStyle(color: Colors.white, fontSize: 13),
+            ),
           ),
         ],
       ),
@@ -768,18 +917,46 @@ class _MockMapPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     // Draw grid paths
-    canvas.drawLine(Offset(0, size.height * 0.2), Offset(size.width, size.height * 0.4), paint);
-    canvas.drawLine(Offset(0, size.height * 0.7), Offset(size.width, size.height * 0.5), paint);
-    canvas.drawLine(Offset(size.width * 0.3, 0), Offset(size.width * 0.4, size.height), paint);
-    canvas.drawLine(Offset(size.width * 0.75, 0), Offset(size.width * 0.6, size.height), paint);
+    canvas.drawLine(
+      Offset(0, size.height * 0.2),
+      Offset(size.width, size.height * 0.4),
+      paint,
+    );
+    canvas.drawLine(
+      Offset(0, size.height * 0.7),
+      Offset(size.width, size.height * 0.5),
+      paint,
+    );
+    canvas.drawLine(
+      Offset(size.width * 0.3, 0),
+      Offset(size.width * 0.4, size.height),
+      paint,
+    );
+    canvas.drawLine(
+      Offset(size.width * 0.75, 0),
+      Offset(size.width * 0.6, size.height),
+      paint,
+    );
 
     // Draw stylized station platforms / buildings
     final buildingPaint = Paint()
       ..color = AppColors.primary.withValues(alpha: 0.15)
       ..style = PaintingStyle.fill;
 
-    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.1, size.height * 0.25, 60, 30), const Radius.circular(4)), buildingPaint);
-    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.65, size.height * 0.45, 80, 40), const Radius.circular(4)), buildingPaint);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(size.width * 0.1, size.height * 0.25, 60, 30),
+        const Radius.circular(4),
+      ),
+      buildingPaint,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(size.width * 0.65, size.height * 0.45, 80, 40),
+        const Radius.circular(4),
+      ),
+      buildingPaint,
+    );
   }
 
   @override
