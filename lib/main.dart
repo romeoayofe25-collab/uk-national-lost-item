@@ -82,10 +82,18 @@ class _MyAppState extends State<MyApp> {
             return _rolePath(user?.role);
           }
           final path = state.matchedLocation;
-          if (path.startsWith('/owner') && user?.role != 'owner') return _rolePath(user?.role);
-          if (path.startsWith('/finder') && user?.role != 'finder') return _rolePath(user?.role);
-          if (path.startsWith('/intermediary') && user?.role != 'intermediary') return _rolePath(user?.role);
-          if (path.startsWith('/admin') && user?.role != 'admin') return _rolePath(user?.role);
+          if (path.startsWith('/owner') && user?.role != 'owner') {
+            return _rolePath(user?.role);
+          }
+          if (path.startsWith('/finder') && user?.role != 'finder') {
+            return _rolePath(user?.role);
+          }
+          if (path.startsWith('/intermediary') && user?.role != 'intermediary') {
+            return _rolePath(user?.role);
+          }
+          if (path.startsWith('/admin') && user?.role != 'admin') {
+            return _rolePath(user?.role);
+          }
         }
         return null;
       },

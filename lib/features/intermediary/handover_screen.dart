@@ -171,7 +171,9 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                     ),
                     activeColor: AppColors.primary,
                     onChanged: (val) {
-                      if (val != null) setState(() => _verifiedId = val);
+                      if (val != null) {
+                        setState(() => _verifiedId = val);
+                      }
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: EdgeInsets.zero,
@@ -185,7 +187,9 @@ class _IntermediaryHandoverScreenState extends State<IntermediaryHandoverScreen>
                     ),
                     activeColor: AppColors.primary,
                     onChanged: (val) {
-                      if (val != null) setState(() => _collectedSignature = val);
+                      if (val != null) {
+                        setState(() => _collectedSignature = val);
+                      }
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: EdgeInsets.zero,

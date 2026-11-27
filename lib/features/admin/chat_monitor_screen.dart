@@ -60,7 +60,9 @@ class _AdminChatMonitorScreenState extends State<AdminChatMonitorScreen> {
             return Consumer<ItemsService>(
               builder: (context, itemsService, child) {
                 final liveItem = itemsService.getItemById(item.id);
-                if (liveItem == null) return const Center(child: Text('Chat not found'));
+                if (liveItem == null) {
+                  return const Center(child: Text('Chat not found'));
+                }
                 final isPaused = itemsService.isChatPaused(liveItem.id);
 
                 return Column(
