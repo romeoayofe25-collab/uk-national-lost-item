@@ -28,7 +28,7 @@ class IntermediaryDashboardScreen extends StatelessWidget {
         .toList();
 
     final pendingDeposits = itemsService.foundItems
-        .where((item) => item.status == 'heldByFinder')
+        .where((item) => item.status == 'awaitingDeposit')
         .toList();
 
     return Scaffold(
@@ -325,7 +325,7 @@ class IntermediaryDashboardScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Code: ${item.secureDepositPin ?? 'DEP-XXX'}',
+                                    'Code: ${item.secureDepositPin ?? 'not issued'}',
                                     style: const TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold),
                                   ),
                                 ],
