@@ -12,15 +12,15 @@ A prototype of a safer lost-property recovery service.
 
 <table>
   <tr>
-    <td align="center"><img src="screenshots/07_verification_center_ownership_claim.png" width="180" alt="Ownership verification screen"><br><sub>Owner: proving ownership</sub></td>
-    <td align="center"><img src="screenshots/01_biometric_identity_verification.png" width="180" alt="Simulated identity scan"><br><sub>Owner: simulated identity scan</sub></td>
-    <td align="center"><img src="screenshots/02_partner_dropoff_centre_map.png" width="180" alt="Drawn map of drop-off desks"><br><sub>Owner: drop-off desk map (drawn)</sub></td>
-    <td align="center"><img src="screenshots/06_secure_collection_desk_qr_pin.png" width="180" alt="Collection PIN screen"><br><sub>Owner: collection PIN</sub></td>
+    <td align="center"><img src="screenshots/07_ownership_verification.png" width="180" alt="Ownership verification screen"><br><sub>Owner: proving ownership</sub></td>
+    <td align="center"><img src="screenshots/01_identity_scan_simulated.png" width="180" alt="Simulated identity scan"><br><sub>Owner: simulated identity scan</sub></td>
+    <td align="center"><img src="screenshots/02_drop_off_desk_map.png" width="180" alt="Drawn map of drop-off desks"><br><sub>Owner: drop-off desk map (drawn)</sub></td>
+    <td align="center"><img src="screenshots/06_owner_collection_pin.png" width="180" alt="Collection PIN screen"><br><sub>Owner: collection PIN</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="screenshots/03_custody_handover_checklist.png" width="180" alt="Deposit voucher and checklist"><br><sub>Finder: deposit voucher</sub></td>
-    <td align="center"><img src="screenshots/05_intermediary_custody_storage_ledger.png" width="180" alt="Desk storage ledger"><br><sub>Desk: storage ledger</sub></td>
-    <td align="center"><img src="screenshots/04_admin_supervised_chat_monitoring.png" width="180" alt="Admin chat monitor"><br><sub>Admin: chat monitor</sub></td>
+    <td align="center"><img src="screenshots/03_finder_deposit_voucher.png" width="180" alt="Deposit voucher and checklist"><br><sub>Finder: deposit voucher</sub></td>
+    <td align="center"><img src="screenshots/05_desk_storage_ledger.png" width="180" alt="Desk storage ledger"><br><sub>Desk: storage ledger</sub></td>
+    <td align="center"><img src="screenshots/04_admin_chat_monitor.png" width="180" alt="Admin chat monitor"><br><sub>Admin: chat monitor</sub></td>
     <td></td>
   </tr>
 </table>
@@ -86,7 +86,7 @@ In the app, every screen carries a PROTOTYPE ribbon, each simulated feature is m
 
 - **Flutter** (Dart 3.12), one code base for Android, iOS and the web. On a wide screen the web version shows the app in a phone-width column.
 - **State:** `provider`, with two `ChangeNotifier` services: `AuthProvider` for the signed-in user and `ItemsService` for all demo data and actions.
-- **Navigation:** `go_router`, with 28 routes and a redirect that keeps each role on its own screens and sends a suspended account to its own page.
+- **Navigation:** `go_router`, with 29 routes and a redirect that keeps each role on its own screens and sends a suspended account to its own page.
 - **Fonts:** `google_fonts`, which downloads the font files when the app first runs.
 
 ```text
@@ -100,7 +100,9 @@ lib/
   features/
     auth/              sign-in, registration, suspended account
     owner/  finder/  intermediary/  admin/
-    common/            notifications, profile and data rights
+    common/            notifications, profile, data rights and the About screen
+docs/
+  DEMO_SCRIPT.md       script for the two-minute demo video
 test/
   widget_test.dart
 ```
@@ -137,7 +139,7 @@ All roles share the same demo data while the app is running. Sign out, sign in a
 1. **Owner.** On the iPhone 13 Pro alert, tap **Provide Proof**. Run the simulated identity scan, fill in the answers and the serial number (any text will do) and submit.
 2. **Admin.** Open the claim under "Pending claims verification review", set the reward and approve it.
 3. **Owner.** Open the iPhone 13 Pro report and tap **Get Collection Code & Map**. The collection PIN is `491-032`.
-4. **Desk staff.** Tap **Scan QR / PIN**, enter `491-032` and confirm the hand-over.
+4. **Desk staff.** Tap **Scan QR / PIN** and enter `491-032`. Tick the checklist, type the PIN again and complete the hand-over.
 5. **Finder.** Open the wallet: the reward has moved from pending to available.
 6. **Admin.** Open **Supervised Chats** and **Disputes & Fraud**.
 
