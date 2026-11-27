@@ -251,7 +251,7 @@ class LostItemDetailsScreen extends StatelessWidget {
   String _getTimelineSubtext(String status) {
     switch (status) {
       case 'searching':
-        return 'We are running search matches against reported found items.';
+        return 'Waiting for a matching found item. In this prototype, matches come from the demo data.';
       case 'matchFound':
         return 'A potential match has been flagged by Admin. Action Required.';
       case 'underReview':

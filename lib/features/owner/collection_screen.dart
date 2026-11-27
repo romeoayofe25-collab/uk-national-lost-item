@@ -168,7 +168,7 @@ class CollectionDetailsScreen extends StatelessWidget {
                                 children: [
                                   Icon(Icons.zoom_out_map, size: 12, color: AppColors.textSecondary),
                                   SizedBox(width: 4),
-                                  Text('Tap to Open Live Map', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+                                  Text('Tap to open the map', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
                                 ],
                               ),
                             ),
@@ -189,7 +189,7 @@ class CollectionDetailsScreen extends StatelessWidget {
             // Coordination Chat CTA
             OutlinedButton.icon(
               icon: const Icon(Icons.forum, color: AppColors.primary),
-              label: const Text('Secure Chat with Centre Desk'),
+              label: const Text('Secure Chat with Admin'),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.primary),
                 padding: const EdgeInsets.symmetric(vertical: 14),

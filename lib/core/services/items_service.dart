@@ -458,8 +458,8 @@ class ItemsService extends ChangeNotifier {
 
     if (biometricVerified) {
       addNotification(
-        title: 'Biometric Identity Verified (${idDocumentType ?? 'Government ID'})',
-        message: 'Biometric liveness confirmed with ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% match. Cryptographic token registered.',
+        title: 'Simulated Identity Check Passed (${idDocumentType ?? 'Government ID'})',
+        message: 'Demo result: ${((biometricConfidence ?? 0.984) * 100).toStringAsFixed(1)}% match. No camera or real ID check was used.',
         type: 'biometricVerified',
         category: 'claims',
         relatedItemId: itemId,

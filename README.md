@@ -69,8 +69,9 @@ In the app, every screen carries a PROTOTYPE ribbon, each simulated feature is m
 | Feature | In this prototype |
 |---|---|
 | Sign-in and accounts | Five built-in demo accounts; any password works. New accounts last until the app restarts. |
-| Data | Reports, messages, notifications and rewards are demo data held in memory. Nothing is saved or shared between devices. |
+| Data | Reports, messages, notifications and rewards are demo data held in memory and shared by all demo accounts, so a new account sees the same items. Nothing is saved or shared between devices. |
 | Matching lost and found reports | Not built. The match shown is part of the demo data. |
+| Public search | Not built. The search box on the owner's Search tab is disabled. |
 | Photos and documents | Tapping upload adds a placeholder file name. No file is read. |
 | Drop-off desk map | A drawn picture with fixed example desks. No maps service, no location. |
 | Identity scan | A timed animation that always succeeds. The camera is not used. |
@@ -133,7 +134,7 @@ All roles share the same demo data while the app is running. Sign out, sign in a
 
 1. **Owner.** On the iPhone 13 Pro alert, tap **Provide Proof**. Run the simulated identity scan, fill in the answers and the serial number (any text will do) and submit.
 2. **Admin.** Open the claim under "Pending claims verification review", set the reward and approve it.
-3. **Owner.** Open the iPhone 13 Pro report and go to its collection details. The collection PIN is `491-032`.
+3. **Owner.** Open the iPhone 13 Pro report and tap **Get Collection Code & Map**. The collection PIN is `491-032`.
 4. **Desk staff.** Tap **Scan QR / PIN**, enter `491-032` and confirm the hand-over.
 5. **Finder.** Open the wallet: the reward has moved from pending to available.
 6. **Admin.** Open **Supervised Chats** and **Disputes & Fraud**.

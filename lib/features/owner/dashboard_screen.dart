@@ -355,9 +355,11 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             ),
             const SizedBox(height: 16.0),
             TextField(
+              // Search is not built: the field is shown disabled rather than pretending to work.
+              enabled: false,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
-                hintText: 'Search matching station or category...',
+                hintText: 'Search is not built in this prototype',
                 filled: true,
                 fillColor: AppColors.surface,
                 border: OutlineInputBorder(
